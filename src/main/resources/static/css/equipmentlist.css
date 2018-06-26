@@ -1,0 +1,36 @@
+body{position: relative;}
+.navBar{bottom: 0}
+.mid{ width:100%; overflow:hidden; margin:0 auto;}
+.middle{width: 88%;margin: 65px 6%;}
+.container{padding-right: 0px;padding-left: 0px;}
+/*道具列表*/
+
+.mid  .equip{ width:100%;  border:1px solid #cccccc; float:left; margin: 20px 0;}
+.mid  .equip .title{ background-color:#eff3ff; height:50px;padding-top: 10px;}
+.mid  .equip .title .equipmentTitle{ padding-left: 10px;float:left ;font-size: 20px}
+.mid  .equip .title span{  float:right; padding-right: 10px}
+.mid  .equip .title .queryButton{ float: right;margin-right: 10px }
+.mid  .equip .title .queryInput{ float: right;margin-right: 10px ;width: 200px }
+.mid  .equip .title select{ float: right;padding-left: 10px ;margin-right: 10px }
+
+
+.mid  .equipList{ width:100%;  display:flex;  flex-wrap:wrap;}
+.mid  .equip00{ margin-left: 50px;margin-top: 5px;height: 175px;}
+.mid  .equip00 .bigpic{ width: 105px;height: 105px;margin-top: 10px;}
+.mid  .info01{  height:30px; overflow:hidden;}
+.mid  .info01 img{ width:20px; height:20px; float:left; margin:4px 6px 0 10px;border-radius: 15px;}
+.mid  .info01 h6{ float:left; text-align:center;}
+.mid  .info02{ height: 22px;overflow: hidden;margin-left: -1px;margin-top: 5px;text-align: center}
+.mid .info02 .shengyu{ float: left;text-align: center;margin-left: 4px;margin-top: 24px;}
+.mid .info02 span{ margin-top:0px; color:#e51c23;padding-right: 5px;font-size: 16px;}
+.mid .info02 .unit{ margin-top:3px;color: black}
+.mid .info02 .gold{ margin-top:-7px;}
+.mid  .equip00:hover{ box-shadow: 0 0 5px #d9d9d9;}
+
+/*分页*/
+.mid .equip .page{ height: 50px;margin-top: 25px;padding-top: 20px;}
+.mid .equip .page .pageInfo{ width:300px ;  border: 0;float: left;  padding-left: 20px;  padding-top: 12px;  font-size: 15px;}
+ul.pagination {float: right;margin: 0px;}
+ul.pagination li {display: inline;}
+ul.pagination li a {  color: black;  float: left;  text-align: center; width: 40px; text-decoration: none;  transition: background-color .3s;  border: 1px solid #ddd;  }
+ul.pagination li a.active {  background-color: #4CAF50;  color: white;  border: 1px solid #4CAF50;  }

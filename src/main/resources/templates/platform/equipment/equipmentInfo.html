@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>装备信息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <script th:src="@{/layui/layui.js}"></script>
+</head>
+<body>
+<!-- 此处class dellAllComment 对应于最下面一个绑定click事件 -->
+<div class="equipmentTable" style="margin-top: 15px;margin-left: 2px;">
+    <div class="layui-form">
+        <div class="layui-form-item">
+            <form id="balancedata" name="balancedata" class="layui-form">
+                <div class="layui-inline">
+                    <label class="layui-form-label">道具名称:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="name" name="name"  autocomplete="off" class="layui-input" maxlength="11">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">道具编号:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="equipmentno" name="equipmentno"  autocomplete="off" class="layui-input" maxlength="11">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">启用状态:</label>
+                    <div class="layui-input-inline">
+                        <select id="state" name="state" lay-filter="qzhuangtai">
+                            <option value="" selected="">全部</option>
+                            <option value="1">启用</option>
+                            <option value="0">禁用</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">分配状态:</label>
+                    <div class="layui-input-inline">
+                        <select id="status" name="status" lay-filter="fzhuangtai">
+                            <option value="" selected="">全部</option>
+                            <option value="0">未分配</option>
+                            <option value="1">已分配</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="layui-btn" style="margin-top: 0px;margin-left: 2px;"
+            data-type="reload">
+        <i class="layui-icon">&#xe615;</i>搜索
+    </button>
+    <button class="layui-btn layui-btn-normal" data-type="addEquipment">
+        <i class="layui-icon">&#xe654;</i>新增
+    </button>
+
+</div>
+<script type="text/html" id="statusTpl">
+    {{#  if(d.status === 1){ }}
+    <span style="color: #09752f;">{{ '已发布' }}</span>
+    {{#  } else if(d.status === 0) { }}
+    <span style="color: #bf6607;">{{ '未发布' }}</span>
+    {{#  } }}
+</script>
+<script type="text/html" id="statsTpl">
+    {{#  if(d.state === 1){ }}
+    <span style="color: #09752f;">{{ '启用' }}</span>
+    {{#  } else if(d.state === 0) { }}
+        <span style="color: #FF0000;">{{ '禁用' }}</span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="usetypeTpl">
+    {{#  if(d.usetype === 1){ }}
+    <span >{{ '展示图' }}</span>
+    {{#  } else if(d.usetype === 0) { }}
+    <span >{{ '缩略图' }}</span>
+    {{#  }  else if(d.usetype === 2) { }}
+    <span >{{ '详情图' }}</span>
+    {{#  } }}
+</script>
+
+<table class="layui-hide" id="equipment_table" lay-filter="tableList"></table>
+
+<div class="layui-tab" lay-filter="equtab">
+    <ul class="layui-tab-title">
+        <li class="layui-this" lay-id="00">道具图片</li>
+        <li class="layui-this" lay-id="01">发布信息</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <table class="layui-hide" id="equpic" lay-filter="equpicList"></table>
+        </div>
+        <div class="layui-tab-item">
+            <table class="layui-hide" id="equpub" lay-filter="equpubList"></table>
+        </div>
+    </div>
+</div>
+
+
+<script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+<script th:inline="javascript" type="text/javascript">
+    var tabIndex=0;
+    var eid='';
+
+    /****查询页面加载列表 *****/
+    var arr = new Array();
+    var cLen = 4;
+
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            elem: '#equipment_table'
+            , url:'/platformEquipment/equipment_getList'
+            , skin: "line"
+            , page: true
+            , height: 'full-350'
+            , cols: [[
+                {field: 'name', event:'click', title: '道具名称'},
+                {field: 'equipmentno',event:'click',  title: '道具编号'},
+//                {field: 'equipmentcategory',event:'click', title: '分类名称',width:'100'},
+                {field: 'state',event:'click',  title: '启用状态', templet: '#statsTpl'},//
+                {field: 'status',event:'click',  title: '发布状态', templet: '#statusTpl'},//
+                {field: 'remark',event:'click', title: '备注'},
+                {field: 'describe',event:'click', title: '描述'},
+                {field: 'createtime',event:'click', title: '创建时间'},
+                {field: 'createuser', event:'click', title: '创建人'},
+                {field: 'updatetime',event:'click',  title: '修改时间'},
+                {field: 'updateuser',event:'click',title: '修改人'},
+                {field: 'occupytime',event:'click',  title: '发布时间'},
+                {field: 'occupyuser',event:'click',title: '发布人'},
+                {title: '操作',templet: '#barDemo',fixed: 'right',width:'220'}
+                //   {width:lastwidth, title: '操作', toolbar: '#barDemo', fixed: 'right'}
+            ]]
+            , limit: 10   //默认十条数据一页
+            , limits: [10, 20, 30]  //数据分页条
+            , done: function (res, curr, count) {
+                if (res.data.length>0){
+//                    console.log(res.data.length)
+//                    console.log(res.data[0]);
+                    eid=res.data[0].id;
+                    qryEquTab(tabIndex,eid);
+                }
+            }
+            //,
+          //  id: 'equTable'
+        });
+        var $ = layui.$,
+            active = {
+                /***定义函数绑定到按钮的data-type上 addEquipment*/
+                refresh: function () {
+                    table.reload('equipment_table');
+                }, /* 搜索框 */
+                reload: function () {
+                    var equipmentno = $("#equipmentno").val();
+                    var state = $("#state").val();
+                    var status = $("#status").val();
+                    var name = $("#name").val();
+                    table.reload('equipment_table',{
+                        url: '/platformEquipment/equipment_getList',
+                        where: {
+                            name:name,
+                            equipmentno: equipmentno,
+                            state: state,
+                            status: status
+                        }
+                    });
+                },
+                addEquipment: function () {
+                    parent.layer.open({
+                        type: 2,
+                        area: ['600px', '500px'],
+                        title: '装备添加',
+                        shade: 0.6,
+                        anim: 2,
+                        content: '/platformEquipment/equipmentFormSave',
+                        end: function () {
+                            location.reload();
+                        }
+                    });
+                }
+            };
+
+        $('.equipmentTable .layui-btn').on('click',
+            function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+        //监听工具条
+        table.on('tool(tableList)', function (obj) {
+            var data = obj.data;
+            if (obj.event == 'edit') {
+                var title = "道具修改";
+                parent.layer.open({
+                    type: 2,
+                    area: ['600px', '500px'],
+                    title: '道具信息',
+                    shade: 0.6,
+                    anim: 2,
+                    content: '/platformEquipment/qryEquipment?Id=' + data.id,//
+                    end: function () {
+                        location.reload();
+                    }
+                });
+            }
+            if (obj.event == 'loadpic') {
+                var title = "上传图片";
+                parent.layer.open({
+                    type: 2,
+                    area: ['686px', '400px'],
+                    title: '装备图片',
+                    shade: 0.6,
+                    anim: 2,
+                    content: '/platformEquipment/qryEquipment1?Id=' + data.id,//
+                    end: function () {
+                        location.reload();
+                    }
+                });
+            }
+            if (obj.event == 'public') {
+                var title = "发布道具";
+                parent.layer.open({
+                    type: 2,
+                    area: ['686px', '350px'],
+                    title: '发布道具',
+                    shade: 0.6,
+                    anim: 2,
+                    content: '/platformEquipment/qryEquipmentProperty?equipmentid=' + data.id+'&name='+data.name,//
+                    end: function () {
+                        location.reload();
+                    }
+                });
+            }
+            if (obj.event == 'click') {
+                eid=data.id;
+                qryEquTab(tabIndex,eid);
+            }
+
+        });
+        table.on('tool(equpicList)', function (obj) {
+            var data = obj.data;
+          //  alert(data);
+            if(obj.event == 'detail') {
+                var lastDate = $(this).attr('data-index');
+                var currDate = new Date();
+                var date3 = -1;
+                if (typeof(lastDate) != "undefined") {
+                    date3 = (currDate.getSeconds() - new Date(lastDate).getSeconds());
+                }
+                if (date3 >= 0 && date3 <= 1) { //一秒内连续点击两下，实现双击事件
+                    parent.layer.open({
+                        type: 1
+                        ,title: '图片信息'
+                        ,offset: 'auto' //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                        ,id: 'layerDemo'+'auto' //防止重复弹出
+                        ,content: ' <div > <img src="'+data.picurl+'"  id="demo1"> </div>'
+                        ,btn: '关闭全部'
+                        ,area: ['700px', '500px']
+                        ,btnAlign: 'c' //按钮居中
+                        ,shade: 0 //不显示遮罩
+                        ,yes: function(){
+                            parent.layer.closeAll();
+                        }
+                    });
+                }else{
+                    var date1=new Date();
+                    $(this).attr('data-index',date1);
+                }
+            }
+        });
+        table.on('tool(equpubList)', function (obj) {
+            var data = obj.data;
+            if (obj.event == 'editProperty') {
+                var title = "发布信息修改";
+                parent.layer.open({
+                    type: 2,
+                    area: ['686px', '350px'],
+                    title: '道具信息',
+                    shade: 0.6,
+                    anim: 2,
+                    content: '/platformEquipment/qryEquipmentProperty?equipmentid=' + data.equipmentid,//
+                    end: function () {
+                        location.reload();
+                    }
+                });
+            }
+        });
+    });
+
+    layui.use('element', function(){
+        var $ = layui.jquery
+            ,element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+        //alert(element);
+        $('.site-demo-active').on('click', function(){
+            var othis = $(this), type = othis.data('type');
+            active[type] ? active[type].call(this, othis) : '';
+        });
+        element.on('tab(equtab)', function(data){
+             tabIndex=data.index;
+            qryEquTab(tabIndex,eid);
+        });
+    });
+
+    function qryEquTab(idx,eid) {
+        if(eid ==''){
+            return ;
+        }
+        if(idx==0){
+            layui.use('table', function () {
+                var table = layui.table;
+                table.render({
+                    elem: '#equpic'
+                    , url:'/platformEquipment/equipmentpic_List?equipmentid='+eid
+                    , skin: "line"
+                    , page: false
+                    , height: 'full'
+                    , cols: [[
+                        {field: 'equipmentname', event:'detail', title: '道具名称'},
+                        {field: 'picurl',event:'detail', title: '图片路径'},
+                        {field: 'usetype',event:'detail',  title: '用途类型', templet: '#usetypeTpl'},
+                        {field: 'showlevel',event:'detail',  title: '优先级'},
+                        {field: 'remark',event:'detail',  title: '备注'},
+                        {field: 'createtime',event:'detail', title: '创建时间'},
+                        {field: 'createuser', event:'detail', title: '创建人'},
+                        {field: 'updatetime',event:'detail',  title: '修改时间'},
+                        {field: 'updateuser',event:'detail',title: '修改人'}
+                        //   {width:lastwidth, title: '操作', toolbar: '#barDemo', fixed: 'right'}
+
+                    ]]
+                    , done: function (res, curr, count) {
+                    }
+                  //  id: 'equPicTable'
+                });
+                var $ = layui.$,
+                    active = {
+                        refresh: function () {
+                            table.reload('equpic');
+                        }, /* 搜索框 */
+                        reload: function () {
+                            var name = $("#name").val();
+                            table.reload('equpic', {
+                                url: '/platformEquipment/equipmentpic_List',
+                                where: {
+                                    equipmentid:eid
+                                }
+                            });
+                        },
+                    };
+                $('.equpic .layui-btn').on('click',
+                    function () {
+                        var type = $(this).data('type');
+                        active[type] ? active[type].call(this) : '';
+                    });
+                //监听工具条
+            });
+        }
+        if(idx==1){
+            layui.use('table', function () {
+                var table = layui.table;
+                table.render({
+                    elem: '#equpub'
+                    , url:'/platformEquipment/equipmentpub_List?equipmentid='+eid
+                    , skin: "line"
+                    , page: false
+                    , height: 'full'
+                    , cols: [[
+                        {field: 'equipmentname',  title: '道具名称'},
+                        {field: 'price', title: '装备价格'},
+                        {field: 'cnt',  title: '发行数量'},
+                        {field: 'propertydes',  title: '属性描述'},
+                        {field: 'createtime', title: '创建时间'},
+                        {field: 'createuser',  title: '创建人'},
+                        {field: 'updatetime',  title: '修改时间'},
+                        {field: 'updateuser',title: '修改人'},
+                        {title: '操作',templet: '#barDemo2',fixed: 'right',width:'100'}
+                        //   {width:lastwidth, title: '操作', toolbar: '#barDemo', fixed: 'right'}
+
+                    ]]
+                    , done: function (res, curr, count) {
+                    }
+                    //  id: 'equPicTable'
+                });
+                var $ = layui.$,
+                    active = {
+                        refresh: function () {
+                            table.reload('equpub');
+                        }, /* 搜索框 */
+                        reload: function () {
+                            var name = $("#name").val();
+                            table.reload('equpub', {
+                                url: '/platformEquipment/equipmentpub_List',
+                                where: {
+                                    equipmentid:eid
+                                }
+                            });
+                        },
+                    };
+                $('.equpub .layui-btn').on('click',
+                    function () {
+                        var type = $(this).data('type');
+                        active[type] ? active[type].call(this) : '';
+                    });
+                //监听工具条
+            });
+        }
+    }
+
+
+
+
+
+
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-sm"  lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-sm"  lay-event="loadpic">图片上传</a>
+    {{#  if(d.status === 0) { }}
+    <a class="layui-btn layui-btn-sm"  lay-event="public">发布</a>
+    {{#  }  else { }}
+    <a class="layui-btn layui-btn-sm" style="background-color : grey; cursor: none ">发布</a>
+    {{#  } }}
+    <!--{{#  if(d.enableFlg === 'N') { }}-->
+    <!--<a class="layui-btn layui-btn-sm" style="width:44px;padding-left: 12px;" lay-event="audit">审核</a>-->
+    <!--<a class="layui-btn layui-btn-sm" style="width:44px;padding-left: 12px;" lay-event="delete">删除</a>-->
+    <!--{{#  }  else { }}-->
+    <!--{{#  if(d.usabilityflg === '1') { }}-->
+    <!--<a class="layui-btn layui-btn-sm" style="background-color : darkgreen; cursor: none ">已启用</a>-->
+    <!--{{#  }  else { }}-->
+    <!--<a class="layui-btn layui-btn-sm" style="background-color : darkred; cursor: none ">已禁用</a>-->
+    <!--{{#  } }}-->
+    <!--{{#  } }}-->
+</script>
+<script type="text/html" id="barDemo2">
+    <a class="layui-btn layui-btn-sm"  lay-event="editProperty">修改</a>
+</script>
+</body>
+</html>

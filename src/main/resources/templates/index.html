@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>[[#{AppTitle}]]</title>
+    <meta charset="gb2312">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/newIndex.css}"/>
+    <link rel="stylesheet" th:href="@{/css/global.css}"/>
+    <link rel="icon" type="image/gif" th:href="@{/images/icon/bitbug_favicon.ico}">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}"/>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/point_scroll.js}"></script>
+    <script type="application/javascript">
+        var cur = "index";
+    </script>
+</head>
+<style>
+
+    .playerLogin{
+        width: 225px;
+        height: 50px;
+        margin-top: -60px;
+        margin-left: 20px;
+        border-radius:5px;
+        background-color: orange;
+    }
+    .playerLogin span{
+        font-size: 20px;
+        color: white;
+        margin: 0 auto;
+        line-height: 250%;
+    }
+
+    .playerregister span{
+        font-size: 20px;
+        color: orange;
+        margin: 0 auto;
+        line-height: 250%;
+    }
+
+    .playerregister{
+        width: 225px;
+        height: 50px;
+        margin-top: 10px;
+        margin-left: 20px;
+        border-radius:5px;
+        border: 1px solid orange;
+    }
+    .count{
+        padding-top: 45px;
+        padding-left: 20px;
+    }
+
+    .jibeizhu{
+        margin-left: 156px;
+        margin-top: -46px;
+        display: block;
+    }
+    .huabeizhu{
+        margin-left: 156px;
+        margin-top: -45px;
+        display: block;
+    }
+    .navBar ul li:first-child{
+        border-left: 1px solid #E3E3E3;
+    }
+
+    body{
+        font-family: 微软雅黑;
+    }
+
+
+
+</style>
+
+<body style="margin: 0;padding: 0">
+<div class="web-top">
+    <div class="topBar" th:include="@{common/top.html}"></div>
+    <div class="logoBar"  th:include="@{common/header.html}"></div>
+    <!--导航-->
+    <div class="logoBar" th:include="@{common/navBar.html}"></div>
+</div>
+<div class="web-middle">
+    <div class="left">
+        <div class="partLeftTop">
+            <a href="javascript:void(0)" onclick="advert1left()" class="webPic focusLeft focusIcon" id="advert1_la"
+               style="display: block;"></a>
+            <ul class="focusList fl" id="ulp" style="">
+                <li style="opacity: 1; z-index: 2; display: list-item;">
+                    <a href="#" title="" target="_blank">
+                        <img alt="" th:src="@{/images1/banner02.png}" width="100%" height="550">
+                    </a>
+                </li>
+
+                <li style="opacity: 1; z-index: 1; display: none;">
+                    <a href="#" title="" target="_blank">
+                        <img alt="" th:src="@{/images1/banner01.png}" width="100%" height="550">
+                    </a>
+                </li>
+
+                <li style="opacity: 1; z-index: 1; display: none;">
+                    <a href="#" title="" target="_blank">
+                        <img alt="" th:src="@{/images1/banner02.png}" width="100%" height="550">
+                    </a>
+                </li>
+
+                <li style="opacity: 1; z-index: 1; display: none;">
+                    <a href="#" title="" target="_blank">
+                        <img alt="" th:src="@{/images1/banner01.png}" width="100%" height="550">
+                    </a>
+                </li>
+
+
+            </ul>
+            <a href="javascript:void(0)" onclick="advert1right()" class="focusRight webPic focusIcon" id="advert1_ra"
+               style="display: block;"></a>
+            <ul class="whPromoBar" id="uln">
+                <li class="current"><a class="point" href="javascript:void(0)"></a></li>
+
+                <li class=" "><a class="point" href="javascript:void(0)"></a></li>
+
+                <li class=" "><a class="point" href="javascript:void(0)"></a></li>
+
+                <li class=" "><a class="point" href="javascript:void(0)"></a></li>
+
+            </ul>
+        </div>
+
+        <div class="partGame">
+            <div class="title">
+                <div class="gameleft">[[#{platform.menu.GameInfo}]]</div>
+                <ul class="gameUl">
+                    <li th:each="gameCategory,gameCategoryStar: ${gameCategoryList}">
+                        <a href="javascript:void(0);" th:id="${gameCategory.id}" onclick="getGameList(this.id)">[[${gameCategory.name}]]</a>
+                    </li>
+                    <li class="gamemore"><a href="/gameList.html">[[#{Common.More}]]</a></li>
+                </ul>
+            </div>
+            <div class="gameList">
+                <!--  <div class="game00">
+                      <img th:src="@{/images1/dnf.png}">
+                      <h6>地下城与勇士</h6>
+                  </div>-->
+            </div>
+        </div>
+        <div class="partEquip">
+            <div class="title">
+                <div class="equipmentleft">[[#{equipment.detail_desc13}]]</div>
+                <ul class="equipUl">
+                    <li th:each="category:${gameEquipmentCategoryList}" onclick="toSellEquipment()"
+                        th:text="${category.name}" th:id="${category.id}"></li>
+                    <li class="equipmentmore"><a href="/equipmentList.html">[[#{Common.More}]]</a></li>
+                </ul>
+            </div>
+            <div class="equipList" id="equipList">
+                <div class='equip00' th:each="equipment:${equipmentList}">
+                    <!--图片-->
+                    <div style="text-align: center">
+                        <a th:href="@{/equipmentdetail.html(equipmentId=${equipment.id})}">
+                            <img class='bigpic' th:if="${equipment.equipmentPic!=null}" th:src="${equipment.equipmentPic}">
+                            <img class='bigpic' th:if="${equipment.equipmentPic==null}" th:src="@{/images1/001.png}">
+                        </a>
+                    </div>
+                    <div style="text-align: center;font-size: 16px;padding-top: 10px;"><span id='fontStyle' th:text="${equipment.name}"></span></div>
+                    <div class='info02'>
+                        <img class="gold"  th:src="@{/images1/gold.png}"><span th:text="${equipment.price}"></span>
+                        <span class='unit'>[[#{equipment.detail_desc5}]]</span>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+        <div class="partActivity"><a href="#"><img th:src="@{/images1/act.jpg}" style="width: 100%;height: 100%"></a>
+        </div>
+
+
+    </div>
+    <div class="right">
+        <div class="partLogin">
+            <div class="GoldIncrePartial">
+                <div class="count"><span class="miaoshu" >[[#{Common.Message}]]</span></div>
+                <br/>
+                <div class="showjinbi">
+                    <div style="display: block;height: 60px;" class="clearfix">
+                        <span style="width: 25%;float:left;padding-top:13px;text-align: center"><img th:src="@{/images1/purse.png}"></span>
+                        <ul style="width: 40%;padding-top: 45px;float:left;text-align: center" class="runNum" id="add"></ul>
+                        <div style="padding-top:15px;text-align: center">[[#{Common.EarnGold}]]</div>
+                    </div>
+                    <div style="display: block;height: 60px;" class="clearfix">
+                        <span style="width: 25%;float:left;padding-top:13px;    text-align: center"><img th:src="@{/images1/shopping trolley.png}"></span>
+                        <ul style="width: 40%;padding-top: 45px;float:left;text-align: center" class="runNum" id="jian"></ul>
+                        <div style="padding-top:15px;text-align: center">[[#{Common.ConsumeGold}]]</div>
+                    </div>
+                    <!--<div class="showjianjinbi">
+                        <ul class="runNum" id="jian"></ul>
+                        <span class="huabeizhu">[[#{Common.ConsumeGold}]]</span>
+                        <span class=""></span>
+                        <span><img class="jianimg" th:src="@{/images1/shopping trolley.png}"></span>
+                    </div>-->
+                </div>
+                <div class="playerinfo">
+                    <div id="isse" style="display: none" th:if="${session.PlayerUserKey!=null}">
+
+                        <p><br><span class="pinfo">[[#{Common.Hellow}]]</span>&nbsp;<span th:text="${session.PlayerUserKey.username}"></span></p>
+                        <div class="jininfo" ><span>[[#{equipment.detail_desc5}]]</span><span th:text="${session.PlayerUserKey.goldcnt}"></span></div>
+                        <div class="eqinfo"><span>[[#{player.memberCenter.menu5}]]</span><span th:text="${session.PlayerUserKey.equipcnt}"></span></div>
+                    </div>
+
+                    <div id="nose" style="display: none;margin-top: 70px">
+                        <div class="playerLogin" style="text-align: center;width: 88%;"><span>
+                            <a th:href="@{/Player/login.html}" style="color:white;text-decoration:none;height: 100%;width: 100%;display: block">[[#{player.login.title}]]</a></span>
+                        </div>
+                        <div class="playerregister" style="text-align: center;width: 88%;height: 100%;width: 88%;display: block"><span>
+                            <a th:href="@{/Player/register.html}" style="color:orange;text-decoration:none;height: 100%;width: 100%;display: block">[[#{player.register.tip15}]]</a></span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="partNews">
+            <div class="newsTitle newsTitleRight">
+                <h2>[[#{Common.Navigator.NewAnnouncement}]]</h2>
+                <div class="more mTop10" style="margin-right: 15px;">
+                    <span><a target="_blank" href="/newsList.html">[[#{Common.More}]]</a></span><span class="webPic moreIcon fl"> </span>
+                </div>
+            </div>
+            <div class="news-box" id="scrollDiv">
+                <ul class="newsList" id="newlist">
+
+                </ul>
+            </div>
+        </div>
+        <div class="partAward">
+            <div class="advertisement">
+                <a href="#"><img th:src="@{/images/ad2.jpg}"></a>
+            </div>
+            <div class="advertisement">
+                <a href="#"><img th:src="@{/images/advertisement.jpg}"></a>
+            </div>
+            <div class="advertisement">
+                <a href="#"><img th:src="@{/images/ad2.jpg}"></a>
+            </div>
+        </div>
+        <div class="partParam">
+            <div class="advertisement">
+                <a href="#"><img th:src="@{/images/advertisement.jpg}"></a>
+            </div>
+            <div class="advertisement">
+                <a href="#"><img th:src="@{/images/ad2.jpg}"></a>
+            </div>
+            <div class="advertisement">
+                <a href="#"><img th:src="@{/images/advertisement.jpg}"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--根据是否会员登录引入不同footer-->
+<div class="web-bottom" th:if="${session.PlayerUserKey!=null}" th:include="@{common/memberFooter.html}"></div>
+<div class="web-bottom" th:if="${session.PlayerUserKey==null}" th:include="@{common/footer.html}"></div>
+
+<script type="text/javascript">
+    var size;
+    var index = 0;
+    var now = 0;
+    var interval = 0;
+    var time;
+    $(function () {
+        $(".partLeftTop").hover(function () {
+            $("#advert1_la").show();
+            $("#advert1_ra").show();
+        }, function () {
+            $("#advert1_la").hide();
+            $("#advert1_ra").hide();
+        });
+
+        size = $("#ulp>li").size() - 1;
+        if ($("#ulp>li").size() > 1) {
+            time = setInterval(function () {
+                addindex();
+                interval = 1;
+            }, 3000);
+
+            $("#uln>li").each(function () {
+                $(this).hover(function () {
+                    $(this).click();
+                }, function () {
+                    if ($(this).index() != index)
+                        $(this).removeClass("current");
+                });
+                $(this).click(function () {
+                    if ($("#ulp>li:eq(" + index + ")").is(":not(:animated)")) {
+                        index = $(this).index();
+                        if (now != index) {
+                            clearInterval(time);
+                            interval = 0;
+                            show();
+                        }
+                    }
+                });
+            });
+            $("#ulp>li").each(function () {
+                $(this).hover(function () {
+                    clearInterval(time);
+                    interval = 0;
+
+                }, function () {
+                    if (interval == 0) {
+                        time = setInterval(function () {
+                            addindex();
+                            interval = 1;
+                        }, 3000);
+                    }
+
+                });
+            });
+        }
+    });
+
+    function addindex() {
+        if (index < size)
+            index++;
+        else
+            index = 0;
+        show();
+    };
+
+    function show() {
+        var $now = $("#ulp>li:eq(" + now + ")");
+        var $index = $("#ulp>li:eq(" + index + ")");
+        $now.hide();
+        $now.css({zIndex: "1"});
+        $index.show();
+        $index.css({zIndex: "2"});
+        now = index;
+        $("#uln>li").each(function () {
+            if ($(this).index() == index)
+                $(this).addClass("current");
+            else
+                $(this).removeClass("current");
+        });
+    };
+
+    function advert1left() {
+        var ulnCur = $("#uln>li.current").index();
+        size = $("#ulp>li").size() - 1;
+        if (ulnCur == 0) {
+            stopAdvert1(size);
+        }
+        else {
+            stopAdvert1(ulnCur - 1);
+        }
+    }
+
+    function advert1right() {
+        var ulnCur = $("#uln>li.current").index();
+        size = $("#ulp>li").size() - 1;
+        if (ulnCur == size) {
+            stopAdvert1(0);
+        }
+        else {
+            stopAdvert1(ulnCur + 1);
+        }
+    }
+
+    function stopAdvert1(num) {
+        $("#uln>li")[num].click();
+    }
+</script>
+
+<script type="text/javascript" th:inline="javascript">
+
+    $(document).ready(function () {
+
+        /*<![CDATA[*/
+        var user=[[${session.PlayerUserKey}]];;
+        if(user!=null){
+            $("#isse").css("display","block");
+        }else{
+            $("#nose").css("display","block");
+        }
+        /*]]>*/
+
+
+        $("#add").runNum(2013141);
+        $("#jian").runNum(3145217);
+        $("#menu0").css("color","red");
+        $("#menu0 i").addClass("first_active_bar");
+        //默认加载第一个游戏分类下的游戏
+        var firstId = $(".gameUl li:first a").attr("id");
+        getGameList(firstId);
+
+
+        //异步获取公告
+        $.ajax({
+            type: 'POST',
+            url: '/news_list',
+            datatype: 'json',
+            cache: false,
+            success: function (data) {
+                data = JSON.parse(data);
+                $.each(data, function (i, obj) {
+                    var createtime = obj.createtime;
+                    var createdate = "";
+                    if (createtime.length >= 8) {
+                        createdate = createtime.substring(4, 6) + "-" + createtime.substring(6, 8);
+                    } else if (createtime.length >= 4) {
+                        createdate = createtime.substr(-1, 4);
+                        createdate = createdate.substring(0, 2) + "-" + createtime.substring(2, 4);
+                    } else {
+                        createdate = createtime;
+                    }
+                    var str = "<span><a href='/news.html?id=" + obj.id + "'>" + obj.title.substring(0, 30) + "</a><label style='float: right;padding-right: 10px'>" + createdate + "</label></span><br/><p style='margin:0;padding:0;height:40px;font-size: 12px;overflow: hidden'>"+obj.content.substring(0, 22)+"</p>";
+                    $("#newlist").append("<li>" + str + "</li>");
+                });
+            }
+        });
+
+
+
+    });
+
+
+    //动态获取游戏列表
+    function getGameList(obj) {
+        var gamelist = [[${gameListMap}]];
+        var str = "";
+        var gameUrl = "/gamedetail.html?gameId=";
+        $(".gameList").html("");
+        $.each(gamelist, function (i, gamelist1) {
+            if (obj == i) {
+                $.each(gamelist1, function (i, obj) {
+
+
+                    if(obj.gamepic==null){
+                        str = str+"<div class=\'game00\'><div class='gameImg'><a href='" + gameUrl + obj.id + "'><img class='imginfo' src='/images1/dnf.png'></a></div><h6>" + obj.name + "</h6></div>";
+                    }else{
+                        str = str+"<div class=\'game00\'><div class='gameImg'><a href='" + gameUrl + obj.id + "'><img class='imginfo' src='" + obj.gamepic + "'></a></div><h6>" + obj.name + "</h6></div>";
+                    }
+                });
+                $(".gameList").append(str);
+            }
+
+        });
+    }
+
+
+</script>
+<!--新闻滚动-->
+<script type="text/javascript">
+    //滚动插件
+    (function ($) {
+        $.fn.extend({
+            Scroll: function (opt, callback) {
+                //参数初始化
+                if (!opt) var opt = {};
+                var _this = this.eq(0).find("ul:first");
+                var lineH = 70, //获取行高
+                    line = opt.line ? parseInt(opt.line, 10) : parseInt(this.height() / lineH, 10), //每次滚动的行数，默认为一屏，即父容器高度
+                    speed = opt.speed ? parseInt(opt.speed, 10) : 500, //卷动速度，数值越大，速度越慢（毫秒）
+                    timer = opt.timer ? parseInt(opt.timer, 10) : 3000; //滚动的时间间隔（毫秒）
+                if (line == 0) line = 1;
+                var upHeight = 0 - line * lineH;
+                //滚动函数
+                scrollUp = function () {
+                    _this.animate({
+                        marginTop: upHeight
+                    }, speed, function () {
+                        for (i = 1; i <= line; i++) {
+                            _this.find("li:first").appendTo(_this);
+                        }
+                        _this.css({marginTop: 0});
+                    });
+                };
+                //鼠标事件绑定
+                _this.hover(function () {
+                    clearInterval(timerID);
+                }, function () {
+                    timerID = setInterval("scrollUp()", timer);
+                }).mouseout();
+            }
+        })
+    })(jQuery);
+
+    $(document).ready(function () {
+        $("#scrollDiv").Scroll({line: 1, speed: 2000, timer: 3000});
+    });
+</script>
+<!--图面切换-->
+
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.platform.IPlatFormRoleDao">
+    <resultMap type="com.hy.entity.PlatFormRole" id="platFormRoleResult"/>
+    <resultMap type="com.hy.entity.PlatFormRole1" id="platFormRoleResult1"/>
+
+    <insert id="add" parameterType="com.hy.entity.PlatFormRole">
+        INSERT  into hy_PLATFORM_ROLE (id,
+        <if test="state != null and state != ''">state,</if>
+        <if test="createuser != null and createuser != ''">createuser,</if>
+        <if test="createtime != null and createtime != ''">createtime,</if>
+        <if test="remark != null and remark != ''">remark,</if>
+        name,apptype) VALUES (#{id},
+        <if test="state != null and state != ''">#{state},</if>
+        <if test="createuser != null and createuser != ''">#{createuser},</if>
+        <if test="createtime != null and createtime != ''">#{createtime},</if>
+        <if test="remark != null and remark != ''">#{remark},</if>
+        #{name},'A')
+    </insert>
+
+    <delete id="delete" parameterType="com.hy.entity.PlatFormRole">
+        DELETE  FROM   hy_PLATFORM_ROLE where id = #{id}
+    </delete>
+
+
+    <update id="update" parameterType="com.hy.entity.PlatFormRole">
+        UPDATE hy_PLATFORM_ROLE t set
+        <if test="state != null">
+            t.state = #{state},
+        </if>
+        <if test="remark != null and remark != ''">
+            t.remark = #{remark},
+        </if>
+        <if test="updatetime != null and updatetime != ''">
+            t.updatetime = #{updatetime},
+        </if>
+        <if test="updateuser != null and updateuser != ''">
+            t.updateuser = #{updateuser},
+        </if>
+            t.apptype='A'
+        where t.id = #{id}
+    </update>
+
+    <select id="getList" parameterType="map" resultMap="platFormRoleResult">
+        SELECT  * from hy_PLATFORM_ROLE t WHERE t.apptype='A'
+        <if test="state != null ">
+            and t.state = #{state}
+        </if>
+        <if test="name1 != null and name1 != ''">
+            and t.name = #{name1}
+        </if>
+        <if test="name != null and name != ''">
+            and  instr(t.name,#{name})>0
+        </if>
+    </select>
+    <select id="getListCount" parameterType="map" resultType="int">
+        SELECT  count(*) from hy_PLATFORM_ROLE t WHERE t.apptype='A'
+        <if test="state != null ">
+            and t.state = #{state}
+        </if>
+        <if test="name1 != null and name1 != ''">
+            and t.name = #{name1}
+        </if>
+        <if test="name != null and name != ''">
+            and  instr(t.name,#{name})>0
+        </if>
+
+    </select>
+    <select id="getPlatFormRole" parameterType="com.hy.entity.PlatFormRole" resultMap="platFormRoleResult">
+        SELECT * from hy_PLATFORM_ROLE where apptype='A' and id = #{id}
+    </select>
+
+    <select id="qryUserRoleList" parameterType="map" resultMap="platFormRoleResult1">
+		SELECT r.*,case when ur.roleid is not null then '1' else '0' end LAY_CHECKED FROM hy_platform_role r left join hy_platform_userrole ur on r.id=ur.roleid and ur.userid=#{userid}
+		  where 1=1	 and r.state=1
+        <if test="name != null and name != ''">
+            and name = #{name}
+        </if>
+		  order by  r.createtime 	desc
+    </select>
+
+    <select id="getListCount1" parameterType="map" resultType="int">
+        SELECT count(*)  FROM hy_platform_role r left join hy_platform_userrole ur on r.id=ur.roleid and ur.userid=#{userid}
+        where 1=1	 and r.state=1
+        <if test="name != null and name != ''">
+            and name = #{name}
+        </if>
+
+    </select>
+</mapper>

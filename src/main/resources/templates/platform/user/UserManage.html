@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/css/style-form.css}" media="all">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+    <!--<script th:src="@{/js/moduleUse2.js}"></script>-->
+    <script th:src="@{/layui/layui-xtree.js}"></script>
+    <link th:href="@{/css/jquery.validate.min.css}" type="text/css" rel="stylesheet" />
+    <script th:src="@{/js/jquery.validate.min.js}" type="text/javascript"></script>
+    <title>操作员管理</title>
+    <script type="text/javascript">
+        $().ready(function() {
+
+
+        });
+    </script>
+</head>
+<body>
+<div style="padding: 15px;">
+    <!-- 此处class dellAllComment 对应于最下面一个绑定click事件 -->
+    <div class="userDiv" style="margin-top: 15px;margin-left: 2px;">
+        <form id="inputForm" class="layui-form">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户姓名:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="fullname" name="fullname"  autocomplete="off" class="layui-input" maxlength="20">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">登 录 名:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="username" name="username" autocomplete="off" class="layui-input" maxlength="19">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">手 机 号:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="phone" name="phone"  autocomplete="off" class="layui-input" maxlength="11">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户状态:</label>
+                    <div class="layui-input-inline">
+                        <select id="status" class="layui-input"  name="status" lay-filter="paystatus">
+                            <option value="" selected="">全部</option>
+                            <option value="1">启用</option>
+                            <option value="0">禁用</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户类型:</label>
+                    <div class="layui-input-inline">
+                        <select id="usertype" class="layui-input"  name="status" lay-filter="paystatus">
+                            <option value="" selected="">全部</option>
+                            <option value="0">管理员</option>
+                            <option value="1">普通用户</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户性别:</label>
+                    <div class="layui-input-inline">
+                        <select id="gendar" class="layui-input"  name="status" lay-filter="paystatus">
+                            <option value="" selected="">全部</option>
+                            <option value="1">男</option>
+                            <option value="2">女</option>
+                            <option value="0">未知</option>
+
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+        <button class="layui-btn" style="margin-top: 0px;margin-left: 2px;"
+                data-type="reload">
+            <i class="layui-icon">&#xe615;</i>搜索
+        </button>
+
+        <button class="layui-btn layui-btn-normal" data-type="addUser">
+            <i class="layui-icon">&#xe654;</i>新增
+        </button>
+
+
+
+    </div>
+    <table class="layui-hide" id="userTable" lay-filter="userList"></table>
+    <script type="text/html" id="barDemo">
+        {{#  if(d.state === 1) { }}
+        <a class="layui-btn  layui-btn-sm layui-btn-xs" style="background-color : grey; cursor: none " >{{ '启用' }}</a>
+        <a class="layui-btn  layui-btn-sm layui-btn-xs" lay-event="disable">禁用</a>
+        <a class="layui-btn  layui-btn-sm layui-btn-xs" lay-event="edit">修改</a>
+        {{#  }  else { }}
+        <a class="layui-btn  layui-btn-sm layui-btn-xs" lay-event="enable" >{{ '启用' }}</a>
+        <a class="layui-btn  layui-btn-sm layui-btn-xs" style="background-color : grey; cursor: none ">禁用</a>
+        <a class="layui-btn  layui-btn-sm layui-btn-xs" lay-event="edit">修改</a>
+        {{#  } }}
+
+
+
+    </script>
+    <script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+
+    <script type="text/html" id="stateTpl">
+        {{#  if(d.state === 1){ }}
+        <span style="color: #5193FA;">{{ '启用' }}</span>
+        {{#  } else { }}
+        <span style="color: #FF0000;">{{ '禁用'}}</span>
+        {{#  } }}
+    </script>
+
+    <script type="text/html" id="gendarTpl">
+        {{#  if(d.gendar === 0){ }}
+        <span >{{ '未知' }}</span>
+        {{#  } else if(d.gendar === 1) { }}
+        <span >{{ '男'}}</span>
+        {{#  } else if(d.gendar === 2) { }}
+        <span >{{ '女'}}</span>
+        {{#  } else  { }}
+        <span >{{ '未知'}}</span>
+        {{#  } }}
+    </script>
+
+
+
+    <script type="text/html" id="usertypeTpl">
+        {{#  if(d.usertype === 1){ }}
+        <span style="color: #5193FA;">{{ '普通用户' }}</span>
+        {{#  } else if(d.usertype === 0) { }}
+        <span style="color: #5193FA;">{{ '管理员'}}</span>
+        {{#  } else { }}
+        <span style="color: #FF0000;">{{ '未知'}}</span>
+        {{#  } }}
+    </script>
+
+
+    <script th:inline="javascript" type="text/javascript">
+        /****查询页面加载列表 *****/
+        var arr=new Array();
+        var cLen=4;
+
+        layui.use('table', function(){
+            var table = layui.table;
+            table.render({
+                elem: '#userTable'
+                ,url:/*[[@{/PUser/user_render_list}]]*/''
+                ,skin:"line"
+                ,even: true
+                ,page: true
+                ,height: 'full-170'
+                ,cols: [[
+                    {field:'fullname', title: '姓名',fixed: 'left'},
+                    {field:'username',title: '登录名',sort: true},
+                    {field:'phone', title: '手机号'},
+                    {field:'email', title: 'EMAIL'},
+                    {field:'skype',title: 'SKYPE'},
+                    {field:'qq', title: 'QQ'},
+                    {field:'gendar',title: '性别',templet:"#gendarTpl"},
+                    {field:'state',title: '状态',templet:"#stateTpl"},
+                    {field:'usertype',title: '用户类型',templet:"#usertypeTpl"},
+                    {title: '操作', templet: '#barDemo', fixed: 'right',width:"180"}
+                    /* {width:lastwidth, title: '操作', toolbar: '#barDemo', fixed: 'right'} */
+                ]]
+                ,limit:10   //默认十条数据一页
+                ,limits:[10,20,30]  //数据分页条
+                ,done: function(res, curr, count){
+
+                }
+            });
+
+            var $ = layui.$,
+                active = {
+                    /***定义函数绑定到按钮的data-type上 addUser*/
+                    refresh: function () {
+                        table.reload('userTable');
+                    },
+                    reload: function () {
+                        var fullname = $("#fullname").val();
+                        var username = $("#username").val();
+                        var phone = $("#phone").val();
+                        var state = $("#status").val();
+                        var usertype = $("#usertype").val();
+                        var gendar = $("#gendar").val();
+
+                        table.reload('userTable', {
+                            url:/*[[@{/PUser/user_render_list}]]*/'',
+                            where: {
+                                fullname: fullname,
+                                username: username,
+                                phone: phone,
+                                state: state,
+                                usertype: usertype,
+                                gendar: gendar
+
+                            }
+                        });
+                    },
+                    addUser: function () {
+                        parent.layer.open({
+                            type: 2,
+                            area: ['780px', '550px'],
+                            title: '添加操作员',
+                            shade: 0.6,
+                            anim: 2,
+                            content:/*[[@{/PUser/user/form}]]*/'',
+                            end: function () {
+                                location.reload();
+                            }
+                        });
+                    }
+                }
+
+            $('.userDiv .layui-btn').on('click',
+                function() {
+                    var type = $(this).data('type');
+                    active[type] ? active[type].call(this) : '';
+                });
+            //监听工具条
+            table.on('tool(userList)', function(obj){
+                var data = obj.data;
+                var path = /*[[@{/PUser/user/upt}]]*/'';
+
+                if(obj.event == 'detail'){
+                    layer.msg('ID：'+ data.id + ' 的查看操作');
+                } else if(obj.event == 'disable'){
+                    layer.confirm('真的禁用该操作员信息么?', function(index){
+                        if(data.state===0){
+                            layer.alert("不能禁用已禁用的操作员信息.");
+                            return;
+                        }
+                        $.ajax({
+                            type : 'POST',
+                            contentType: "charset=utf-8",
+                            url : path+'?id='+data.id+'&state=0',
+                            datatype: 'json',
+                            cache:false,
+                            success : function(data) {
+                                if(data=="SUCCESS"){
+                                    layer.alert("禁用成功!",function () {
+                                        location.reload();
+                                    });
+                                }else{
+                                    layer.alert(data);
+                                }
+                            }
+                        });
+                        //obj.del();
+                        layer.close(index);
+                    });
+                }else if(obj.event == 'enable'){
+                    layer.confirm('真的启用该操作员信息么?', function(index){
+                        if(data.state===1){
+                            layer.alert("不能启用已启用的操作员信息.");
+                            return;
+                        }
+                        $.ajax({
+                            type : 'POST',
+                            contentType: "charset=utf-8",
+                            url : path+'?id='+data.id+'&state=1',
+                            datatype: 'json',
+                            cache:false,
+                            success : function(data) {
+                                if(data=="SUCCESS"){
+                                    layer.alert("启用成功!",function () {
+                                        location.reload();
+                                    });
+                                }else{
+                                    layer.alert(data);
+                                }
+                            },
+                        });
+                        layer.close(index);
+                    });
+
+                } else if(obj.event == 'edit'){
+                    /*var lastDate=$(this).attr('data-index');
+                     var currDate=new Date();
+                     var date3=-1;
+                     if (typeof(lastDate) != "undefined"){
+                     date3=(currDate.getSeconds()-new Date(lastDate).getSeconds());
+                     }
+                     if(date3>=0 && date3<=1) { *///一秒内连续点击两下，实现双击事件
+                    var title = "修改操作员信息";
+                    var path = /*[[@{/PUser/user/form}]]*/'';
+                    layer.open({
+                        type: 2,
+                        /* offset: ['70px', '200px'], */
+                        title: [title, true],
+                        area: ['780px', '550px'],
+                        fixed: false, //不固定
+                        maxmin: true,
+                        content: path+'?id=' + data.id,
+                        end: function () {
+                            location.reload();
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.player.IPlayerEquipmentDao">
+    <resultMap type="com.hy.entity.PlayerEquipment1" id="equipmentResult"/>
+
+    <select id="getPlayerEquipment" parameterType="com.hy.entity.PlayerEquipment" resultMap="equipmentResult">
+        SELECT  * from hy_player_equipment where playerid = #{playerid} and equipmentid = #{equipmentid}
+    </select>
+
+    <select id="getList" parameterType="map" resultMap="equipmentResult">
+        SELECT  a.*,t.picurl,to_char(a.quantity*p.price,'FM999,999,999,990.00') totalprice from hy_player_equipment a
+        --left join hy_equipmentpic b on a.equipmentid=b.equipmentid
+        left join (select * from (select a.*,row_number() over (partition by a.equipmentid order by showlevel desc) cnt from hy.hy_equipmentpic a) where cnt=1) t on a.equipmentid=t.equipmentid
+        left join hy_equipment_property p on a.equipmentid=p.equipmentid
+        where 1=1
+        <if test="playerid != null and playerid != ''">
+            and  a.playerid = #{playerid}
+        </if>
+        <if test="equipmentid != null and equipmentid != ''">
+            and a.equipmentid = #{equipmentid}
+        </if>
+    </select>
+
+    <select id="getListCount" parameterType="map" resultType="int">
+        SELECT  count(*) from hy_player_equipment a
+        --left join hy_equipmentpic b on a.equipmentid=b.equipmentid
+        left join (select * from (select a.*,row_number() over (partition by a.equipmentid order by showlevel desc) cnt from hy.hy_equipmentpic a) where cnt=1) t on a.equipmentid=t.equipmentid
+        left join hy_equipment_property p on a.equipmentid=p.equipmentid
+        where 1=1
+        <if test="playerid != null and playerid != ''">
+            and  a.playerid = #{playerid}
+        </if>
+        <if test="equipmentid != null and equipmentid != ''">
+            and a.equipmentid = #{equipmentid}
+        </if>
+    </select>
+
+</mapper>

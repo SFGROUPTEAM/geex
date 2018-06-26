@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=1200" />
+	<meta name="renderer" content="webkit" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+	<meta http-equiv="expires" content="0">
+	<title>[[#{player.login.title}]]</title>
+	<link rel="shortcut icon" th:href="@{/images/icon/bitbug_favicon.ico}"/>
+
+	<link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+	<link rel="stylesheet" th:href="@{/player/css/player_common.css}" media="all">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+	<link rel="stylesheet" th:href="@{/css/font-awesome.css}" />
+	<link rel="stylesheet" th:href="@{/css/global.css}" />
+	<link rel="stylesheet" th:href="@{/css/newIndex.css}"/>
+
+	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/layui/layui.js}"></script>
+	<script type="text/javascript" th:src="@{/js/md5.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.validate.min.js}"></script>
+	<script th:inline="javascript" type="text/javascript">
+        function getScrollTop(){
+            return document.body.scrollTop;
+        }
+        //文档的总高度
+        function getScrollHeight(){
+            return document.body.clientHeight;
+        }
+
+        $().ready(function() {
+            // $('.footer').css('display','block');
+
+            $("#loginForm").validate({
+                rules: {
+                    loginName:"required",
+                    loginPwd:"required",
+                    kaptcha:"required"
+                },
+                messages : {
+                    loginName:{
+                        required:[[#{player.login.tip1}]]
+                    },
+                    loginPwd:{
+                        required:[[#{player.login.tip2}]]
+                    },kaptcha:{
+                        required:[[#{player.register.tip3}]]
+                    }
+				},errorPlacement: function(error, element){
+                    error.insertAfter(element.parent());
+                },errorClass: "invalid"
+            });
+
+            layui.use(['form', 'laydate', 'layedit', 'laypage', 'layer'], function () {
+                var t_layer = layui.layer;
+
+                if ($("#isLoginOut").val() == "true") {
+                    t_layer.alert([[#{player.login.tip0}]], function () {
+                        parent.location.href = "/Player/login.html";
+                    });
+                }
+                if ($("#errorInfo").val() != "") {
+                    if($("#errorInfo").val()=="Register_Success"){//注册成功
+                        t_layer.msg([[#{player.register.tip14}]]);
+					}else{
+                        t_layer.msg($("#errorInfo").val());
+					}
+                }
+            });
+
+            $('#kaptchaImgObj').on({
+                click:function(){
+                    $("#kaptchaImgObj").attr('src',"/Player/captcha.jpg?t=" + $.now());
+                }
+            });
+        });
+
+
+        function beforeSubmit() {
+            $('#errorTip').text("");
+            var loginName = $("#loginName").val();
+            var loginPwd = $("#loginPwd").val();
+            var kaptcha = $("#kaptcha").val();
+            if(loginName=='' || loginName.length==0) {
+                $('#errorTip').text([[#{player.login.tip1}]]);
+                return false;
+            }
+            if(loginPwd=='' || loginPwd.length==0) {
+                $('#errorTip').text([[#{player.login.tip2}]]);
+                return false;
+            }
+            if(kaptcha=='' || kaptcha.length==0) {
+                $('#errorTip').text([[#{player.register.tip3}]]);
+                return false;
+            }
+            $('#btnSubmit').attr('disabled', false);
+            $('#btnSubmit').val([[#{player.login.tip6}]]);
+            //加密成md5
+            var md5Passwd = $.md5(loginPwd);
+
+            $("#md5Password").val(md5Passwd);
+            //$("#loginPwd").val('');
+            return true;
+        }
+	</script>
+	<style type="text/css">
+
+		#kaptchaImgObj{
+			width: 150px;
+			height: 60px;
+			float: left;
+			margin-left: 7px;
+			margin-right: -6px;
+		}
+
+		.key1{
+			float:left;padding:15px;width:150px;
+		}
+		.relative-box {
+			position: relative;
+			width: 171%;
+		}
+		#loginName{
+			width: 406px;
+			height: 60px;
+			float: left;
+		}
+		#loginPwd{
+			width: 406px;
+			height: 60px;
+			float: left;
+		}
+		label {
+			display: inline-block;
+			max-width: 100%;
+			margin-bottom: 5px;
+			font-weight: 700;
+			margin-top: 3%;
+			margin-left: 3%;
+			float: left;
+		}
+		.form-group {
+			margin-bottom: 15px;
+			width: 122%;
+		}
+		.form-pb30-h48 .ZForm-wrap {
+			position: relative;
+			padding-bottom: 15px;
+
+		}
+		.invalid{
+			color:red;
+		}
+        .form-user {
+            margin: 0 auto;
+            width: 37%;
+        }
+	</style>
+</head>
+<body>
+<div class="web-top" style="height: 0px;">
+	<div class="topBar" th:include="@{common/top.html}"></div>
+	<!--<div class="logoBar" th:include="@{/common/header.html}"></div>
+	&lt;!&ndash;导航&ndash;&gt;
+	<div class="logoBar" th:include="@{/common/navBar.html}"></div>-->
+</div>
+<div style="height: 500px;margin-top: 60px;">
+	<div style="height: 80px;border-bottom:1px solid #dddddd;padding-top: 30px;">
+		<div class="clearfix">
+			<div style="float: left;width: 25%;text-align: right;border-right:1px solid #dddddd;" class="clearfix">
+				<a href="/index.html/" ><img th:src="@{/images1/logo_huiyou.png}" style="height:50px;padding-right:15px;" /></a>
+				<!--<span style="font-size:28px;width: 200px;padding-right: 20px;"><a href="/index.html/" style="text-decoration: none;color:black;" >[[#{AppTitle}]]</a></span>-->
+			</div>
+			<div style="float: left;width: 25%;text-align: left;padding-top: 10px;" class="clearfix">
+				<span style="font-size:18px;color:#797979;padding-left: 15px;">[[#{player.login.title}]]</span>
+			</div>
+			<p style="float:right;width: 50%;text-align: center;padding-top: 5px;">
+                <span>[[#{player.register.tip12}]]</span>&nbsp;&nbsp;<a style="font-size: 20px;color:red;" th:href="@{/Player/register.html}" th:text="#{player.register.tip13}"></a>
+			</p>
+		</div>
+	</div>
+
+	<form id="loginForm" th:action="@{/Player/login}" method="post" style="vertical-align: middle;padding-top: 40px;">
+		<input type="hidden" id="isLoginOut" th:value="${isLoginOut}" />
+		<input type="hidden" id="errorInfo" th:value="${errorInfo}" />
+		<div >
+			<div class="clearfix" style="height: 100%;">
+				<div class="form-box form-user form-pb30-h48" >
+					<div class="ZForm-wrap clearfix" data-type="1">
+						<!--<p class="key1">[[#{player.login.tip3}]]</p>-->
+						<div>
+							<div class="relative-box" style="">
+								<i class="img_login"></i>
+								<input id="loginName" name="loginName" class="layui-input" tabindex="1" type="text" style="width: 406px;height:60px;" maxlength="30" th:placeholder="#{player.login.tip1}" value='' />
+							</div>
+						</div>
+					</div>
+
+					<div class="ZForm-wrap clearfix" data-type="1">
+						<!--<p class="key1">[[#{player.login.tip4}]]</p>-->
+						<div>
+							<div class="relative-box" style="">
+								<i class="img_login"></i><span ></span>
+								<input id="loginPwd" name="loginPwd" tabindex="2" class="layui-input" type="password" style="width: 406px;height:60px;" onpaste="return false" th:placeholder="#{player.login.tip2}" />
+								<input type="hidden" id="md5Password" name="md5Password">
+							</div>
+						</div>
+					</div>
+					<div class="ZForm-wrap clearfix" data-type="1">
+						<!--<p class="key1"><nobr>[[#{player.login.tip5}]]</nobr></p>-->
+						<div >
+							<!--<i class="fa fa-unlock fa-lg"></i>-->
+							<input type="text" name="kaptcha" id="kaptcha" tabindex="3" style="width: 255px;height:60px;float: left;" class="layui-input clearfix" th:placeholder="#{player.register.tip3}"
+								   autocomplete="off" >
+							<img id="kaptchaImgObj" style="width:150px;height: 60px;" th:alt="#{player.login.tip7}" th:src="@{/Player/captcha.jpg}" />
+						</div>
+					</div>
+
+					<div class="inner-box">
+						<input id="btnSubmit" class="layui-btn" onclick="beforeSubmit()" type="submit" style="background-color:#FF9800;color:white;width:406px;font-weight: bold;height:60px;" th:value="#{player.login.tip9}"/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+<div class="web-bottom" style="position:absolute;bottom:0px;"  th:include="@{common/footer.html}"></div>
+
+</body>
+</html>

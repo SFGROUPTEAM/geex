@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>[[#{equipment.detail_desc0}]]</title>
+    <link rel="shortcut icon" th:href="@{/images/icon/bitbug_favicon.ico}"/>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}" />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+    <link rel="stylesheet" th:href="@{/css/newIndex.css}" />
+    <link rel="stylesheet" th:href="@{/css/jquery.spinner.css}" />
+
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.spinner.js}"></script>
+
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/moduleUse2.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/equipmentdetail.css}" />
+
+    <script th:inline="javascript" type="text/javascript">
+        function exchange() {
+            var playerUser = [[${session.PlayerUserKey}]];
+            if(playerUser==null){
+                layer.alert([[#{player.login.tip0}]], function () {
+                    parent.location.href = "/Player/login.html";
+                });
+                return;
+            }
+            var playerGoldCnt=playerUser.goldcnt;
+            // alert(playerGoldCnt);
+            var totalPrice=parseFloat($("#input-num").val())*parseFloat($("#price").val());
+            if(playerGoldCnt<=0 || parseFloat(playerGoldCnt)<totalPrice){
+                layer.alert([[#{equipment.detail_desc1}]],{title:[[#{equipment.detail_desc12}]]});
+            }else {
+                layer.confirm([[#{equipment.detail_desc8}]], {
+                    btn : [ [[#{equipment.detail_desc10}]], [[#{equipment.detail_desc11}]] ],//按钮
+                    title:[[#{equipment.detail_desc12}]]
+                }, function(index) {
+
+                    $("#btnExchange").attr("disabled", true);
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "/Player/exchange.html",
+                        data: $("#addForm").serialize(),
+                        success: function (result) {
+                            if (result.retVal != "00") {
+                                // layer.msg(result.retMsg);
+                                if(result.retMsg=="exchange.err.msg1"){
+                                    layer.msg([[#{exchange.err.msg1}]]);
+                                }else if(result.retMsg=="exchange.err.msg2"){
+                                    layer.msg([[#{exchange.err.msg2}]]);
+                                }else if(result.retMsg=="exchange.err.msg3"){
+                                    layer.msg([[#{exchange.err.msg3}]]);
+                                }else if(result.retMsg == "exchange.err.msg4"){
+                                    layer.msg([[#{exchange.err.msg4}]]);
+                                }else if(result.retMsg == "exchange.err.msg5"){
+                                    layer.msg([[#{exchange.err.msg5}]]);
+                                }else if(result.retMsg == "exchange.err.msg6"){
+                                    layer.msg([[#{exchange.err.msg6}]]);
+                                }
+                                $("#btnExchange").attr("disabled", false);
+                            } else {
+                                layer.msg([[#{equipment.detail_desc2}]]);
+                                setTimeout(function () {
+                                    $("#btnExchange").attr("disabled", false);
+                                }, 1500);
+                            }
+                        }, error: function (result) {
+                            if (result.responseText == 'isLoginOut') {
+                                layer.alert([[#{player.login.tip0}]], function () {
+                                    parent.location.href = "/Player/login.html";
+                                });
+                            }
+                            layer.alert([[#{result}]]);
+                        }
+                    });
+
+                    layer.close(index);
+                });
+
+            }
+        }
+
+        function reduce(){
+            var input_num = document.getElementById("input-num");
+            if(input_num.value>1)
+                input_num.value = parseInt(input_num.value) - 1;
+        }
+
+        function plus(){
+            var input_num = document.getElementById("input-num");
+            input_num.value = parseInt(input_num.value) + 1;
+        }
+    </script>
+</head>
+
+<body class="layout" onmousemove="return false" ondragstart="return false" onselectstart ="return false" >
+<div class="web-top">
+    <div class="topBar" th:include="@{common/top.html}"></div>
+    <div class="logoBar" th:include="@{common/header.html}"></div>
+    <!--导航-->
+    <div class="logoBar" th:include="@{common/navBar.html}"></div>
+</div>
+<div style="height: 550px;padding-top: 85px;width: 100%;">
+    <div style="padding-left: 150px;float: left">
+        <span style="font-size: 22px;">[[#{equipment.detail_desc3}]]&nbsp;&nbsp;&nbsp;</span>>&nbsp;&nbsp;&nbsp;<span style="font-size:18px;padding-bottom: 10px;" th:text="${equipment.name}"></span>
+    </div>
+    <div class="detailList" id="equipmentInfo" style="height: 400px;width:100%;">
+        <div class="eqdetail" style="width: 48%;text-align:center">
+            <img th:if="${equipment.equipmentPic!=null}" th:src="${equipment.equipmentPic}" style="border-radius: 15px;width: 220px;height: 220px;margin-top: 80px;">
+            <img th:if="${equipment.equipmentPic==null}" th:src="@{/images1/default2.png}" style="border-radius: 15px;width: 220px;height: 220px;margin-top: 80px;">
+        </div>
+        <div style="border-left: 1px solid #dddddd;width: 52%;">
+            <form th:id="addForm" style="padding-left: 50px;">
+                <input type="hidden" name="equirmentid" th:value="${equipment.id}" >
+                <input type="hidden" id="price" name="price" th:value="${equipment.price}" >
+                <div class="eqdetail" style="width:380px;padding-left: 10px;">
+                    <ul style="list-style: none;">
+                        <li style="padding-top: 80px;border-bottom: 1px solid #DCDCCC;"><p style="font-size: 26px;font-weight: bold;padding-bottom: 10px;" th:text="${equipment.name}"></p></li>
+                        <li style="padding-top: 20px;">[[#{equipment.detail_desc4}]]：<span style="color:#FA8F19;font-size: 26px;padding-left: 30px;" th:text="${equipment.price}"></span>&nbsp;&nbsp;[[#{equipment.detail_desc5}]]</li>
+                        <li class="btn-numbox">
+                            <span style="float: left;padding-top: 5px;">[[#{equipment.detail_desc6}]]：</span>
+                            <ul class="count" style="padding-left: 30px;">
+                                <li><span th:id="num-jian" class="num-jian" th:onclick="'javascript:reduce();'">-</span></li>
+                                <li><input type="text" name="num" class="input-num" th:id="input-num" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" style="height:30px;" value="1" /></li>
+                                <li><span th:id="num-jia" class="num-jia" th:onclick="'javascript:plus();'">+</span></li>
+                            </ul>
+                        </li>
+                        <li style="padding-top: 20px;"><span style="padding-top: 20px;">[[#{equipment.detail_desc7}]]：
+                            <span style="padding-left: 30px;" th:text="${equipment.cnt}"></span>
+                            &nbsp;&nbsp;</span></li>
+                        <li>
+                            <div style="padding-top: 35px;">
+                                <input type=button class="btn" th:id="btnExchange" style="background:#ff9800;float:left;width: 230px;height: 45px;color:white;font-weight: bold;" onclick="exchange()" th:value="#{equipment.detail_desc9}" >
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $('.spinnerExample').spinner({});
+    </script>
+</div>
+
+<!--根据是否会员登录引入不同footer-->
+<div class="web-bottom" th:if="${session.PlayerUserKey!=null}" th:include="@{common/memberFooter.html}"></div>
+<div class="web-bottom" th:if="${session.PlayerUserKey==null}" th:include="@{common/footer.html}"></div>
+</body>
+</html>

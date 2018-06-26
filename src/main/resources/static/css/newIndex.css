@@ -1,0 +1,175 @@
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,button,input,textarea,p,blockquote,th,td {margin:0;padding:0;}
+.web-top{width: 100%;height: 205px;}
+.web-top .topBar{width: 100%;height: 45px;}
+.web-top .logoBar{width: 100%;height: 110px;}
+
+
+
+/* 带logo的头部*/
+/*.header .logo-site{width: 100%;height: 100px;background-color: #FA8F19;}
+.header .logo-site .logo{ height: 100px;width: 200px;background-color: red;margin-left: 10%;}
+.header .logo-site .tiaozhuan{width:355px; display:block;margin-top:10px;}
+.header .logo-site .tiaozhuan ul{width: 350px;height: 17px;margin-top: -60px;float: right;margin-right: -115%;}
+.header .logo-site .tiaozhuan ul li{ float:left;font-size:14px;width:80px;color:#fff;margin-right:35px;text-align:center;font-weight:bold;list-style: none;}
+.header .logo-site .tiaozhuan ul li a{color:#fff; }
+.header .logo-site .tiaozhuan ul li span{width:80px;float:left;font-size: 20px;}
+.header .logo-site .tiaozhuan ul li span .jijinbi{width:80px;height:38px; background-position:21px -35px;}
+.header .logo-site .tiaozhuan ul li span .duihaoli{width:80px;height:38px; background-position:-60px -35px;}
+.header .logo-site .tiaozhuan ul li span .active{width:80px;height:38px; background-position:-155px -35px;}
+.header .logo-site .phone{margin-top: -33px;}
+.header .logo-site .mobilephone{margin-right: 225px;width: 165px;height: 39px;margin-top: -70px;background-color: white;float: right;}
+.header .logo-site .weichat{margin-right: 225px;width: 165px;height: 39px;margin-top: -25px;background-color: white;float: right;}*/
+
+
+/* 导航栏*/
+.web-top .navBar{width: 100%;height: 100px;border-bottom: 1px solid#E3E3E3;}
+.web-top .navBar ul{list-style: none;margin-left: 6%;}
+.web-top .navBar ul li{ float: left;list-style: none;border-right: 1px solid #E3E3E3;height: 100%;}
+.web-top .navBar ul li div{ width: 230px;height: 100px;margin-bottom: 0px;}
+.web-top .navBar ul li div a{ text-decoration: none;line-height: 440%;text-align: center;font-size: 20px;margin: 0 auto;display: block;color:black;}
+.web-top .navBar ul li div a:active{ color:red;}
+.web-top .navBar ul li div a:hover{ color:red;}
+.web-top .navBar ul li:first-child{ border-left: 1px solid #E3E3E3;}
+.web-top .navBar ul li:first-child div a:hover i{background: url("../images/icon/index.png");}
+.web-top .navBar ul li:nth-child(2) div a:hover i{background: url("../images/icon/default.png");}
+.web-top .navBar ul li:nth-child(3) div a:hover i{background: url("../images/icon/gold.png");}
+.web-top .navBar ul li:first-child{border-left: 1px solid #E3E3E3;}
+
+.first_default_bar{display: block;height: 29px;width: 30px;float:left;text-align: right;margin-top:29px;background: url("../images/icon/index_default.png");}
+.second_default_bar{display: block;height: 29px;width: 30px;float:left;margin-top:29px;background: url("../images/icon/gift_default.png");}
+.third_default_bar{display: block;height: 29px;width: 30px;float:left;margin-top:29px;background: url("../images/icon/gold_default.png");}
+
+.first_active_bar{display: block;height: 29px;width: 30px;float:left;text-align: right;margin-top:29px;background: url("../images/icon/index.png");}
+.second_active_bar{display: block;height: 29px;width: 30px;float:left;margin-top:29px;background: url("../images/icon/default.png");}
+.third_active_bar{display: block;height: 29px;width: 30px;float:left;margin-top:29px;background: url("../images/icon/gold.png");}
+
+/* 轮播图*/
+.web-middle{width: 88%;height: 1480px;margin: 65px 6%;}
+.web-middle .left{width: 75%;height: 100%;float: left;margin-right: 1%}
+.web-middle .left .partLeftTop{width: 100%;height: 550px;margin-bottom: 5px ;position: relative;}
+.web-middle .left .partLeftTop .focusList{width: 100%;height: 550px;margin: 0;padding:0;overflow: hidden;}
+.web-middle .left .partLeftTop .fl{float: left;}
+.web-middle .left .partLeftTop .webPic{background: url(../images/imgTool.png) no-repeat;}
+.web-middle .left .partLeftTop .focusLeft{ background-position: -422px 0;left: 0;}
+.web-middle .left .partLeftTop .focusRight{ background-position: -462px 0;right: 0;}
+.web-middle .left .partLeftTop .focusIcon{ width: 37px;height: 80px;position: absolute;top: 237px;z-index: 1;}
+.web-middle .left .partLeftTop .whPromoBar{left:410px;background: none repeat scroll 0 0 rgba(255, 255, 255, 0.3);border-radius: 10px;bottom: 10px;font-size: 0;height: 13px;left: 48%;position: absolute;text-align: center;z-index: 10;}
+.web-middle .left .partLeftTop .whPromoBar ul{padding: 0;margin: 0}
+.web-middle .left .partLeftTop .whPromoBar li{padding: 0;display: inline-block;float: left;height: 9px;margin: 2px;vertical-align: middle;width: 9px;}
+.web-middle .left .partLeftTop .whPromoBar .point{background: none repeat scroll 0 0 #B7B7B7;border-radius: 50%;cursor: pointer;display: block;height: 0;overflow: hidden;padding-top: 9px;width: 9px;}
+
+/* 游戏*/
+.web-middle .left .partGame{width: 100%;height: 400px;margin-bottom: 5px;border: 1px solid #E3E3E3;}
+.web-middle .left .partGame .title{ background-color:#F1F1F1; height:50px;}
+.web-middle .left .partGame .gameleft{display: inline-block;float: left;margin-top: 1%;font-size: 20px;font-weight: bold;margin-left: 1%;}
+.web-middle .left .partGame ul{ list-style:none; float:right; margin-right:-15px;height: 50px;}
+.web-middle .left .partGame ul .gamemore{line-height: 260%;}
+.web-middle .left .partGame li{ width:80px; height:50px; float:left; margin-right:20px;padding-top: 1.5%;text-align:center;line-height: 260%;}
+.web-middle .left .partGame li a{ text-decoration:none;color:black}
+.web-middle .left .partGame li a:hover{color:#D1027B}
+.web-middle .left .partGame .gamemore:hover{background-color:#ffffff; border-top: 2px solid #e51c23;}
+.web-middle .left .gameList{ width: 100%;height: 347px;flex-wrap:wrap;}
+.web-middle .left .gameList .game00{ width: 20%; height:150px;float: left;margin-top: 10px;}
+.web-middle .left .gameList .game00 .gameImg{ width: 100%; height:105px;text-align: center;margin-top: 15px;}
+.web-middle .left .gameList img:hover{ width:105px; height:105px;border-radius: 15px}
+.web-middle .left .gameList img{width: 100px;height: 100px;border-radius: 15px}
+.web-middle .left .gameList h6{ text-align:center}
+
+/* 装备*/
+.web-middle .left .partEquip{width: 100%;height: 430px;margin-bottom: 5px;border: 1px solid #E3E3E3;}
+.web-middle .left .partEquip .title{background-color:#F1F1F1; height:50px;}
+.web-middle .left .partEquip .equipmentleft{ display: inline-block;float: left;margin-top: 1%;font-size: 20px;font-weight: bold;margin-left: 1%;}
+.web-middle .left .partEquip ul{ list-style:none; float:right; margin-right:-15px;}
+.web-middle .left .partEquip li{ width: 93px; height:50px; float:left; margin-right:30px; margin-top:-30px; text-align:center  }
+.web-middle .left .partEquip ul .equipmentmore{ margin-top: 1.5%;line-height: 260%;padding-top: 4%;}
+.web-middle .left .partEquip li a{ text-decoration:none;color: black}
+.web-middle .left .partEquip li a:hover{color: #D1027B}
+.web-middle .left .partEquip ul .equipmentmore:hover{ background-color:#ffffff; border-top: 2px solid #e51c23;}
+.web-middle .left .equipList{ width:100%; height:370px;flex-wrap:wrap;}
+.web-middle .left .equip00{ width: 25%;margin-top: 5px;height: 175px;float: left}
+.web-middle .left .equip00 .bigpic{ width: 105px;height: 105px;margin-top: 10px;}
+.web-middle .left .info01{ width:220px; height:30px;font-size: 16px;font-weight: bold;margin-top: 10px;}
+.web-middle .left .info01 span{ margin-left: 85px}
+.web-middle .left .info01 img{ width:20px; height:20px; float:left; margin:4px 6px 0 10px;}
+.web-middle .left .info01 h6{ float:left; text-align:center;}
+.web-middle .left .info02{ height: 22px;overflow: hidden;margin-left: -1px;margin-top: 5px;text-align: center}
+.web-middle .left .info02 .shengyu{ float: left;text-align: center;margin-left: 4px;margin-top: 24px;}
+.web-middle .left .info02 span{ margin-top:0px; color:#e51c23;padding-right: 5px;font-size: 16px;}
+.web-middle .left .info02 .unit{ margin-top:3px;color: black}
+.web-middle .left .info02 .gold{ margin-top:-7px;}
+.web-middle .left .equip00:hover{ box-shadow: 0 0 5px #d9d9d9;}
+
+/* 活动*/
+.web-middle .left .partActivity{width: 100%;height: 130px;margin-bottom: 5px ;margin-top:10px;background-color: grey}
+/*.web-middle .left .partFriendLink{width: 100%;height: 150px;margin-bottom: 5px ;background-color: grey}*/
+.web-middle .right{width: 24%;height: 100%;float: left}
+.web-middle .right .partLogin{width: 100%;height: 400px;margin-bottom: 5px;position: relative;;border: 1px solid #E3E3E3}
+.web-middle .right .partLogin .GoldIncrePartial{height:398px;}
+.web-middle .right .partLogin .GoldIncrePartial .count{ padding-top: 45px;padding-left: 20px;}
+.web-middle .right .partLogin .miaoshu{font-size:19px;}
+.web-middle .right .partLogin .showjinbi{ height:43%;}
+.web-middle .right .partLogin .showjinbi .runNum{  padding: 0;overflow: hidden;height: 50px;line-height: 50px;text-align: center;font-weight: bold;position: relative;}
+.web-middle .right .partLogin .showjinbi .runNum > li{list-style: none;width: 20px;float: left;position: absolute;color:red;font-family: "Microsoft YaHei";font-size: 14px;}
+.web-middle .right .partLogin .showjinbi showaddjinbi{height: 80px;width: 235px;margin-top: 15px;margin-left: 14px;border: 1px solid #E5E5E5;background-color: #F6F6F6;}
+.web-middle .right .partLogin .showjinbi showjianjinbi{height: 80px;width: 235px;margin-top: 5px;margin-left: 14px;border: 1px solid #E5E5E5;background-color: #F6F6F6;}
+
+.web-middle .right .partLogin .rel{position: relative;}
+.web-middle .right .partLogin .rel .Quick{float: left;display: inline;z-index: 4;position: absolute;background-color: White;height: 360px;margin: 10px 5px 0 5px !important;}
+.web-middle .right .partLogin .rel .Quick .memberNo{font-size: 15px;color: #2e2e2e;margin-bottom: 16px;width: 290px;float: left;}
+.web-middle .right .partLogin .rel .Quick .memberNoBox{float: left;position: relative; border-radius: 10px;width: 293px;margin-bottom: 20px;border: 1px solid #E5E5E5;}
+.web-middle .right .partLogin .rel .Quick .memberNoBox .hyMoney{ float: left;position: relative; overflow: hidden;text-align: center;height: 62px;width: 293px;border-bottom: 1px solid #E5E5E5;}
+.web-middle .right .partLogin .rel .Quick .memberNoBox .hyMoney .indexHYIcon{float:left;background-position: -413px -220px;width: 37px;margin-top: 22px;float: left;height: 22px;margin-left: 10px;margin-right: 10px;}
+.web-middle .right .partLogin .rel .Quick .memberNoBox .hyMoney .webPic{background: url(../images/imgTool.png) no-repeat;}
+.web-middle .right .partLogin .rel .Quick .memberNoBox .hyMoney .numRoll{margin-top: -33px;display: inline-block;}
+.web-middle .right .partLogin .rel .Quick .memberNoBox .hyMoney .numRoll li{display: inline-block;position: relative;width: 12px;}
+.web-middle .right .partLogin .rel .Quick .memberNoBox .hyMoney .numRoll li ul{list-style: none;position: absolute;display: inline-block;top: 0;left: 0;width: 15px;}
+.web-middle .right .partLogin .rel .Quick .memberNoBox .hyMoney .hyNumber{ list-style: none;margin-left: 0;color: #6dbd25;font-size: 30px;float: left;}
+.web-middle .right .partLogin .rel .Quick .memberNoBox .hyMoney .hyBi{font-size: 14px;position: absolute; right: 10px !important;    overflow: hidden;height: 62px;line-height: 62px;float: left;}
+.web-middle .right .partLogin .rel .Quick .memberNoBox .hyMoneyBorder{border-bottom: none;}
+.web-middle .right .partLogin .rel .Quick .QuickBntBox{width: 295px;margin-bottom: 10px;float: left}
+.web-middle .right .partLogin .rel .Quick .QuickBntBox .QuickBnt{cursor: pointer;background: #fa8f19;height: 52px;width: 295px;border-radius: 5px;text-align: center;color: #fff;font-size: 20px;}
+.web-middle .right .partLogin .rel .Quick .QuickBntBox .QuickBnt input{ border: none 0;vertical-align: middle;}
+.web-middle .right .partLogin .rel .Quick .QuickBntBox .Register{display: block;width: 293px;height: 50px;line-height: 50px;border: 1px solid #f4ae3f;border-radius: 5px;text-align: center;background: #fff;color: #333;font-size: 20px;cursor: pointer;}
+.web-middle .right .partLogin .rel .Quick .QuickBntBox .Register a{text-decoration: none;}
+
+
+.web-middle .right .partLogin .playerinfo{ border-top: 1px solid #E5E5E5;height: 117px;width: 100%;text-align: center;}
+.web-middle .right .partLogin .playerinfo p{ height: 38%;}
+.web-middle .right .partLogin .playerinfo .jininfo{ width: 50%;height: 53%;float: left;border-right: 1px solid #E5E5E5;border-top: 1px solid #E5E5E5;text-align: center;margin-top: 14px;}
+.web-middle .right .partLogin .playerinfo .jininfo span{display: block;margin-top: 13px;font-size: 17px;color: red;font-weight: bold}
+.web-middle .right .partLogin .playerinfo .eqinfo{ width: 50%;float: left;border-top: 1px solid #E5E5E5;text-align: center;margin-top: 14px;}
+.web-middle .right .partLogin .playerinfo .eqinfo span{display: block;margin-top: 13px;font-size: 17px;color: #457CCD;font-weight: bold}
+.web-middle .right .partLogin .playerinfo p span{font-size: 15px;font-weight: bold}
+.web-middle .right .partLogin .playerinfo .playerLogin{height: 50px;margin-top: -60px;margin-left: 20px;border-radius: 5px;background-color: orange;text-align: center;width: 88%;}
+.web-middle .right .partLogin .playerinfo .playerLogin span{ font-size: 20px;color: white;margin: 0 auto;line-height: 250%;}
+.web-middle .right .partLogin .playerinfo .playerregister{width: 225px;height: 50px;margin-top: 10px;margin-left: 20px;border-radius:5px;border: 1px solid orange;}
+.web-middle .right .partLogin .playerinfo .playerregister{width: 225px;height: 50px;margin-top: 10px;margin-left: 20px;border-radius:5px;border: 1px solid orange;}
+.web-middle .right .partLogin .playerinfo .playerregister span{ font-size: 20px;color: orange;margin: 0 auto;line-height: 250%;}
+
+
+
+
+.web-middle .right .partNews{width: 100%;height: 325px;margin-bottom: 5px;border: 1px solid #E3E3E3;overflow: hidden}
+.web-middle .right .partNews .news-box{width: 100%;height: 100%;overflow: hidden}
+.web-middle .right .partNews .news-box .newsList{ height:325px; margin-left: 10px;overflow: hidden}
+.web-middle .right .partNews .news-box .newsList li{height: 70px; line-height: 30px;display: block;overflow: hidden;}
+.web-middle .right .partNews .news-box .newsList li .active{ color: #e0493b;}
+.web-middle .right .partNews .news-box .newsList li a:hover{ color: #e0493b;text-decoration:none;}
+.web-middle .right .partNews .news-box .newsList li a:visited{ color: purple;text-decoration:none;}
+.web-middle .right .newsTitle{ border-bottom: 1px solid #E6E9EC;  color: #666E78;  font-size: 18px;  height: 50px;  line-height: 50px;  padding-left: 15px; }
+.web-middle .right .newsTitle .more{ float: right;  color: #888;  font-size: 14px;  line-height: 19px;  height: 19px;
+    margin: 16px 15px 0 0;
+}
+.web-middle .right .newsTitle h2{ padding-top: 5%;margin-right: 10px;float: left;font-size: 100%;font-weight: normal; }
+.web-middle .right .newsTitleRight{width:100%}
+
+.web-middle .right .partAward{width: 100%;height: 400px;margin-bottom: 5px}
+.web-middle .right .partAward .advertisement{width: 100%;height: 33%;}
+.web-middle .right .partAward .advertisement img{width: 100%;height: 100%;padding-bottom:5px}
+.web-middle .right .partParam{width: 100%;height: 400px;margin-bottom: 5px}
+.web-middle .right .partParam .advertisement{width: 100%;height: 33%;}
+.web-middle .right .partParam .advertisement img{width: 100%;height: 100%;padding-bottom: 5px}
+
+.web-bottom{width: 100%;height: 100px;}
+
+

@@ -1,0 +1,84 @@
+<style type="text/css">
+    .logo-site {
+        position:relative;
+        overflow:hidden;
+        margin: 6px 0 0 10px;
+        transition-duration: 2s;
+    }
+    .logo-site:before{
+        content:"";
+        position: absolute;
+        left: -665px;
+        top: -460px;
+        width: 2500px;
+        height: 40px;
+        background-color: rgba(255,255,255,.5);
+        -webkit-transform: rotate(-45deg);
+        -moz-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        -o-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+        -webkit-animation: searchLights 4s ease-in 0s infinite;
+        -o-animation: searchLights 4s ease-in 0s infinite;
+        animation: searchLights 4s ease-in 0s infinite;
+    }
+    @-webkit-keyframes searchLights {
+    0,75% { left: -100px; top: 0; }
+    100% { left: 120px; top: 100px; }
+    }
+    @-o-keyframes searchLights {
+    0,75% { left: -100px; top: 0; }
+    100% { left: 120px; top: 100px; }
+    }
+    @-moz-keyframes searchLights {
+    0,75% { left: -100px; top: 0; }
+    100% { left: 120px; top: 100px; }
+    }
+    @keyframes searchLights {
+    0,75% { left: -100px; top: 0; }
+    100% { left: 120px; top: 100px; }
+    }
+</style>
+<script type="application/javascript">
+    $(function() {
+        var idx = 0;
+        try{
+            if($.isEmptyObject(cur)) cur="";
+        }catch(err){
+            cur="";
+        }
+        if (cur == "index") idx = 1;
+        else if (cur == "gamelist") idx = 2;
+        else if (cur == "equipmentlist") idx = 3;
+        else if (cur == "newslist" || cur=="news") idx = 4;
+        else idx = 0;
+        $(".nav .navList li:nth-child(" + idx + ") a").addClass('current');                            // 添加当前元素的样式
+
+    });
+</script>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    var lang=[[${session.lang}]];
+
+    //var lang ='zh_CN';
+    if(lang=='en_US') {
+        $("head").append("<link>");
+        var css = $("head").children(":last");
+        css.attr({
+            rel:  "stylesheet",
+            type: "text/css",
+            href: "/css/global_en.css"
+        });
+    }
+    /*]]>*/
+</script>
+<div class="header">
+    <div class="logo-site" style="position: relative">
+        <div class="logo" style="width: 200px;height: 70px;position: absolute;margin-top: 1%;margin-left: 9%"><img style="height: 70px;width: 200px" th:src="@{/images1/logo_huiyou.png}"></div>
+        <!--<div class="phone" style="width: 20%;;height: 50px;position: absolute;margin-top: 2%;margin-left: 38%;opacity:0.9"><img style="height: 30px;width: 30px;margin-top: -16px;" th:src="@{/images1/iphone.png}"><span style="font-size: 30px;color: white" th:if="${session}!=null" id="baseConfigPhone"></span></span></div>-->
+        <!--<div class="phone" style="width: 20%;;height: 50px;position: absolute;margin-top: 2%;margin-left: 76%;opacity:0.9"><img style="height: 30px;width: 30px;margin-top: -16px;" th:src="@{/images1/iphone.png}"><span style="font-size: 30px;color: white"  th:if="${session}!=null" id="baseConfigWechat" ></span></span></div>-->
+        <img  th:src="@{/images1/tophead.png}" style="display: block;margin:0 auto;width: 89.4%;height: 110px">
+    </div>
+
+</div>
+

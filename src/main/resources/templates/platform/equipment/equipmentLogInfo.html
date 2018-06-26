@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>玩家管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <script th:src="@{/layui/layui.js}"></script>
+</head>
+<body>
+<!-- 此处class dellAllComment 对应于最下面一个绑定click事件 -->
+<div class="equLogDiv" style="margin-top: 15px;margin-left: 2px;">
+    <div class="layui-form">
+        <div class="layui-form-item">
+            <form class="layui-form" id="aaa" name="aaa">
+            <div class="layui-inline">
+                <label class="layui-form-label">玩家名称:</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="playername" name="playername"  autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">类型:</label>
+                <div class="layui-input-inline layui-form">
+                    <select id="type" class="layui-input"  name="type" lay-filter="type">
+                        <option value="" selected="">全部</option>
+                        <option value="1">系统日志</option>
+                        <option value="2">玩家日志</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">子类型:</label>
+                <div class="layui-input-inline layui-form">
+                    <select id="subtype" class="layui-input"  name="subtype">
+                        <option value="" selected="">全部</option>
+                    </select>
+                </div>
+            </div>
+            <br/>
+            <div class="layui-inline">
+                <label class="layui-form-label">道具编号:</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="equno" name="equno"  autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">起始时间:</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="data1" name="data1" class="layui-input" readonly="readonly" placeholder="">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">结束时间:</label>
+                <div class="layui-input-inline">
+                    <input type="text" id="data2" name="data2" class="layui-input" readonly="readonly" placeholder="">
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>
+    <button class="layui-btn" style="margin-top: 0px;margin-left: 2px;"
+            data-type="reload">
+        <i class="layui-icon">&#xe615;</i>搜索
+    </button>
+</div>
+<script type="text/html" id="typeTpl">
+    {{#  if(d.type=== '1'){ }}
+    <span>{{ '系统日志' }}</span>
+    {{#  } else if(d.type === '2') { }}
+    <span>{{ '玩家日志' }}</span>
+    {{#  } else { }}
+    <span>{{ '未知' }}</span>
+    {{#  } }}
+</script>
+<script type="text/html" id="subtypeTpl">
+    {{#  if(d.subtype=== '01'){ }}
+    <span>{{ '新增道具' }}</span>
+    {{#  } else if(d.subtype === '02') { }}
+    <span>{{ '修改道具' }}</span>
+    {{#  } else if(d.subtype === '03') { }}
+    <span>{{ '发布道具' }}</span>
+    {{#  } else if(d.subtype === 'A1') { }}
+    <span>{{ '兑换道具' }}</span>
+    {{#  } else if(d.subtype === 'A2') { }}
+    <span>{{ '售出道具' }}</span>
+
+    {{#  } else { }}
+    <span>{{ '未知' }}</span>
+    {{#  } }}
+</script>
+<table class="layui-hide" id="equlog_table" lay-filter="tableList"></table>
+<script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+<script th:inline="javascript" type="text/javascript">
+    /****查询页面加载列表 *****/
+    var arr = new Array();
+    var cLen = 4;
+    layui.use(['table','laydate','form'], function () {
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#data1',
+            type:'datetime',
+        });
+        laydate.render({
+            elem: '#data2',
+            type:'datetime'
+        });
+        var form=layui.form;
+        form.on('select(type)', function(data){
+            /*        $.getJSON("/api/getCity?pid="+data.value, function(data){
+             var optionstring = "";
+             $.each(data.data, function(i,item){
+             optionstring += "<option value=\"" + item.code + "\" >" + item.name + "</option>";
+             });
+             $("#city").html('<option value=""></option>' + optionstring);
+
+             });*/
+            var  optionstring = "";
+            if(data.value =='1'){
+                optionstring ="<option value=\"01\">新增道具</option> <option value=\"02\">修改道具</option> <option value=\"03\">发布道具</option>";
+            }else{
+                optionstring ="<option value=\"A1\">兑换道具</option><option value=\"A2\">出售道具</option>";
+            }
+            $("#subtype").html('<option value="">全部</option>' + optionstring);
+            form.render('select'); //这个很重要
+        });
+        var table = layui.table;
+        table.render({
+            elem: '#equlog_table'
+            , url: '/EquipmentLog/equipmentLog_render_list'
+            , skin: "line"
+            , even: true
+            , page: true
+            , height: 'full-170'
+            , cols: [[
+                {field: 'equipmentname',  title: '道具名称',fixed: 'left'},
+                {field: 'quantity', title: '操作数量'},
+                {field: 'beforequantity', title: '操作前数量'},
+                {field: 'afterquantity', title: '操作后数量'},
+                {field: 'price', title: '当前兑换价格'},
+                {field: 'type',  title: '类型', templet: '#typeTpl'},//
+                {field: 'subtype',  title: '子类型', templet: '#subtypeTpl'},//
+                {field: 'playername',  title: '玩家名称'},
+                {field: 'operationtime', title: '操作时间',sort: true},
+                {field: 'operationuser', title: '操作人'},
+                {field: 'remark', title: '备注',fixed: 'right'},
+//                {title: '操作', toolbar: '#barDemo', fixed: 'right',width:"150"}
+                //   {width:lastwidth, title: '操作', toolbar: '#barDemo', fixed: 'right'}
+            ]]
+            , limit: 10   //默认十条数据一页
+            , limits: [10, 20, 30]  //数据分页条
+            , done: function (res, curr, count) {
+
+            }
+        });
+        var $ = layui.$,
+            active = {
+                /***定义函数绑定到按钮的data-type上 addEquipment*/
+                refresh: function () {
+                    table.reload('equlog_table');
+                }, /* 搜索框 */
+                reload: function () {
+                    var playername = $("#playername").val();
+                    var type = $("#type").val();
+                    var subtype = $("#subtype").val();
+                    var equno = $("#equno").val();
+                    var data1 = $("#data1").val();
+                    var data2 = $("#data2").val();
+                    table.reload('equlog_table', {
+                        url: '/EquipmentLog/equipmentLog_render_list',
+                        where: {
+                            playername:playername,
+                            data1: data1,
+                            data2: data2,
+                            equno:equno,
+                            type: type,
+                            subtype: subtype
+                        }
+                    });
+                }
+            };
+
+        $('.equLogDiv .layui-btn').on('click',
+            function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+
+      //  监听工具条
+        table.on('tool(tableList)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'detail') {
+                layer.open({
+                    title: '详细信息',
+                    type: 2,
+                    content:'/EquipmentLog/qryEquipmentLog',//这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
+                    area: ['500px', '600px'],
+                    anim: 2
+                });
+            }
+        });
+    });
+
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-sm" style="width:50px;padding-left: 12px;" lay-event="detail">详情</a>
+</script>
+
+</body>
+</html>

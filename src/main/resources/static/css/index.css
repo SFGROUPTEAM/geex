@@ -1,0 +1,96 @@
+
+
+.mid{ width:1200px; overflow:hidden; margin-left: 116px;}
+.mid .left{width:720px;float:left}
+.mid .right{width:455px;margin-left: 745px}
+/*banner*/
+.mid .left .banner{  margin:20px 0px; float:left;}
+/*游戏列表*/
+.mid .left .game{ width:1200px; height:465px; border:1px solid #cccccc; float:left; }
+.mid .left .game .title{ background-color:#eff3ff; height:50px;}
+.mid .left .game p{ padding:14px 0 0 10px; font-size:16px;font-weight: bold; }
+.mid .left .game ul{ list-style:none; float:right; margin-right:-15px;}
+.mid .left .game li{ width:80px; height:50px; float:left; margin-right:20px; margin-top:-30px; text-align:center  }
+.mid .left .game li a{ text-decoration:none;}
+.mid .left .game li:hover{ width:80px; height:50px; background-color:#ffffff; border-top: 2px solid #e51c23; text-align:center; margin-top:-46px; padding-top: 14px;}
+.mid .left .gameList{ width:727px; height:400px; display:flex;  flex-wrap:wrap}
+.mid .left .gameList .game00{ width: 120px; height:120px;}
+.mid .left .gameList img:hover{ width:100px; height:100px;}
+.mid .left .gameList img{ margin-left:25px;margin-top: 20px;width: 80px;height: 80px}
+.mid .left .gameList h6{ text-align:center}
+/*道具列表*/
+.mid .left .equip{ width:1200px; height:445px; border:1px solid #cccccc; float:left; margin: 20px 0;}
+.mid .left .equip .title{ background-color:#eff3ff; height:50px;}
+.mid .left .equip p{ padding:14px 0 0 10px; font-size:16px;font-weight: bold; }
+.mid .left .equip ul{ list-style:none; float:right; margin-right:-15px;}
+.mid .left .equip li{ width: 93px; height:50px; float:left; margin-right:30px; margin-top:-30px; text-align:center  }
+.mid .left .equip li a{ text-decoration:none;}
+.mid .left .equip li:hover{ width:80px; height:50px; background-color:#ffffff; border-top: 2px solid #e51c23; text-align:center; margin-top:-46px; padding-top: 14px;}
+.mid .left .equipList{ width:727px; height:370px;display:flex;flex-wrap:wrap;}
+.mid .left .equip00{ width:220px; height:180px;margin-left: 40px;border:1px dashed red}
+.mid .left .equip00 .bigpic{ width: 206px;height: 105px;}
+.mid .left .info01{ width:220px; height:30px; }
+.mid .left .info01 img{ width:20px; height:20px; float:left; margin:4px 6px 0 10px;}
+.mid .left .info01 h6{ float:left; text-align:center;}
+.mid .left .info02{ width:178px; height:50px; overflow:hidden;width: 218px;}
+.mid .left .info02 .shengyu{ float:left; text-align:center; margin-left:10px; margin-top:-23px;}
+.mid .left .info02 h4{ float:left;margin-left:10px; margin-top:0px; color:#e51c23;}
+.mid .left .info02 .unit{ margin-top:3px;}
+.mid .left .equip00:hover{ box-shadow: 0 0 5px #d9d9d9;}
+
+
+/*平台入口*/
+.mid .right .entrance{ width:258px; height:70px; margin:0px 0 0 0; border:0px}
+.mid .right .entrance input{ width:110px; height:50px; color:#ffffff;  margin:20px 0 20px 0px; border: 2px solid #ff9800;font-size:16px;font-weight:400;}
+.mid .right .entrance .iwillsale{float:left;}
+.mid .right .entrance .iwillbuy{float:right;}
+/*公告*/
+.mid .right .news{ width:455px; height:343px; margin:15px 0 0 0; border:1px solid #cccccc;margin-top:19px;margin-left: -3px}
+.mid .right .news .title{ background-color:#cccccc; height:40px;width: 100%; }
+.mid .right .news p{ width:100px;padding: 10px 0 0 10px;float:left; font-weight: bold;}
+.mid .right .news .more{ margin-top:8px;margin-right:2px; font-size:12px; font-weight:normal;float:right;color:#de8831;}
+/*.mid .right .news li{list-style:none; margin:20px 0 20px -30px; font-size:12px;}*/
+.mid .right .news  ul li{list-style-type:none; height:26px; margin:10px 0 10px -30px;font-size:12px;}
+/*.mid .right .news ul li{line-height: 20px;text-overflow: ellipsis;white-space: nowrap;  font-size:12px;height: 26px;padding: 1px 0;overflow: hidden;}*/
+.mid .right .news ul li a{background:url(../images/news_point.gif) no-repeat left center;padding-left:10px; font-size:12px; list-style:none; }
+.mid .right .news ul li a:hover{color:#ee6c02; font-size:14px;/*text-decoration:underline*/}
+.mid .right .news ul li label{float:right;margin-right:5px;font-weight: lighter;}
+
+/*最新入驻游戏*/
+.mid .right .newGame{ width:258px; height:340px;  margin:15px 0 0 0; border:1px solid #cccccc;}
+.mid .right .newGame .title{ background-color:#cccccc; height:40px; width:256px; }
+.mid .right .newGame p{ width:100px;padding: 10px 0 0 10px;float:left;font-weight: bold;}
+.mid .right .newGame .more{ margin-top:10px;margin-right:2px; font-size:12px; font-weight:normal;float:right;color:#de8831;}
+.mid .right .newG{ width: 258px; height:300px; display:flex; flex-wrap:wrap; justify-content:space-around;}
+.mid .right .newG00{ width: 128px; height: 70px; }
+.mid .right .newG00 img{ margin-left:15px; margin-top:5px; }
+.mid .right .newG00 img:hover{ width: 100px; height:60px;}
+
+.mid .right .newGame .newGu{display: block;list-style: none;margin-left: -28px;}
+.mid .right .newGame .newGu li{width:120px;float: left; margin-top: 10px;}
+.mid .right .newGame .newGu li:hover{padding-left: 5px; }
+.mid .right .newGame .newGu li img{padding:4px 0; width:94px;height:56px;}
+
+
+/*最新上架道具*/
+.mid .right .newEquip{ width:258px; height:350px; margin-top:15px;margin-bottom:15px; border:1px solid #cccccc;}
+.mid .right .newEquip .title{ background-color:#cccccc; height:40px; width:256px; }
+.mid .right .newEquip p{ width:100px;padding: 10px 0 0 10px;float:left;font-weight: bold;}
+.mid .right .newEquip .more{ margin-top:10px;margin-right:2px; font-size:12px; font-weight:normal;float:right;color:#de8831;}
+.mid .right .newEquipList{ width:254px; height: 260px; display:flex; flex-wrap:wrap;justify-content:space-around;}
+.mid .right .newEquip00{ width:100px; height:130px; border:1px solid #e8e6e8; margin-top:15px;}
+.mid .right .newEquip00 .bigPic{ width:98px; height:98px;}
+.mid .right .newEquip00 .info{ width:100px; overflow:hidden; padding-top:5px;}
+.mid .right .newEquip00 .info img{ width:20px; height:20px; float:left; margin-left:1px; }
+.mid .right .newEquip00 h6{ float:right; text-align:center; margin-top:4px; margin-right:5px;}
+.mid .right .newEquip00 img:hover{ box-shadow: 0 0 5px #d9d9d9;}
+/*最新成交*/
+.mid .right .newTrade{ width:258px; height:249px;margin:15px 0 0 0; border:1px solid #cccccc;}
+.mid .right .newTrade .title{ background-color:#cccccc; height:40px; width:256px; }
+.mid .right .newTrade p{ padding: 10px 0 0 10px;font-weight: bold;}
+.mid .right .newTrade ul li{ list-style:none;margin: 15px 0 15px -30px;font-size:12px;border-bottom:1px dashed #cccccc;height: 23px;}
+.mid .right .newTrade ul li a{font-size:12px; list-style:none;}
+.mid .right .newTrade ul li a:hover{color:#ee6c02; font-size:14px;}
+.mid .right .newTrade ul li .eqname{margin-left: 20px;}
+.mid .right .newTrade ul li .price{margin-left: 20px;color:red;}
+.mid .right .newTrade ul li .time{margin-left: 20px;}

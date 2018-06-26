@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+    <link rel="shortcut icon" th:href="@{/images/icon/bitbug_favicon.ico}"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1200" />
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <title>[[#{player.memberCenter.menu1}]]</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}" />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+    <link rel="stylesheet" th:href="@{/css/newIndex.css}" />
+    <script th:src="@{/js/jquery.min.js}"></script>
+
+    <link rel="stylesheet" th:href="@{/css/highlight.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/pagination.css}" />
+    <script th:src="@{/js/jquery.pagination.js}"></script>
+
+    <link rel="stylesheet" th:href="@{/css/player_equipment.css}" />
+    <script th:inline="javascript">
+        $().ready(function(){
+            var totalData=[[${listCount}]];
+            var pagenum=[[${pagenum}]];
+            var pagesize=[[${pagesize}]];
+            $('.M-box1').pagination({
+                totalData: totalData,
+                showData: pagesize,
+                current:pagenum,
+                coping: true,
+                homePage: [[#{player.page.desc0}]],
+                endPage: [[#{player.page.desc1}]],
+                prevContent: [[#{player.page.desc2}]],
+                nextContent: [[#{player.page.desc3}]],
+                callback: function (api) {
+                    // console.log(api.getCurrent());
+                    location.href="/Player/equipment.html?pagenum="+api.getCurrent();
+                }
+            });
+        });
+
+    </script>
+</head>
+<body class="layout" onmousemove="return false" oncontextmenu="return false" ondragstart="return false" onselectstart ="return false" onselect="document.selection.empty()" oncopy="document.selection.empty()" >
+<div class="web-top">
+    <div class="topBar" th:include="@{common/top.html}"></div>
+    <div class="logoBar" th:include="@{common/header.html}"></div>
+    <!--导航-->
+    <div class="logoBar" th:include="@{common/navBar.html}"></div>
+</div>
+<div class="wrapper" style="padding-top: 75px;">
+    <div class="container" style="border: 1px;width:88%;min-height: 500px;">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <div class="row clearfix">
+                    <!--左侧-->
+                    <div  th:include="@{player/left.html}"></div>
+
+                    <!--右侧-->
+                    <div class="col-md-10 column">
+                        <div style="height: 60px;border-bottom:1px solid #E5E5E5">
+                            <div class="w1200 clearfix">
+                                <h1 class="clearfix" style="width: 500px;">
+                                    <p style="font-size:18px;padding-top: 15px;float: left;color:black;float: left" >[[#{player.memberCenter.menu1}]]</p>
+                                </h1>
+                            </div>
+                        </div>
+
+                        <div class="panel-collapse collapse in" style="padding-top: 15px;">
+                            <div th:if="${listCount>0}" class="header nav" >
+                                <div style="display: block;" class="clearfix">
+                                    <ul class="title_ul clearfix">
+                                        <li class="title_li" style="width: 50px;"></li>
+                                        <li class="title_li li_sub_con">[[#{player.detail.name.label}]]</li>
+                                        <li class="title_li li_sub_con">[[#{player.detail.quanity.label}]]</li>
+                                        <li class="title_li li_sub_con">[[#{player.detail.price.label}]]</li>
+                                    </ul>
+
+                                    <ul class="detail_ul" th:each="equip,iterStat:${list}">
+                                        <li class="title_li" style="width: 50px;text-align: right;">
+                                            <input type="hidden" name="cartid" th:value="${equip.equipmentid}" />
+
+                                        </li>
+                                        <li class="title_li">
+                                            <img style="width: 52px;height: 52px;float: left;" th:if="${equip.picurl!=null}" th:src="${equip.picurl}" />
+                                            <img style="width: 52px;height: 52px;float: left;" th:if="${equip.picurl==null}" th:src="@{/images1/001.png}" />
+                                            <p th:text="${equip.equipmentname}" style="padding-top: 20px;"></p></li>
+                                        <li class="title_li li_sub_con" ><p th:text="${equip.quantity}"></p></li>
+                                        <li class="title_li li_sub_con"><p th:text="${equip.totalprice}"></p></li>
+                                    </ul>
+
+                                </div>
+
+                                <div class="m-style M-box1" style="float:right;padding: 5px;"></div>
+                            </div>
+
+                            <div th:if="${listCount<=0}">
+                                <ul style="list-style: none;height: 330px;text-align: center" >
+                                    <!--<li style="padding-right: 30px;">
+                                        <img th:src="@{/images/timg.jpg}" />
+                                    </li>-->
+                                    <li style="padding-top: 30px;">
+                                        <label style="font-size:15px;font-weight: bold;font-size: 23px;font-weight: bold;margin-top: 5%; ">[[#{player.equipment.li6}]]&nbsp;<br><a th:href="@{/index.html}" style="font-size:21px;font-weight: bold;margin-top: 5%;display: block;color: red;">[[#{player.equipment.li7}]]</a></label></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:include="@{common/memberFooter.html}"></div>
+<!--bottom-->
+</body>
+<script>
+    $("#memberMenu3").addClass("hover")
+</script>
+</html>

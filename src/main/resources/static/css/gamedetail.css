@@ -1,0 +1,65 @@
+.middle{ width:1100px; overflow:hidden; margin:0 auto;}
+.detail{ width:1100px; height:415px; border:1px solid #cccccc; float:left; }
+.input_d{ width:118px; height:35px; color:#ffffff; float:left; border: 2px solid #ff9800}
+.detail .title{ background-color:#eff3ff; height:50px; width:1100px; }
+.detail p{ padding:14px 0 0 10px; font-size:16px; }
+.detail ul{ list-style:none; float:right; margin-right:-15px;}
+.detail li{ width:80px; height:50px; float:left; margin-right:20px; margin-top:-30px; text-align:center  }
+.detail li a{ text-decoration:none;}
+.detail li:hover{ width:80px; height:50px; background-color:#ffffff; border-top: 2px solid #e51c23; text-align:center; margin-top:-46px; padding-top: 14px;}
+
+.detailList{ width:1100px; display:flex; justify-content:space-around; flex-wrap:wrap;
+    border-bottom:1px dashed #D4D4D4;height:230px;
+}
+.gamedetail{
+    width: 200px; height:200px;
+}
+.web-middle .gamedetail p{ padding:14px 0 0 10px; font-size:16px; }
+.web-middle .gamedetail li{ margin-top: 10px }
+.web-middle .gamedetail span{padding:14px 0 0 10px;font-weight: bolder  }
+.web-middle .gamedetail .gamedetail ul li p { padding:14px 0 0 10px; font-size:16px;font-weight: bold; }
+.web-middle .gamedetail .gamedetail span{ font-size:16px;font-weight: bolder }
+
+
+.btn-numbox {
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+.btn-numbox li {
+    float: left;
+}
+
+.btn-numbox li .number,
+.kucun {
+    display: inline-block;
+    font-size: 12px;
+    color: #808080;
+    vertical-align: sub;
+}
+
+.btn-numbox .count {
+    overflow: hidden;
+    margin: 0 16px 0 -20px;
+}
+
+.btn-numbox .count .num-jian,
+.input-num,
+.num-jia {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 28px;
+    text-align: center;
+    font-size: 18px;
+    color: red;
+    cursor: pointer;
+    border: 1px solid #e6e6e6;
+}
+.btn-numbox .count .input-num {
+    width: 58px;
+    height: 26px;
+    color: #333;
+    border-left: 0;
+    border-right: 0;
+}

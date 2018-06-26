@@ -1,0 +1,5 @@
+.middle { width:800px; overflow:hidden; margin:0 auto;}
+.container{padding-right: 0px;padding-left: 0px; padding-top: 15px}
+
+.middle  h1{text-align: center;}
+.middle .newsContent{width: 100%; margin:0 auto;}

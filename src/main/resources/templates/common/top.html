@@ -1,0 +1,251 @@
+
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div id="oxToolbar" class="ox-appbar">
+    <div class="ox-appbar-tabs" id="appBarTabs">
+
+    </div>
+</div>
+<script type="text/javascript">
+
+    //动画显示边条内容区域
+    $(function() {
+
+        oxToolbar();
+        $(window).resize(function () {
+            oxToolbar();
+        });
+
+        function oxToolbar() {
+            if ($(window).width() >= 1240) {
+                $('#appBarTabs >.variation').show();
+            } else {
+                $('#appBarTabs >.variation').hide();
+            }
+        }
+
+        $('#appBarTabs').hover(
+            function () {
+                $('#appBarTabs >.variation').show();
+            },
+            function () {
+                oxToolbar();
+            }
+        );
+
+        $("#rtoolbar_cart").click(function () {
+            if ($("#content-cart").css('right') == '-210px') {
+               // $('#content-compare').animate({'right': '-210px'});
+                $("#content-cart").animate({right: '35px'});
+                if (!$("#rtoolbar_cartlist").html()) {
+                    $("#rtoolbar_cartlist").load('/Player/cartlist.html');
+                }
+            } else {
+                $(".content-box .top .close").click();
+
+            }
+        });
+        $(".content-box .top .close").click(function () {
+            $(".content-box").animate({right: '-210px'});
+        });
+
+
+        // 右侧bar用户信息
+        $('div[oxtype="a-barUserInfo"]').click(function(){
+            $('div[oxtype="barUserInfo"]').toggle();
+        });
+        // 右侧bar登录
+        $('div[oxtype="a-barLoginBox"]').click(function(){
+            $('div[oxtype="barLoginBox"]').toggle();
+            $("#topKaptchaImgObj").attr('src',"/Player/captcha.jpg?t=" + $.now());
+        });
+        $('a[oxtype="close-barLoginBox"]').click(function(){
+            $('div[oxtype="barLoginBox"]').toggle();
+        });
+
+        $('a[oxtype="close-barUserInfo"]').click(function(){
+            $('div[oxtype="barUserInfo"]').toggle();
+        });
+
+
+
+        //右侧bar登录 验证码
+        $('#topKaptchaImgObj').on({
+            click:function(){
+                $("#topKaptchaImgObj").attr('src',"/Player/captcha.jpg?t=" + $.now());
+            }
+        });
+    });
+
+    function topBeforeSubmit() {
+        $('#errorTip').text("");
+        var loginName = $(".user-login-box #topLoginName").val();
+        var loginPwd = $(".user-login-box #topLoginPwd").val();
+        var kaptcha = $(".user-login-box #topKaptcha").val();
+
+        if(loginName=='' || loginName.length==0) {
+            $('#errorTip').text("请输入登录用户名或手机号");
+            return false;
+        }
+        if(loginPwd=='' || loginPwd.length==0) {
+            $('#errorTip').text("请输入登录密码");
+            return false;
+        }
+        if(kaptcha=='' || kaptcha.length==0) {
+            $('#errorTip').text("请输入验证码");
+            return false;
+        }
+        //加密成md5
+        var md5Passwd = $.md5(loginPwd);
+        $("#topMd5Password").val(md5Passwd);
+        //$("#loginPwd").val('');
+        return true;
+    }
+
+</script>
+<script type="text/javascript" th:inline="javascript">
+
+
+
+</script>
+
+<div class="public-top-layout w">
+    <div class="topbar wrapper" style="background-color: #363636;height: 45px;width: 100%">
+        <div class="user-entry" th:if="${session.PlayerUserKey==null}" style="color:#CECECE;margin-top: 8px">
+            [[#{Common.Vistor.Welcome}]] <a href="/" th:title="#{Common.Navigator.Home}" th:alt="#{Common.Navigator.Home}" style="color:#CECECE">[[#{AppTitle}]]</a>
+            <span>[<a th:href="@{/Player/login.html}" style="color:#CECECE">[[#{Common.Vistor.Login}]]</a>]</span>
+            <span>[<a th:href="@{/Player/register.html}" style="color:#CECECE">[[#{Common.Vistor.Register}]]</a>]</span>
+            <span><img id="phonePic" class="phoneimg" style="padding-left: 36%;margin-top: -1%" th:src="@{/images1/iphone.png}"><span class="phoneinfo" style="font-size: 20px;color: white;padding-top: 3px;display: inline-block;" id="baseConfigPhone" ></span></span>
+            <div class="quick-menu">
+                <dl>
+                    <dt><a class="languageChoice" href="#" >[[#{Common.QuickMenu.Language.Choice}]]</a><i></i></dt>
+                    <dd>
+                        <ul>
+                            <li class="item_en" style="color:black"><a href="#" onclick="changeLanguage('en_us')">[[#{Common.QuickMenu.Language.English}]]</a><i class="en"></i></li>
+                            <li class="item_zh"><a href="#" onclick="changeLanguage('zh_cn')">[[#{Common.QuickMenu.Language.SimpleChinese}]]</a><i class="zh"></i></li>
+                        </ul>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="user-entry" style="color: #CECECE;margin-top: 8px;" th:if="${session.PlayerUserKey!=null}">
+            [[#{Common.Member.Welcome}]] <span>[<a class="username" href="/Player/" th:text="${session.PlayerUserKey.username}"></a>]</span>
+            [[#{Common.Member.Into}]]<a th:href="@{/}" th:title="#{Common.Navigator.Home}" th:alt="#{Common.Navigator.Home}">[[#{AppTitle}]]</a>
+            <span >[<a th:href="@{/Player/logout}" class="logout">[[#{Common.Member.Logout}]]</a>]</span>
+            <div class="quick-menu" style="font-size: 0;height: 30px;display: inline;padding-left: 57%;">
+                <dl>
+                    <dt><a class="languageChoice" href="#" >[[#{Common.QuickMenu.Language.Choice}]]</a><i></i></dt>
+                    <dd>
+                        <ul>
+                            <li class="item_en" style="color:black"><a href="#" onclick="changeLanguage('en_us')">[[#{Common.QuickMenu.Language.English}]]</a><i class="en"></i></li>
+                            <li class="item_zh"><a href="#" onclick="changeLanguage('zh_cn')">[[#{Common.QuickMenu.Language.SimpleChinese}]]</a><i class="zh"></i></li>
+                        </ul>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+            <!--<dl>
+                <dt><a href="http://b2b2c.shopnctest.com/dema/shop/index.php?act=member_favorite_goods&amp;op=fglist">我的收藏</a><i></i></dt>
+                <dd>
+                    <ul>
+                        <li><a href="http://b2b2c.shopnctest.com/dema/shop/index.php?act=member_favorite_goods&amp;op=fglist">商品收藏</a></li>
+                        <li><a href="http://b2b2c.shopnctest.com/dema/shop/index.php?act=member_favorite_store&amp;op=fslist">店铺收藏</a></li>
+                    </ul>
+                </dd>
+            </dl>
+            <dl class="">
+                <dt>客户服务<i></i></dt>
+                <dd>
+                    <ul>
+                        <li><a href="http://b2b2c.shopnctest.com/dema/member/article-article-ac_id-2.html">帮助中心</a></li>
+                        <li><a href="http://b2b2c.shopnctest.com/dema/member/article-article-ac_id-5.html">售后服务</a></li>
+                        <li><a href="http://b2b2c.shopnctest.com/dema/member/article-article-ac_id-6.html">客服中心</a></li>
+                    </ul>
+                </dd>
+            </dl>
+            <dl>
+                <dt>站点导航<i></i></dt>
+                <dd>
+                    <ul>
+                        <li><a target="_blank" href="http://b2b2c.shopnctest.com/dema/cms/">资讯频道</a></li>
+                        <li><a target="_blank" href="http://b2b2c.shopnctest.com/dema/circle/">社区圈子</a></li>
+                        <li><a target="_blank" href="http://b2b2c.shopnctest.com/dema/shop/">商城首页</a></li>
+                    </ul>
+                </dd>
+            </dl>
+            -->
+
+    </div>
+</div>
+<script type="application/javascript">
+    $(function() {
+        $(".quick-menu dl").hover(function () {
+                $(this).addClass("hover");
+            },
+            function () {
+                $(this).removeClass("hover");
+            });
+    });
+
+    function changeLanguage(lang){
+        $.ajax({
+            type:'post',
+            url:'/changeLanguage',
+            dataType:'json',
+            data:{lang:lang},
+            success:function(data){
+                if(data=='success') window.location.href=window.location.href.replace("#","");
+            },
+            error:function(XMLHttpRequest ,textStatus,errorThrown){
+                alert("error");
+            }
+
+        })
+    }
+</script>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    var lang=[[${session.lang}]];
+    $('.public-top-layout .quick-menu dl dd ul li').removeClass("selected");
+    //var lang ='zh_CN';
+    if(lang=='en_US') {
+        $('.public-top-layout .quick-menu dl dd ul .item_en').addClass("selected");
+        $('.public-top-layout .quick-menu dl dt .languageChoice').text("English");
+    }else{
+        $('.public-top-layout .quick-menu dl dd ul .item_zh').addClass("selected");
+        $('.public-top-layout .quick-menu dl dt .languageChoice').text("简体中文");
+    }
+    /*]]>*/
+</script>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function () {
+        var baseConfig = [[${session.baseConfig}]];
+        if(baseConfig==null){
+            $.ajax({
+                type: 'POST',
+                url: '/baseConfig',
+                datatype: 'json',
+                cache: false,
+                success: function (data) {
+                    var data1=JSON.parse(data);
+                    if(data1.phone==null) {
+                        $("#phonePic").css("visibility","hidden");
+                    }
+                    $("#baseConfigPhone").html(data1.phone);
+                    $("#baseConfigWechat").html(data1.wechat);
+                }
+            });
+        }else {
+            if(baseConfig.phone==null) {
+                $("#phonePic").css("visibility","hidden");
+            }
+            $("#baseConfigPhone").html(baseConfig.phone);
+            $("#baseConfigWechat").html(baseConfig.wechat);
+        }
+    })
+    /*]]>*/
+</script>
+<!-- PublicHeadLayout Begin -->

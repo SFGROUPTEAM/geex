@@ -1,0 +1,186 @@
+﻿@charset "utf-8";
+*{font-family:"微软雅黑"; }
+
+strong { font-weight: bold;}
+html {min-height:101%; min-width: 1000px;}
+
+/*顶部*/
+.wrapper{margin:0 auto;}
+.header .top{width:1000px; height:80px; background-color:#ffffff; margin:0 auto; overflow:hidden}
+.header .top h2{width:350px;float:left; margin-top:15px;}
+.header .top .stage{width:350px;float:left; margin-top:15px;}
+
+.header .top .search{ margin-top:-15px;float:right;}
+.header .top .search .searchInput{width:500px; height:44px; margin:15px -100px; border: 2px solid #e51c23;font-color:#eeeeee;  }
+.header .top .search .searchButton{ width:100px; height:44px; margin:28px 0; color:#FFFFFF;border: 2px solid #e51c23;background-color:#e51c23; }
+
+/*导航栏*/
+.header .nav{ width:100%; height:50px; background-color:#e51c23; overflow:hidden; margin:0 auto;}
+.header .nav .navList{ width:1000px; height:50px; margin:0 auto; background-color:#e51c23;}
+.header .nav ul{ list-style:none;}
+.header .nav li{ width:200px; height:50px; float:left; text-align:center; margin:-10px 0;}
+.header .nav li:hover{ width:200px; height:50px; text-align:center; background-color:#851319;}
+.header .nav li .current{ width:200px; height:50px; text-align:center; background-color:#751319;}
+.header .nav li a{display:block;font-size:16px; line-height:50px;color:#ffffff; text-decoration:none;font-weight: bold;}
+.header .nav li a:hover{font-size:18px; }
+
+.mid{ width:100%; overflow:hidden; margin:0 auto;}
+/*frindLink*/
+.friendLink{  width:100%; overflow:hidden; margin:0 auto;background-color:#eeeeee;}
+.friendLink .link{ width:88%;margin:0 6%;height:40px; display:flex; flex-wrap:wrap; justify-content:flex-start; }
+.friendLink .link span{ margin-top:10px;margin-left:5px; }
+.friendLink .link a{ text-decoration:none; text-outline:none; color:#626F7D;  }
+
+/*bottom*/
+.footer{ width:100%; height:155px; background-color:#eeeeee;  margin:0 auto; margin-top:0px;}
+.footer .companyInfo{ width:1000px; height:100px; margin:0 auto; text-align: center }
+.footer .companyInfo .info01{ list-style:none; display:block;margin: 0 auto; width: 60%;height:50px; display:flex; flex-wrap:wrap; justify-content:space-around; padding-top:30px;}
+.footer .companyInfo .info01 a{color:#4E5465;margin-left:10px;}
+.footer .companyInfo h5{ display:block; text-align:center; width:1000px;  margin-top:10px; color:#7b7676;}
+.footer .companyInfo h5 a{ text-decoration:none;color:#7b7676;}
+
+
+.w { width:100%;}
+/* 公用顶部区域
+-------------------------------------- */
+.public-top-layout { font-family: Arial, "宋体"; line-height: 20px; color: #777; background-color: #FAFAFA; border-bottom: solid 1px #F0F0F0;}
+.public-top-layout .topbar { height: 30px;}
+.public-top-layout .wrapper  { width: 1000px; margin: auto;}
+.public-top-layout .user-entry { width: 100%; height: 20px; float: left;font-size:12px;margin-top: 13px;color: white;padding-left: 6%}
+.public-top-layout .user-entry span{ color: white;}
+.public-top-layout .user-entry a { color: white}
+.public-top-layout .user-entry .username { font-weight: bold;color: white}
+.public-top-layout .user-entry .username span{color: white}
+.public-top-layout .user-entry .logout { font-color: #ffefef; font-weight: bold;}
+
+
+.public-top-layout .quick-menu { font-size: 0; *word-spacing:-1px/*IE6、7*/;  height: 30px;display: inline;padding-left:18%;}
+.public-top-layout .quick-menu a { color: #CECECE }
+.public-top-layout .quick-menu dl { text-align: left;letter-spacing: normal; word-spacing: normal; display: inline-block; *display:inline/*IE6、7*/; width: 110px; height: 30px; position: relative; z-index: 999; *zoom:1/*IE6、7*/;}
+.public-top-layout .quick-menu dl dt{ font-size: 12px;padding: 5px 0;z-index: 2;top: 0px;}
+.public-top-layout .quick-menu dl dt a { font-size:12px;font-weight: 200;}
+.public-top-layout .quick-menu dl dt a:hover { text-decoration: none; color: black; }
+.public-top-layout .quick-menu dl dt i { background: url(../images/top_bg.png) no-repeat 0 0; vertical-align: middle; display: inline-block; width: 6px; height: 3px; margin-left: 6px;-webkit-transition: .2s ease-in; -moz-transition: -webkit-transform .2s ease-in; -o-transition: -webkit-transform .2s ease-in; transition: .2s ease-in;}
+.public-top-layout .quick-menu dl.hover dt i { -moz-transform: rotate(180deg); -moz-transform-origin: 50% 30%; -webkit-transform: rotate(180deg); -webkit-transform-origin: 50% 30%; -o-transform: rotate(180deg); -o-transform-origin: 50% 30%; transform: rotate(180deg); transform-origin: 50% 30%;}
+.public-top-layout .quick-menu dl dd { background-color: #FFF; display: none; width: 110px; border: solid 1px #F0F0F0; position: absolute; z-index: 1; top: 0; left: 0;}
+.public-top-layout .quick-menu dl.hover dd { display: block;   background-color: rgba(0, 0, 0, 0.4); color:white}
+
+.public-top-layout .quick-menu dl dd ul { width: 110px; margin: 30px 0 0 0; padding:0;}
+.public-top-layout .quick-menu dl dd ul li a { font-size: 12px; line-height: 24px; display: block; clear: both; padding: 2px 0 2px 15px;color:white;}
+.public-top-layout .quick-menu dl dd ul li a:hover { text-decoration: none; background-color: #1b6d85;color:white;}
+
+.public-top-layout .quick-menu dl dd ul li .zh { background: url(../images/countryFlag/CN.png) no-repeat 0 0; vertical-align: middle; display: inline-block; width: 21px; height: 15px; margin-left: 80px;margin-top: -25px;padding-right: 3px;}
+.public-top-layout .quick-menu dl dd ul li .en { background: url(../images/countryFlag/US.png) no-repeat 0 0; vertical-align: middle; display: inline-block; width: 21px; height: 15px; margin-left: 80px;margin-top: -25px;padding-right: 3px;}
+
+.public-top-layout .quick-menu dl dd ul .selected a{font-weight: bold;}
+
+/* 侧边工具条 */
+.ox-appbar { position: fixed; z-index: 1998; width: 35px; height: 100%; right: 0; top: 0; bottom: 0;}
+.ox-appbar-tabs { width: 35px; height: 100%;}
+.ox-appbar-tabs .ever { width: 35px; height: 158px; background-color: #000; position: absolute; z-index: 2; top: 50%; margin-top: -79px;}
+.ox-appbar-tabs .variation { width: 35px; height: 100%; background-color: #000; position: relative; z-index: 1;}
+.ox-appbar-tabs .variation .middle { width: 35px; height: 250px; margin-top: -125px; position: absolute; z-index: 1; top: 50%; left: 0;}
+.ox-hidebar { display: block; position: absolute; z-index: 3; bottom: 15px; right: -79px; cursor: pointer;}
+.ox-hidebar .ox-hidebar-bg { background: url(../images/toolbar.png) no-repeat -100px 0; width: 79px; height: 56px; position: relative; z-index: 1;}
+.ox-hidebar .ox-hidebar-bg .user-avatar,
+.ox-hidebar .ox-hidebar-bg .frame,
+.ox-hidebar .ox-hidebar-bg .show { background: url(../images/toolbar.png) no-repeat; width: 36px; height: 36px; position: absolute; top: 10px; left: 15px;}
+.ox-hidebar .ox-hidebar-bg .user-avatar { background-position: -100px 0px; z-index: 1;}
+.ox-hidebar .ox-hidebar-bg .user-avatar img { max-width: 36px; max-height: 36px;}
+.ox-hidebar .ox-hidebar-bg .frame { background-position: -100px -70px; z-index: 2;}
+.ox-hidebar .ox-hidebar-bg .show { display: none; background-position: -140px -70px; z-index: 3;}
+.ox-hidebar .ox-hidebar-bg:hover .show { display: block;}
+.ox-hidebar:hover { background-position: -100px -60px;}
+
+.ox-appbar-tabs .user { display: block;}
+.ox-appbar-tabs .user .avatar { background-color: #FFF; width: 28px; height: 28px; margin: 3px auto 4px auto; border-radius: 14px;}
+.ox-appbar-tabs .user .avatar img { width: 28px; height: 28px; border-radius: 14px;}
+.ox-appbar-tabs span.icon { display: block; background: url(../images/toolbar.png) no-repeat; width: 35px; height: 35px;}
+
+.ox-appbar-tabs .cart a { display: block; width: 35px; height: 100px; padding: 10px 0 0; border-top: solid 1px #555; border-bottom: solid 1px #555; position: relative; z-index: 1;}
+.ox-appbar-tabs .user a,
+.ox-appbar-tabs .gotop a { display: block; width: 35px; height: 35px; padding: 1px 0 1px 0; position: relative; z-index: 1;}
+
+.ox-appbar-tabs .cart a:hover,
+.ox-appbar-tabs .user a:hover,
+.ox-appbar-tabs .gotop a:hover { text-decoration: none; background-color: #F32613;}
+
+.ox-appbar-tabs .cart .icon { background-position: 0 -120px;}
+.ox-appbar-tabs .cart .name { line-height: 16px; color: #FFF; display: block; text-align: center; width: 15px; padding: 0 10px; white-space: pre-wrap;}
+
+.ox-appbar-tabs .prech { display: block; width: 35px; height: 158px;}
+
+.ox-appbar-tabs .gotop { position: fixed; bottom: 0;}
+.ox-appbar-tabs .gotop .icon { background-position: 0 -80px; opacity: 1;}
+.ox-appbar-tabs .gotop:hover .icon { opacity: 1;}
+
+.ox-appbar-tabs a i { font: 12px Arial;  color: #FFF; background-color: #F32613; text-align: center; min-width: 14px; height: 14px; padding: 1px; border-radius: 100%; position: absolute; z-index: 1; top: 5px; right: 3px;}
+.ox-appbar-tabs a:hover i { color: #F32613; background-color: #FFF;}
+.ox-appbar-tabs a span.tit {font-size:12px; line-height: 30px; color: #FFF; background: url(../images/toolbar.png) no-repeat -50px 0; white-space: nowrap; display: none; width: 50px; height: 40px; padding: 0px 71px 0px 15px; position: absolute; z-index: 9; top: 0px; right: 29px;}
+.ox-appbar-tabs a:hover span.tit { display: block;}
+
+/*工具条-会员登录*/
+.ox-appbar-tabs .user-login-box { background-color: #FFF; width: 320px; padding: 10px 40px 30px 40px; border: solid 1px #CCC; position: absolute; z-index: 2; top: -32px; right: 35px; box-shadow: -4px 0 4px rgba(0,0,0,0.25);}
+.ox-appbar-tabs .user-login-box i.arrow { background:url(../images/toolbar.png) no-repeat -100px -150px; width: 7px; height: 13px; position: absolute; z-index: 3; top: 40px; right: -7px;}
+.ox-appbar-tabs .user-login-box a.close-a { font: 600 11px /16px Verdana, Geneva, sans-serif; text-decoration: none; color: #999; text-align: center; width: 16px; height: 16px; position: absolute; z-index: 3; top: 5px; right: 5px;}
+.ox-appbar-tabs .user-login-box a { font: 12px/20px arial,"宋体"; color: #005EA6; text-decoration: underline; }
+.ox-appbar-tabs .user-login-box a .left{float:left;}
+.ox-appbar-tabs .user-login-box a .right{float:right;}
+.ox-appbar-tabs .user-login-box dl {}
+.ox-appbar-tabs .user-login-box dt { font: 13px/20px Arial,"microsoft yahei"; height: 30px; padding: 5px 0 0;}
+.ox-appbar-tabs .user-login-box dt a { font: 12px/20px arial,"宋体"; color: #005EA6; text-decoration: underline; float: right;}
+.ox-appbar-tabs .user-login-box dd .text { line-height: 20px; width: 226px; height: 28px; padding: 3px 5px; border: solid 1px #CCC;}
+.ox-appbar-tabs .user-login-box #topKaptchaImgObj{ width:100px;height:25px; margin-left:2px;float:right;}
+.ox-appbar-tabs .user-login-box .bottom { margin-top: 20px;}
+.ox-appbar-tabs .user-login-box .bottom .submit { font: 600 14px/20px Arial,"microsoft yahei";  color: #FFF; background-image:none;background-color: #D93600; width: 240px; height: 35px; border: solid 1px #B22D00; cursor: pointer;}
+.ox-appbar-tabs .user-login-box .bottom span{ margin-top: 10px;}
+
+/*工具条-会员信息*/
+.ox-appbar-tabs .user-info-box { background-color: #FFF; width: 300px; padding: 19px 19px; border: solid 1px #CCC; position: absolute; z-index: 2; top: -2px; right: 35px; box-shadow: -4px 0 4px rgba(0,0,0,0.25);}
+.ox-appbar-tabs .user-info-box i.arrow { background:url(../images/toolbar.png) no-repeat -100px -150px; width: 7px; height: 13px; position: absolute; z-index: 3; top: 45px; right: -7px;}
+.ox-appbar-tabs .user-info-box a.close-a { font: 600 11px /16px Verdana, Geneva, sans-serif; text-decoration: none; color: #999; text-align: center; width: 16px; height: 16px; position: absolute; z-index: 3; top: 5px; right: 5px;}
+.ox-appbar-tabs .user-info-box .avatar { width: 88px; height: 88px; float: left; position: relative; z-index: 1;}
+/*
+.ox-appbar-tabs .user-info-box .avatar .frame { background: url(../images/point_bg.png) no-repeat 0 0; width: 88px; height: 88px; position: absolute; z-index: 2; top: 0; left: 0;}
+*/
+.ox-appbar-tabs .user-info-box .avatar img { width: 80px; height: 80px; position: absolute; z-index: 1; top: 4px; left: 4px;}
+.ox-appbar-tabs .user-info-box dl { display: block; width: 140px; float: left; margin: 10px 0 0 10px;}
+.ox-appbar-tabs .user-info-box dt { font: 600 14px/20px "microsoft yahei"; margin-bottom: 6px;}
+.ox-appbar-tabs .user-info-box dd { line-height: 22px;}
+
+
+.ox-appbar-tabs .content-box { background-color: #F5F5F5; width: 200px; height: 100%; border-left: solid 1px #7C8994; position: absolute; z-index: 0; top: 0; right: -210px; bottom: 0; box-shadow: -4px 0 2px rgba(0,0,0,0.25);}
+.ox-appbar-tabs .content-box .top { height: 30px; padding: 9px 7px; border-bottom: dotted 1px #CCC; margin-bottom: 10px;}
+.ox-appbar-tabs .content-box .top h3 { font: 14px "microsoft yahei"; color: #333; display: inline-block; }
+.ox-appbar-tabs .content-box .top a.close { background: url(../images/toolbar.png) no-repeat -100px -120px; width: 16px; height: 16px; margin-top: -1px; float: right;}
+.ox-appbar-tabs .content-box .goods-list { background-color: #FFF; width: 180px; padding: 10px 0; margin: 0 auto;}
+.ox-appbar-tabs .content-box .goods-list li { width: 160px; padding: 0 0 10px 0; margin: 0 auto; }
+.ox-appbar-tabs .content-box .goods-info { width: auto; margin: auto;}
+.ox-appbar-tabs .goods-pic { width: 120px; height: 120px; margin: 0 auto 10px auto;}
+.ox-appbar-tabs .goods-pic a { line-height: 0; background: none; text-align: center; vertical-align: middle; display: table-cell; *display: block; width: 120px; height: 120px; padding: 0; margin: 0; overflow: hidden;}
+.ox-appbar-tabs .goods-pic a img { max-width: 120px; max-height: 120px; }
+.ox-appbar-tabs .goods-name a { font-weight: normal; line-height: 16px; color: #555; background: none; text-align: left; display: block; width: 100%; height: 16px; padding: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.ox-appbar-tabs .goods-price { font: 600 14px/20px Arial; color: #C00;}
+.ox-appbar-tabs .goods-price .del { font: normal 12px/20px  Arial; color: #005EA6; display: none; float: right; cursor: pointer;}
+.ox-appbar-tabs .goods-list li:hover .goods-price .del { display: block;}
+.ox-appbar-tabs .content-box .no-compare { color: #999; line-height: 180px; text-align: center;}
+.ox-appbar-tabs .content-box .btn-box { background-color: #F5F5F5; text-align: center; width: 160px; padding: 10px; position: absolute; z-index: 2; bottom: 0; left: 10px;}
+.ox-appbar-tabs .content-box .btn-box a { background-color: #F32613; color: #FFFFFF; cursor: pointer; padding: 5px 10px;}
+.ox-appbar-tabs .content-box .btn-box .total-price { color: #777; padding-bottom: 10px;}
+
+.ox-appbar-tabs .cart-list { width: 180px; margin: 0 auto;}
+.ox-appbar-tabs .cart-list li { font-size: 0; *word-spacing:-1px/*IE6、7*/; background-color: #FFF; padding: 4px; border: solid 1px #FFF; margin-bottom: 10px; position: relative; z-index: 1;}
+.ox-appbar-tabs .cart-list li:hover { border-color: #F32613; box-shadow: 3px 3px 0 rgba(204,204,204,0.75);}
+.ox-appbar-tabs .cart-list .goods-pic,
+.ox-appbar-tabs .cart-list dl { font-size: 12px; vertical-align: top; letter-spacing: normal; display: inline-block; *display: inline/*IE6、7*/; *zoom:1; }
+.ox-appbar-tabs .cart-list .goods-pic { width: 40px ; height: 40px; margin: 0;}
+.ox-appbar-tabs .cart-list .goods-pic a { line-height: 0; background: none; text-align: center; vertical-align: middle; display: table-cell; *display: block; width: 40px; height: 40px; padding: 0; margin: 0; overflow: hidden;}
+.ox-appbar-tabs .cart-list .goods-pic a img { max-width: 40px; max-height: 40px;}
+.ox-appbar-tabs .cart-list dl { width: 125px; margin-left: 5px;}
+.ox-appbar-tabs .cart-list .goods-name { text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
+.ox-appbar-tabs .cart-list a.del { font: 600 10px/14px Arial; color: #FFF; background-color: #CCC; text-align: center; width: 14px; height: 14px; border-radius: 7px; position: absolute; z-index: 1; top: -5px; right: -5px;}
+.ox-appbar-tabs .cart-list li:hover a.del { background-color: #F32613;}
+
+.w130 { width:130px !important;}
+.vm { vertical-align: middle;}
+.vt { vertical-align: top;}

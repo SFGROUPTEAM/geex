@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.IEquipmentPropertyDao">
+    <resultMap type="com.hy.entity.EquipmentProperty" id="equipmentPropertyResult"/>
+    <resultMap type="com.hy.entity.EquipmentProperty1" id="equipmentProperty1Result"/>
+    <insert id="add" parameterType="com.hy.entity.EquipmentProperty">
+        INSERT into HY_EQUIPMENT_PROPERTY (equipmentid,
+        <if test="propertydes != null and propertydes != ''">propertydes,</if>
+        <if test="price != null and price != ''">price,</if>
+        <if test="cnt != null and cnt != ''">cnt,</if>
+        <if test="createuser != null and createuser != ''">createuser,</if>
+        <if test="crondate != null and crondate != ''">crondate,</if>
+        createtime)VALUES (#{equipmentid},
+        <if test="propertydes != null and propertydes != ''">#{propertydes},</if>
+        <if test="price != null and price != ''">#{price},</if>
+        <if test="cnt != null and cnt != ''">#{cnt},</if>
+        <if test="createuser != null and createuser != ''">#{createuser},</if>
+        <if test="crondate != null and crondate != ''">#{crondate},</if>
+        to_char(sysdate,'yyyymmddHH24mmss'))
+    </insert>
+    <update id="update" parameterType="com.hy.entity.EquipmentProperty">
+        UPDATE HY_EQUIPMENT_PROPERTY
+        <set>
+            <if test="propertydes != null and propertydes != ''">propertydes = #{propertydes},</if>
+            <if test="price != null and price != ''">price = #{price},</if>
+            <if test="cnt != null and cnt != ''">cnt = #{cnt},</if>
+            <if test="crondate != null and crondate != ''">crondate = #{crondate},</if>
+            updatetime = to_char(sysdate,'yyyymmddHH24miss'),
+            <if test="updateuser != null and updateuser != ''">updateuser = #{updateuser},</if>
+        </set>
+        where equipmentid = #{equipmentid}
+    </update>
+    <delete id="delete" parameterType="com.hy.entity.EquipmentProperty">
+          DELETE FROM HY_EQUIPMENT_PROPERTY where equipmentid = #{equipmentid}
+    </delete>
+    <select id="getEquipmentProperty1" parameterType="com.hy.entity.EquipmentProperty1" resultMap="equipmentProperty1Result">
+        SELECT  a.*,b.name equipmentname from HY_EQUIPMENT_PROPERTY a,hy_equipment b where a.equipmentid = b.id and  equipmentid = #{equipmentid}
+    </select>
+    <select id="getList" parameterType="map" resultMap="equipmentProperty1Result">
+        SELECT  a.*,b.name equipmentname from HY_EQUIPMENT_PROPERTY a,hy_equipment b where a.equipmentid = b.id and  1=1
+        <if test="equipmentid != null and equipmentid != ''">
+            and equipmentid = #{equipmentid}
+        </if>
+    </select>
+    <select id="getListCount" parameterType="map" resultType="int">
+        SELECT count(*) from HY_EQUIPMENT_PROPERTY a,hy_equipment b where a.equipmentid = b.id and  1=1
+        <if test="equipmentid != null and equipmentid != ''">
+            and equipmentid = #{equipmentid}
+        </if>
+    </select>
+</mapper>

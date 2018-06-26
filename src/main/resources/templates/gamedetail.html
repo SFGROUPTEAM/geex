@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>[[#{game.detail_desc0}]]</title>
+    <link rel="shortcut icon" th:href="@{/images/icon/bitbug_favicon.ico}"/>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}" />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+    <link rel="stylesheet" th:href="@{/css/newIndex.css}" />
+    <link rel="stylesheet" th:href="@{/css/jquery.spinner.css}" />
+    <link rel="stylesheet" th:href="@{/css/gamedetail.css}" />
+
+    <script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/jquery.spinner.js}"></script>
+
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/moduleUse2.js}"></script>
+
+
+    <script th:inline="javascript" type="text/javascript">
+
+    </script>
+</head>
+
+<body class="layout" onmousemove="return false" ondragstart="return false" onselectstart ="return false" >
+<div class="web-top">
+    <div class="topBar" th:include="@{common/top.html}"></div>
+    <div class="logoBar" th:include="@{common/header.html}"></div>
+    <!--导航-->
+    <div class="logoBar" th:include="@{common/navBar.html}"></div>
+</div>
+<div class="web-middle" style="height: 450px;padding-top: 40px;padding-right: 10%;padding-left: 10%;">
+    <div class="detailList" id="equipmentInfo" style="width:100%;height: 400px;">
+        <div class="gamedetail" style="width: 45%;text-align:center">
+            <img class='bigpic' th:if="${gamePic.picurl!=null}" th:src="${gamePic.picurl}" style="width: 180px;height: 180px;margin-top: 80px;">
+            <img class='bigpic' th:if="${gamePic.picurl==null}" th:src="@{/images1/default.png}" style="width: 180px;height: 180px;margin-top: 80px;">
+        </div>
+        <div style="border-left: 1px solid #dddddd;width: 55%;padding-top: 70px">
+            <input type="hidden" name="gameid" th:value="${gameInfo.id}" >
+            <input type="hidden" id="gameno" name="gameno" th:value="${gameInfo.gameno}" >
+            <div class="gamedetail" style="width:40%;padding-left: 10px;float: left">
+                <ul style="list-style: none;">
+                    <li style="padding-top: 0px;border-bottom: 1px solid #DCDCCC;"><span>[[#{game.detail_desc1}]]</span><p th:text="${gameInfo.name}"></p></li>
+                    <li style="padding-top: 0px;border-bottom: 1px solid #DCDCCC;"><span>[[#{game.detail_desc2}]]</span><p th:text="${gameInfo.category}"></p></li>
+                    <li style="padding-top: 0px;border-bottom: 1px solid #DCDCCC;"><span>[[#{game.detail_desc3}]]</span><p th:text="${gameInfo.company}"></p></li>
+                 </ul>
+            </div>
+            <div class="gamedetail" style="width:60%;padding-left: 10px;float: left">
+                <ul style="list-style: none;">
+                    <li style="padding-top: 0px;border-bottom: 1px solid #DCDCCC;"><span>[[#{game.detail_desc4}]]</span><p th:text="${gameInfo.remark}"></p></li>
+                    <li style="padding-top: 0px;"><span>[[#{game.detail_desc5}]]</span><p  th:text="${gameInfo.describe}"></p></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $('.spinnerExample').spinner({});
+    </script>
+</div>
+
+<!--根据是否会员登录引入不同footer-->
+<div class="web-bottom" th:if="${session.PlayerUserKey!=null}" th:include="@{common/memberFooter.html}"></div>
+<div class="web-bottom" th:if="${session.PlayerUserKey==null}" th:include="@{common/footer.html}"></div>
+</body>
+</html>

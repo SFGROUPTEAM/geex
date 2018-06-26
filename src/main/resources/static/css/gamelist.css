@@ -1,0 +1,37 @@
+body{position: relative}
+.navBar{bottom: 0}
+.mid{ width: 88%;margin: 65px 6%;}
+.container{padding-right: 0px;padding-left: 0px;}
+
+
+/*游戏列表*/
+.mid .game{ width:100%;  border:1px solid #cccccc; float:left;  margin: 20px 0;}
+.mid .game .title{ background-color:#eff3ff; height:50px; padding-top: 10px;}
+.mid .game .title .gameTitle{ padding-left: 10px;float:left ;font-size: 20px}
+.mid .game .title span{  float:right; padding-right: 10px}
+.mid .game .title .queryButton{ float: right;margin-right: 10px }
+.mid .game .title .queryInput{ float: right;margin-right: 10px ;width: 200px }
+.mid .game .title select{ float: right;padding-left: 10px ;margin-right: 10px }
+
+.mid .gameList{ width:100%; flex-wrap:wrap}/*; display:flex*/
+.mid .gameList .game00{ width: 50%; height:120px;margin-top: 10px;float: left; text-overflow:ellipsis;padding-top: 10px}
+.mid .gameList .game00:hover{ box-shadow: 0 0 15px #d9d9d9;}
+.mid .gameList .game00 .gamePic{ width: 120px; height:120px;float: left;text-align: center}
+.mid .gameList .game00 .gamePic img{ width: 80px; height:80px;border-radius: 15px;}
+.mid .gameList .game00 .gameDetails{ width: 450px; height:120px;float: left;}
+.mid .gameList .game00 .gameCategory{ width: 450px; height:20px;float: left;}
+.mid .gameList .game00 .gameDescribe{ width: 450px; height:70px;float: left;}
+.mid .gameList .game00 .gameRemark{ width: 300px; height:20px;float: left;}
+.mid .gameList .game00 .gameRemark p{font-size: 12px;color: rgb(72, 72, 72);padding: 0px;margin: 0;height: 20px;overflow : hidden;  text-overflow: ellipsis;  display: inline-block;  }
+.mid .gameList .game00 .gameCategory p{font-size: 12px;color: rgb(72, 72, 72);padding: 0px;margin: 0;height: 20px;overflow : hidden;  text-overflow: ellipsis;  display: inline-block;  }
+.mid .gameList .game00 .gameDescribe p{font-size: 12px;color: rgb(72, 72, 72);padding: 0px;margin: 0;height: 70px;overflow : hidden;  text-overflow: ellipsis;  display: inline-block;  }
+.mid .gameList .game00 .gameURL{ width: 80px; height:120px;float: left}
+.mid .gameList img:hover{ width:80px; height:80px;border-radius: 15px;}
+.mid .gameList h6{ text-align:center;padding-top: 5px;}
+/*分页*/
+.mid .game .page{ height: 50px;margin-top: 0px;padding-top: 50px;clear: both; }
+.mid .game .page .pageInfo{ width:300px ;  border: 0; float: left; padding-left: 20px;  padding-top: 12px;  font-size: 15px;}
+ul.pagination {float: right;margin: 0px;}
+ul.pagination li {display: inline;}
+ul.pagination li a {  color: black;  float: left;  text-align: center; width: 40px; text-decoration: none;  transition: background-color .3s;  border: 1px solid #ddd;  }
+ul.pagination li a.active {  background-color: #4CAF50;  color: white;  border: 1px solid #4CAF50;  }

@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<head id="Head1"><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>	[[#{player.bindAccount.title}]]</title>
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}"/>
+    <link th:href="@{/css/memberMenuBasic.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/memberMenuStyle.css}" rel="stylesheet" type="text/css">
+    <script th:src="@{/js/memberMenu.js}"></script>
+</head>
+<body class="layout">
+<!--会员中心左侧-->
+<div class="col-md-2 column">
+    <div class="row clearfix">
+        <div class="panel-group" id="panel-407752">
+
+            <div class="panel panel-default" style="box-shadow: 0 0 3px #D4D4D4;position: relative">
+                <!--<div class="panel-heading">
+                    <a class="panel-title" data-toggle="collapse" data-parent="#panel-407752" th:href="@{/Player/main}">[[#{player.memberCenter.title}]]</a>
+                </div>-->
+                <!--<div class="panel-collapse collapse in" >-->
+                <!--<div class="panel-body" style="padding-left: 35px;border-bottom:1px solid #E5E5E5">-->
+                <!--<a th:href="@{/Player/main.html}">[[#{player.memberCenter.menu0}]]</a>-->
+                <!--</div>-->
+                <!--</div>-->
+
+                <!--<div id="panel-element-784554" class="panel-collapse collapse in">-->
+                <!--<div class="panel-body" style="padding-left: 35px;border-bottom:1px solid #E5E5E5">-->
+                <!--<a th:href="@{/Player/gold.html}">[[#{player.memberCenter.menu2}]]</a>-->
+                <!--</div>-->
+                <!--</div>-->
+
+                <!--<div id="panel-element-784553" class="panel-collapse collapse in" >-->
+                <!--<div class="panel-body" style="padding-left: 35px;border-bottom:1px solid #E5E5E5">-->
+                <!--<a th:href="@{/Player/equipment.html}">[[#{player.memberCenter.menu1}]]</a>-->
+                <!--</div>-->
+                <!--</div>-->
+
+                <!--<div id="panel-element-784558" class="panel-collapse collapse in">-->
+                <!--<div class="panel-body" style="padding-left: 35px;border-bottom:1px solid #E5E5E5">-->
+                <!--<a th:href="@{/Player/exchangelog.html}">[[#{player.memberCenter.menu3}]]</a>-->
+                <!--</div>-->
+                <!--</div>-->
+                <ul>
+                    <li><a id="memberMenu1" th:href="@{/Player/main.html}">[[#{player.memberCenter.menu0}]]</a></li>
+                    <li><a id="memberMenu2" th:href="@{/Player/gold.html}">[[#{player.memberCenter.menu2}]]</a></li>
+                    <li><a id="memberMenu3" th:href="@{/Player/equipment.html}">[[#{player.memberCenter.menu1}]]</a></li>
+                    <li><a id="memberMenu4" th:href="@{/Player/exchangelog.html}">[[#{player.memberCenter.menu3}]]</a></li>
+                    <div id="lanPos"></div>
+                </ul>
+                <!--<div id="panel-element-784151" class="panel-collapse collapse in">
+                    <div class="panel-body" style="padding-left: 35px;">
+                        <a th:href="@{/Player/historyOrder.html}">[[#{player.memberCenter.menu4}]]</a>
+                    </div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

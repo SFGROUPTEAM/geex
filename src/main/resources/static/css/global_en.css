@@ -1,0 +1,5 @@
+*{font-family:"Arial" !important; }
+.ox-appbar-tabs .cart .name{padding:0 4px !important;}
+.public-top-layout .quick-menu dl {  width: 110px !important;}
+.public-top-layout .quick-menu dl dd { background-color: #FFF; display: none; width: 110px; border: solid 1px #F0F0F0; position: absolute; z-index: 1; top: 0; left: 0;}
+.public-top-layout .quick-menu dl dd ul { width: 110px !important;}

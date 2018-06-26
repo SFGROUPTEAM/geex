@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.player.IPlayerUserDao">
+    <resultMap type="com.hy.entity.Player" id="playerUserResult"/>
+
+
+    <select id="getPlayerUser"  parameterType="com.hy.entity.Player"  resultType="com.hy.entity.Player1">
+        select a.*,nvl(b.goldcnt,0) goldcnt,nvl(t.equipcnt,0) equipcnt from hy_player a
+        left join hy_player_gold b on a.id=b.playerid
+        left join (select playerid,count(*) equipcnt from hy_player_equipment group by playerid) t on a.id=t.playerid
+        where 1=1
+        <if test="username != null and username != ''">
+            and a.username=#{username}
+        </if>
+        <if test="phone != null and phone != ''">
+            and a.phone=#{phone}
+        </if>
+        <if test="id != null and id != ''">
+            and a.id=#{id}
+        </if>
+    </select>
+
+    <select id="getList"  parameterType="map" resultMap="playerUserResult">
+        select * from hy_player t where 1=1
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        <if test="username != null and username != ''">
+            and instr(username,#{username})>0
+        </if>
+        <if test="nickname != null and nickname != ''">
+            and instr(nickname,#{nickname})>0
+        </if>
+        <if test="gendar != null">
+            and gendar = #{gendar}
+        </if>
+    </select>
+
+    <select id="getListCount" parameterType="map" resultType="int">
+        select count(*) from hy_player t where 1=1
+        <if test="status != null">
+            and status = #{status}
+        </if>
+        <if test="username != null and username != ''">
+            and instr(username,#{username})>0
+        </if>
+        <if test="nickname != null and nickname != ''">
+            and instr(nickname,#{nickname})>0
+        </if>
+        <if test="gendar != null">
+            and gendar = #{gendar}
+        </if>
+    </select>
+
+    <insert id="add" parameterType="com.hy.entity.Player">
+        insert into hy_player(id,username,password
+        <if test="phone != null and phone != ''">
+            ,phone
+        </if>
+        <if test="registerip != null and registerip != ''">
+            ,registerip
+        </if>
+        ,registsertime
+        )
+        values(sys_guid(),#{username},#{password}
+        <if test="phone != null and phone != ''">
+            ,#{phone}
+        </if>
+        <if test="registerip != null and registerip != ''">
+            ,#{registerip}
+        </if>
+        ,to_char(sysdate,'yyyymmddHH24mmss')
+        )
+    </insert>
+
+    <update id="update" parameterType="com.hy.entity.Player">
+        update hy_player
+        <set>
+            <if test="username != null and username != ''">
+                username=#{username},
+            </if>
+            <if test="password != null and password != ''">
+                password=#{password},
+            </if>
+            <if test="nickname != null and nickname != ''">
+                nickname=#{nickname},
+            </if>
+            <if test="gendar != null and gendar != ''">
+                gendar=#{gendar},
+            </if>
+            <if test="birthday != null and birthday != ''">
+                birthday=#{birthday},
+            </if>
+            <if test="qq != null and qq != ''">
+                qq=#{qq},
+            </if>
+            <if test="skype != null and skype != ''">
+                skype=#{skype},
+            </if>
+            <if test="email != null and email != ''">
+                email=#{email},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone=#{phone},
+            </if>
+            <if test="status != null and status != ''">
+                status=#{status},
+            </if>
+            <if test="updateuser != null and updateuser != ''">
+                updateuser=#{updateuser},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark=#{remark},
+            </if>
+            updatetime=to_char(sysdate,'yyyymmddHH24mmss')
+        </set>
+        where id=#{id}
+    </update>
+    <select id="login" statementType="CALLABLE" parameterType="map">
+                <![CDATA[  {call ox_pack_playera.login(
+  	               #{p_userName,mode=IN,jdbcType=VARCHAR},
+	  			   #{p_userPwd,mode=IN,jdbcType=VARCHAR},
+				   #{p_retVal,mode=OUT,jdbcType=NUMERIC},
+				    #{p_retMsg,mode=OUT,jdbcType=VARCHAR}
+  			    )}
+  			    ]]>
+    </select>
+
+    <select id="exchange" statementType="CALLABLE" parameterType="java.util.Map" >
+        <![CDATA[ {call hy_pack_player.exchange(
+  	              #{p_playerId,mode=IN,jdbcType=VARCHAR},
+  	              #{p_equipmentId,mode=IN,jdbcType=VARCHAR},
+  	              #{p_quantity,mode=IN,jdbcType=VARCHAR},
+				  #{p_retVal,mode=OUT,jdbcType=VARCHAR},
+				  #{p_retMsg,mode=OUT,jdbcType=VARCHAR}
+  			  )}
+  			  ]]>
+    </select>
+
+    <select id="getExUser"  parameterType="com.hy.entity.ExUser"  resultType="com.hy.entity.ExUser">
+        select * from ex_user a where a.username=#{username}
+    </select>
+
+    <insert id="addExUser" parameterType="com.hy.entity.ExUser">
+        insert into ex_user(id,username,password,privatekey,publickey)
+        values(#{id},#{username},#{password},#{privatekey},#{publickey})
+    </insert>
+
+    <insert id="addExAsset" parameterType="com.hy.entity.ExAsset">
+        insert into ex_asset(id,userid)
+        values(sys_guid(),#{userid})
+    </insert>
+</mapper>

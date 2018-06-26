@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <title>[[#{AppTitle}]]</title>
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}"/>
+    <!--<link rel="icon" type="image/gif" th:href="@{/images/animated_favicon.gif}">-->
+    <link rel="stylesheet" th:href="@{/css/newIndex.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}" />
+    <link rel="stylesheet" th:href="@{/css/global.css}" />
+    <link rel="stylesheet" th:href="@{/css/news.css}" />
+
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <style type="text/css">
+       /* .container{
+            margin-top:50px;
+            margin-bottom: 50px;
+        }*/
+
+
+        /*.bottom{
+            position:fixed;
+            bottom:0px;
+            left:0px;
+        }*/
+    </style>
+</head>
+<body class="layout" style="position: relative">
+    <div class="web-top">
+        <div class="topBar" th:include="@{common/top.html}"></div>
+        <div class="logoBar"  th:include="@{common/header.html}"></div>
+        <!--导航-->
+        <div class="logoBar" th:include="@{common/navBar.html}"></div>
+    </div>
+    <div class="middle" style="margin: 65px 20%;width: 60%;">
+            <h1 th:text="${news.title}"></h1>
+        <div class="newsContent" style="float: left">
+               <pre th:text="${news.content}" ></pre>
+        </div>
+    </div>
+    <!--底部栏-->
+    <div class="web-bottom" th:include="@{common/footer.html}">
+    </div>
+</body>
+</html>

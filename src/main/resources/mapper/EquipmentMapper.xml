@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.IEquipmentDao">
+    <resultMap type="com.hy.entity.Equipment" id="equipmentResult"/>
+    <resultMap type="com.hy.entity.Equipment1" id="equipment1Result"/>
+    <insert id="add" parameterType="com.hy.entity.Equipment">
+        INSERT into hy_equipment (id,
+        <if test="categoryid != null and categoryid != ''">categoryid,</if>
+        <if test="name != null and name != ''">name,</if>
+        <if test="equipmentno != null and equipmentno != ''">equipmentno,</if>
+        <if test="state != null">state,</if>
+        <if test="status != null">status,</if>
+        <if test="gameid != null and gameid != ''">gameid,</if>
+        <if test="remark != null and remark != ''">remark,</if>
+        <if test="describe != null and describe != ''">describe,</if>
+        <if test="createuser != null and createuser != ''">createuser,</if>
+        createtime)VALUES (#{id},
+        <if test="categoryid != null and categoryid != ''">#{categoryid},</if>
+        <if test="name != null and name != ''">#{name},</if>
+        <if test="equipmentno != null and equipmentno != ''">#{equipmentno},</if>
+        <if test="state != null">#{state},</if>
+        <if test="status != null">#{status},</if>
+        <if test="gameid != null and gameid != ''">#{gameid},</if>
+        <if test="remark != null and remark != ''">#{remark},</if>
+        <if test="describe != null and describe != ''">#{describe},</if>
+        <if test="createuser != null and createuser != ''">#{createuser},</if>
+        to_char(sysdate,'yyyymmddHH24mmss'))
+    </insert>
+    <update id="update" parameterType="com.hy.entity.Equipment">
+        UPDATE hy_equipment
+        <set>
+            <if test="categoryid != null and categoryid != ''">categoryid = #{categoryid},</if>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="equipmentno != null and equipmentno != ''">equipmentno = #{equipmentno},</if>
+            <if test="state != null ">state = #{state},</if>
+            <if test="status != null ">status = #{status},</if>
+            <if test="gameid != null  and gameid != ''">gameid = #{gameid},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="describe != null and describe != ''">describe = #{describe},</if>
+            updatetime = to_char(sysdate,'yyyymmddHH24miss'),
+            <if test="updateuser != null and updateuser != ''">updateuser = #{updateuser},</if>
+            <if test="occupyuser != null and occupyuser != ''">occupyuser = #{occupyuser},occupytime = to_char(sysdate,'yyyymmddHH24miss'),</if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="delete" parameterType="com.hy.entity.Equipment">
+        DELETE FROM hy_equipment where id = #{id}
+    </delete>
+    <select id="getEquipment1" parameterType="com.hy.entity.Equipment1" resultMap="equipment1Result">
+        SELECT a.*,b.picurl equipmentPic,c.propertydes,c.price,c.cnt,c.createtime propertydescreatetime,c.createuser propertydescreateuser,c.updatetime propertydesupdatetime,c.updateuser propertydesupdateuser ,c.crondate propertydescrondate
+        from hy_equipment a,(select * from (select a.*,row_number() over (partition by a.equipmentid order by showlevel desc) cnt from hy.hy_equipmentpic a) where cnt=1) b,
+        hy_equipment_property c where a.id=b.equipmentid(+) and a.id = c.equipmentid(+)
+        <if test="id != null and id != ''">and a.id = #{id}</if>
+    </select>
+    <select id="getList" parameterType="map" resultMap="equipment1Result">
+     SELECT a.*,b.picurl equipmentPic,c.propertydes,c.price,c.cnt,c.createtime propertydescreatetime,c.createuser propertydescreateuser,c.updatetime propertydesupdatetime,c.updateuser propertydesupdateuser ,c.crondate propertydescrondate from
+        hy_equipment a,hy_equipmentpic b,hy_equipment_property c where a.id=b.equipmentid(+) and a.id = c.equipmentid(+)
+        <if test="id != null and id != ''">
+            and a.id  = #{id}
+        </if>
+        <if test="name != null and name != ''">
+            and instr(a.name,#{name})>0
+        </if>
+        <if test="equipmentno != null and equipmentno != ''">
+            and a.equipmentno = #{equipmentno}
+        </if>
+        <if test="state != null and state != '' ">
+            and a.state  = #{state}
+        </if>
+        <if test="status != null and status != ''">
+            and a.status  = #{status}
+        </if>
+    </select>
+    <select id="getListCount" parameterType="map" resultType="int">
+        SELECT count(*) from
+        hy_equipment a,hy_equipmentpic b,hy_equipment_property c where a.id=b.equipmentid(+) and a.id = c.equipmentid(+)
+        <if test="id != null and id != ''">
+            and a.id  = #{id}
+        </if>
+        <if test="name != null and name != ''">
+            and instr(a.name,#{name})>0
+        </if>
+        <if test="equipmentno != null and equipmentno != ''">
+            and a.equipmentno = #{equipmentno}
+        </if>
+        <if test="state != null ">
+            and a.state  = #{state}
+        </if>
+        <if test="status != null ">
+            and a.status  = #{status}
+        </if>
+    </select>
+
+    <select id="getAllEquipmentList" parameterType="map" resultMap="equipment1Result">
+        SELECT a.*,b.picurl equipmentPic,c.propertydes,to_char(c.price,'FM999,999,999,990.00') price,c.cnt from
+        hy_equipment a,
+        (select * from (
+        select tt.*,row_number() over (partition by tt.id  order by showlevel desc) cnt
+        from hy.hy_equipmentpic tt where tt.usetype='1')
+        where cnt=1) b,
+        hy_equipment_property c where a.id=b.equipmentid(+) and
+        a.id=c.equipmentid(+)
+
+        <if test="state != null and state != '' ">
+            and a.state  = #{state}
+        </if>
+        <if test="status != null and status != ''">
+            and a.status  = #{status}
+        </if>
+
+    </select>
+
+    <select id="getAllEquipmentCount" parameterType="map" resultType="int">
+        SELECT COUNT(*) from
+        hy_equipment a,
+        (select * from (
+        select tt.*,row_number() over (partition by tt.id  order by showlevel desc) cnt
+        from hy.hy_equipmentpic tt where tt.usetype='1')
+        where cnt=1) b,
+        hy_equipment_property c where a.id=b.equipmentid(+) and
+        a.id=c.equipmentid(+)   <if test="state != null and state != '' ">
+            and a.state  = #{state}
+        </if>
+        <if test="status != null and status != ''">
+            and a.status  = #{status}
+        </if>
+    </select>
+    <select id="getSimpleEquipmentList" resultMap="equipmentResult">
+        select * from hy_equipment where 1=1
+        <if test="id != null and id != ''">
+            and id  = #{id}
+        </if>
+        <if test="name != null and name != ''">
+            and instr(name,#{name})>0
+        </if>
+        <if test="equipmentno != null and equipmentno != ''">
+            and equipmentno = #{equipmentno}
+        </if>
+        <if test="state != null and state != '' ">
+            and state  = #{state}
+        </if>
+        <if test="status != null and status != ''">
+            and status  = #{status}
+        </if>
+        ORDER BY createtime DESC
+    </select>
+    <select id="getSimpleEquipmentListCount" parameterType="map" resultType="int">
+        select COUNT(*)  from hy_equipment where 1=1
+        <if test="id != null and id != ''">
+            and id  = #{id}
+        </if>
+        <if test="name != null and name != ''">
+            and instr(name,#{name})>0
+        </if>
+        <if test="equipmentno != null and equipmentno != ''">
+            and equipmentno = #{equipmentno}
+        </if>
+        <if test="state != null and state != '' ">
+            and state  = #{state}
+        </if>
+        <if test="status != null and status != ''">
+            and status  = #{status}
+        </if>
+    </select>
+</mapper>

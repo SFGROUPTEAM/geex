@@ -1,0 +1,19 @@
+.title_ul{
+    list-style: none;background-color: #E5E5E5;vertical-align: middle
+}
+.detail_ul{
+    list-style: none;height: 58px;border-bottom:1px dotted #D4D4D4;
+}
+
+.title_li{
+    width: 30%;height:50px; float:left; text-align:center;
+}
+
+.li_sub_con{
+    padding-top: 20px;
+}
+
+.currentmenu{
+    color:red;
+    font-weight: bold;
+}

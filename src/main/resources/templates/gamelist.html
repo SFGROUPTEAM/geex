@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <title>[[#{AppTitle}]]</title>
+    <link rel="shortcut icon" th:href="@{/images/icon/bitbug_favicon.ico}"/>
+    <!--<link rel="icon" type="image/gif" th:href="@{/images/animated_favicon.gif}">-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}"/>
+    <link rel="stylesheet" th:href="@{/css/global.css}"/>
+    <link rel="stylesheet" th:href="@{/css/gamelist.css}"/>
+    <link rel="stylesheet" th:href="@{/css/newIndex.css}"/>
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/changePage.js}"></script>
+    <script th:inline="javascript" th:src="@{/js/gameList.js}"></script>
+    <style type="text/css">
+        /*.container{
+            margin-top:50px;
+            margin-bottom: 50px;
+        }*/
+
+        /*.bottom{
+            position:fixed;
+            bottom:0px;
+            left:0px;
+        }*/
+    </style>
+
+    <script type="application/javascript">
+        var cur = "gamelist";
+    </script>
+</head>
+<body class="layout">
+<div class="wrapper">
+    <div class="web-top">
+        <div class="topBar" th:include="@{common/top.html}"></div>
+        <div class="logoBar" th:include="@{common/header.html}"></div>
+        <!--导航-->
+        <div class="logoBar" th:include="@{common/navBar.html}"></div>
+    </div>
+    <div class="mid container clearfix">
+        <!--游戏列表-->
+        <div class="game">
+            <div class="title">
+                <span class="gameTitle">[[#{platform.menu.GameInfo}]]:</span>
+                <input class="queryButton" type="button" onclick="queryGameByCategoryAndName()" th:value="#{Common.Button.Search}" >
+                <input class="queryInput" type="text" name="name" id="game_name_remark" placeholder="请输入游戏名称或游戏备注">
+                <select class="queryCategory" name="categoryid" id="categoryid">
+                    <option value="" selected="selected">[[#{platform.menu.AllGameInfo}]]</option>
+                    <option th:each="gameCategoryList:${gameCategoryList}" th:text="${gameCategoryList.name}"
+                            th:value="${gameCategoryList.id}"></option>
+                </select>
+                <span>[[#{platform.menu.GameCategory}]]:</span>
+            </div>
+            <div class="gameList" id="gameList"></div>
+            <div class="page" id="page">
+                <div class="pageInfo">
+                     <span>[[#{Common.page.total1}]]</span>
+                     <span id="gameNum1"></span>
+                     <span>[[#{Common.page.total2}]]</span>
+                     <span>[[#{Common.page.total3}]]</span>
+                     <span id="currentPage1" ></span>
+                     <span >[[#{Common.page.total4}]]</span>
+                </div>
+                <ul class="pagination" id="pagination">
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!--根据是否会员登录引入不同footer-->
+    <div class="web-bottom" th:if="${session.PlayerUserKey!=null}" th:include="@{common/memberFooter.html}"></div>
+    <div class="web-bottom" th:if="${session.PlayerUserKey==null}" th:include="@{common/footer.html}"></div>
+
+    </div>
+    <input type="hidden" id="allPage">
+    <input type="hidden" id="currentPage">
+    <input type="hidden" id="currentMaxPage">
+    <input type="hidden" id="currentMinPage">
+    <input type="hidden" id="gameNum">
+    <script type="text/javascript" th:inline="javascript">
+        $(document).ready(function () {
+            $("#menu1").css("color", "red");
+            $("#menu1 i").addClass("second_active_bar");
+            showAllGameInfo();
+        });
+
+        //根据游戏分类遍历游戏，并生成分页
+        function showAllGameInfo() {
+            /*<![CDATA[*/
+            var gameInfoList = [[${gameInfoList}]];
+            console.log(gameInfoList)
+            var str = '';
+            //生成分页相关并记录到隐藏域
+            var eachPageNum = 20;//每页显示数量
+            var tempNum = Math.ceil([[${gameInfoListCount}]] / eachPageNum);//计算总页数
+            $("#allPage").val(tempNum);
+            $("#currentPage").val(1);//当前页面
+            $("#currentMinPage").val(1);//当前最小显示页码
+            $("#gameNum").val([[${gameInfoListCount}]]);
+            var strPage = '<li><a onclick=\'pageChange(1)\'>«</a></li>';
+            for (var a = 1; a <= tempNum; a++) {
+                if (a > 7) {
+                    strPage = strPage + "<li><a  onclick='more()'>…</a></li>";
+                    break;
+                }
+                strPage = strPage + "<li><a   id='a" + a + "' onclick='pageChange(" + a + ")'>" + a + "</a></li>"
+                $("#currentMaxPage").val(a);//当前最大显示页码
+            }
+            strPage = strPage + "<li><a onclick='pageChange(" + tempNum + ")'>»</a></li>";
+
+            //遍历游戏
+            $.each(gameInfoList, function (i, obj) {
+                if (obj.gamepic == null||obj.gamepic == '') {
+                    obj.gamepic = "/images1/default.png";
+                }
+                if(obj.describe!=null){
+                    obj.describe=obj.describe.substring(0, 110);
+                }else{
+                    obj.describe="";
+                }
+
+                str = str + "<a href='/gamedetail.html?gameId=" + obj.id + "'><div class = \"game00\"><div class=\"gamePic\"><img src=\"" + obj.gamepic + "\"><h6>" + obj.name + "</h6></div>" +
+                    "<div class='gameDetails'><div class='gameCategory'><p>" + obj.category + "</p></div><div class=\"gameRemark\"><p>" + obj.remark + "</p></div><div class='gameDescribe'><p>" + obj.describe + "</p></div></div></div></a>";
+
+            });//[[#{Common.surplus}]]  [[#{Common.ge}]]
+            $("#gameList").html(str);
+            $("#pagination").html(strPage);
+            //增加第一页选中状态
+            if ($("#currentPage").val() != null && $("#currentPage").val() != '') {
+                $("#a1").attr("class", "active")
+            }
+            //显示页面信息
+            $("#gameNum1").html($("#gameNum").val());
+            $("#allPage1").html($("#allPage").val());
+            $("#currentPage1").html($("#currentPage").val());
+            $("html,body").animate({scrollTop: 0}, 500);
+
+            /*]]>*/
+//        //显示选中的类别分页
+
+        }
+
+        //分页操作相关
+
+        //变更显示页面
+        function pageChange(obj) {
+            //点击当前页页码
+            if (obj == $("#currentPage").val()) {
+                $("html,body").animate({scrollTop: 0}, 500);
+                return;
+            }
+            //点击首页尾页时刷新分页
+            var allPage = $("#allPage").val();
+            if (parseInt(obj) == 1) {
+                var temp = 1;
+                var strPage = '<li><a onclick=\'pageChange(1)\'>«</a>';
+                $("#currentMinPage").val(temp);//当前最小显示页码
+                for (var a = 1; a <= allPage; a++) {
+                    if (a > (parseInt(temp) + 6)) {
+                        strPage = strPage + "<li><a  onclick='more()'>…</a></li>";
+                        break;
+                    }
+                    strPage = strPage + "<li><a   id='a" + a + "' onclick='pageChange(" + a + ")'>" + a + "</a></li>";
+                    $("#currentMaxPage").val(a);
+                }
+                strPage = strPage + "<li><a onclick='pageChange(" + allPage + ")'>»</a></li>";
+                $("#pagination").html(strPage);
+            } else if (parseInt(obj) == parseInt(allPage)) {
+                var temp = parseInt(obj) - 6;
+                var strPage = '<li><a onclick=\'pageChange(1)\'>«</a>';
+                //判断是否会到首页
+                if (temp <= 1) {
+                    temp = 1;
+                } else {
+                    strPage = strPage + "</li><li><a onclick='less()'>…</a></li>";
+                }
+                $("#currentMinPage").val(temp);//当前最小显示页码
+                for (var b = parseInt(temp); b <= allPage; b++) {
+                    if (b > (parseInt(temp) + 6)) {
+                        strPage = strPage + "<li><a  onclick='more()'>…</a></li>";
+                        break;
+                    }
+                    strPage = strPage + "<li><a   id='a" + b + "' onclick='pageChange(" + b + ")'>" + b + "</a></li>";
+                    $("#currentMaxPage").val(b);
+                }
+                strPage = strPage + "<li><a onclick='pageChange(" + allPage + ")'>»</a></li>";
+                $("#pagination").html(strPage);
+            }
+
+            //请求数据库
+            /*<![CDATA[*/
+            var eachPageNum = 20;//每页显示数量
+            $("#currentPage").val(obj);
+            var str = '';
+            $.ajax({
+                type: 'POST',
+                url: '/getGameListByPageNumAndCategory?categoryid=' + $("#categoryid").val() + '&pagenum=' + obj,
+                datatype: 'json',
+                cache: false,
+                success: function (data) {
+                    var data1 = JSON.parse(data);
+                    $.each(data1[0].gameInfoList, function (i, obj) {
+                        if (obj.gamepic == null ||obj.gamepic == '') {
+                            obj.gamepic = "/images1/default.png";
+                        }
+                        if(obj.describe!=null){
+                            obj.describe=obj.describe.substring(0, 110);
+                        }else{
+                            obj.describe="";
+                        }
+                        str = str + "<a href='/gamedetail.html?gameId=" + obj.id + "'><div class = \"game00\"><div class=\"gamePic\"><img src=\"" + obj.gamepic + "\"><h6>" + obj.name + "</h6></div>" +
+                            "<div class='gameDetails'><div class='gameCategory'><p>" + obj.category + "</p></div><div class=\"gameRemark\"><p>" + obj.remark + "</p></div><div class='gameDescribe'><p>" + obj.describe.substring(0, 110) + "</p></div></div></div></a>";             //[[#{Common.surplus}]]  [[#{Common.ge}]]
+                    });
+                    $("#gameList").html(str);
+                    //刷新选中状态
+                    $(".page .pagination li a").attr("class", "");
+                    if ($("#currentPage").val() != null && $("#currentPage").val() != '') {
+                        $("#a" + obj + "").attr("class", "active")
+                    }
+                    //显示页面信息
+                    $("#gameNum1").html($("#gameNum").val());
+                    $("#allPage1").html($("#allPage").val());
+                    $("#currentPage1").html($("#currentPage").val());
+                    $("html,body").animate({scrollTop: 0}, 500);
+                }
+            });
+            /*]]>*/
+        }
+
+
+        function queryGameByCategoryAndName() {
+            $.ajax({
+                type: 'POST',
+                url: '/getGameListByPageNumAndCategory?categoryid=' + $("#categoryid").val() + '&pagenum=1&name=' + $("#game_name_remark").val(),
+                datatype: 'json',
+                cache: false,
+                success: function (data) {
+                    console.log(data)
+                    var data1 = JSON.parse(data);
+                    var str = '';
+                    $.each(data1[0].gameInfoList, function (i, obj) {
+                        if (obj.gamepic == null ||obj.gamepic == '') {
+                            obj.gamepic = "/images1/default.png";
+                        }
+                        if(obj.describe!=null){
+                            obj.describe=obj.describe.substring(0, 110);
+                        }else{
+                            obj.describe="";
+                        }
+                        if (obj.remark==null){
+                            obj.remark = ""
+                        }
+                        str = str + "<a href='/gamedetail.html?gameId=" + obj.id + "'><div class = \"game00\"><div class=\"gamePic\"><img src=\"" + obj.gamepic + "\"><h6>" + obj.name + "</h6></div>" +
+                            "<div class='gameDetails'><div class='gameCategory'><p>" + obj.category + "</p></div><div class=\"gameRemark\"><p>" + obj.remark + "</p></div><div class='gameDescribe'><p>" + obj.describe.substring(0, 110) + "</p></div></div></div></a>";             //[[#{Common.surplus}]]  [[#{Common.ge}]]
+                    });
+                    $("#gameList").html(str);
+
+                    //更新分页信息
+                    var num = data1[0].gameInfoListCount;
+                    var eachPageNum = 20;//每页显示数量
+                    var tempNum = Math.ceil(num / eachPageNum);//计算总页数
+                    $("#allPage").val(tempNum);
+                    $("#currentPage").val(1);//当前页面
+                    $("#currentMinPage").val(1);//当前最小显示页码
+                    $("#gameNum").val(num);
+                    var strPage = '<li><a onclick=\'pageChange(1)\'>«</a></li>';
+                    for (var a = 1; a <= tempNum; a++) {
+                        if (a > 7) {
+                            strPage = strPage + "<li><a  onclick='more()'>…</a></li>";
+                            break;
+                        }
+                        strPage = strPage + "<li><a   id='a" + a + "' onclick='pageChange(" + a + ")'>" + a + "</a></li>"
+                        $("#currentMaxPage").val(a);//当前最大显示页码
+                    }
+                    strPage = strPage + "<li><a onclick='pageChange(" + tempNum + ")'>»</a></li>";
+                    $("#pagination").html(strPage);
+                    //刷新选中状态
+                    $(".page .pagination li a").attr("class", "");
+                    if ($("#currentPage").val() != null && $("#currentPage").val() != '') {
+                        $("#a1").attr("class", "active")
+                    }
+                    //显示页面信息
+                    $("#gameNum1").html($("#gameNum").val());
+                    $("#allPage1").html($("#allPage").val());
+                    $("#currentPage1").html($("#currentPage").val());
+                    $("html,body").animate({scrollTop: 0}, 500);
+                    //高亮显示
+                    if ($("#game_name_remark").val() != null && $("#game_name_remark").val() != '') {
+                        $(".gamePic h6").html(function () {
+                            return $(this).text().replace($("#game_name_remark").val(), "<a style='color: red'>" + $("#game_name_remark").val() + "</a>");
+                        });
+                        $(".gameCategory p").html(function () {
+                            return $(this).text().replace($("#game_name_remark").val(), "<a style='color: red'>" + $("#game_name_remark").val() + "</a>");
+                        });
+                        $(".gameRemark p").html(function () {
+                            return $(this).text().replace($("#game_name_remark").val(), "<a style='color: red'>" + $("#game_name_remark").val() + "</a>");
+                        });
+                        $(".gameDescribe p").html(function () {
+                            return $(this).text().replace($("#game_name_remark").val(), "<a style='color: red'>" + $("#game_name_remark").val() + "</a>");
+                        });
+                    }
+                }
+            });
+        }
+
+    </script>
+</div>
+</body>
+</html>

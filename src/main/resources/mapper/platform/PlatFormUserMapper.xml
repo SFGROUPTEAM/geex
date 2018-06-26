@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.platform.IPlatFormUserDao">
+    <resultMap type="com.hy.entity.PlatFormUser" id="userResult"/>
+
+    <select id="getPlatFormUser" parameterType="com.hy.entity.PlatFormUser"  resultMap="userResult">
+        SELECT * FROM hy_platform_user t  where 1=1
+        <if test="username !=null and username != ''">
+            and t.username=#{username}
+        </if>
+
+        <if test="id !=null and id != ''">
+            and t.id=#{id}
+        </if>
+        and rownum=1
+    </select>
+
+    <insert id="add" parameterType="com.hy.entity.PlatFormUser">
+        INSERT  INTO hy_platform_user (
+        id,username,password,
+        <if test="usertype !=null and usertype != ''">usertype,</if>
+        <if test="state !=null and state != ''">state,</if>
+        <if test="fullname !=null and fullname != ''">fullname,</if>
+        <if test="gendar !=null and gendar != ''">gendar,</if>
+        <if test="birthday !=null and birthday != ''">birthday,</if>
+        <if test="qq !=null and qq != ''">qq,</if>
+        <if test="skype !=null and skype != ''">skype,</if>
+        <if test="email !=null and email != ''">email,</if>
+        <if test="phone !=null and phone != ''">phone,</if>
+        <if test="remark !=null and remark != ''">remark,</if>
+        <if test="rolename !=null and rolename != ''">rolename,</if>
+        createtime,createuser) VALUES (#{id},#{username},#{password},
+        <if test="usertype !=null and usertype != ''">#{usertype},</if>
+        <if test="state !=null and state != ''">#{state},</if>
+        <if test="fullname !=null and fullname != ''">#{fullname},</if>
+        <if test="gendar !=null and gendar != ''">#{gendar},</if>
+        <if test="birthday !=null and birthday != ''">#{birthday},</if>
+        <if test="qq !=null and qq != ''">#{qq},</if>
+        <if test="skype !=null and skype != ''">#{skype},</if>
+        <if test="email !=null and email != ''">#{email},</if>
+        <if test="phone !=null and phone != ''">#{phone},</if>
+        <if test="remark !=null and remark != ''">#{remark},</if>
+        <if test="rolename !=null and rolename != ''">#{rolename},</if>
+        #{createtime},#{createuser})
+    </insert>
+
+    <update id="update" parameterType="com.hy.entity.PlatFormUser">
+        UPDATE hy_platform_user set
+        <trim  suffixOverrides=",">
+        <if test="username !=null and username != ''">username = #{username},</if>
+        <!--<if test="password !=null and password != ''">password = #{password},</if>-->
+        <if test="usertype !=null and usertype != ''">usertype = #{usertype},</if>
+        <if test="state !=null ">state = #{state},</if>
+        <if test="fullname !=null and fullname != ''">fullname = #{fullname},</if>
+        <if test="gendar !=null ">gendar = #{gendar},</if>
+        <if test="birthday !=null and birthday != ''">birthday = #{birthday},</if>
+        <if test="qq !=null and qq != ''">qq = #{qq},</if>
+        <if test="skype !=null and skype != ''">skype = #{skype},</if>
+        <if test="email !=null and email != ''">email = #{email},</if>
+        <if test="phone !=null and phone != ''">phone = #{phone},</if>
+        <if test="remark !=null and remark != ''">remark = #{remark},</if>
+        <if test="rolename !=null and rolename != ''">rolename = #{rolename},</if>
+        <if test="lastvisittime !=null and lastvisittime != ''">lastvisittime = #{lastvisittime},</if>
+        <if test="lastvisitip !=null and lastvisitip != ''">lastvisitip = #{lastvisitip},</if>
+        <if test="updateuser !=null and updateuser != ''">updateuser = #{updateuser},</if>
+        <if test="updatetime !=null and updatetime != ''">updatetime = #{updatetime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updatePwd" parameterType="com.hy.entity.PlatFormUser">
+        UPDATE hy_platform_user set
+        <trim  suffixOverrides=",">
+            <if test="password !=null and password != ''">password = #{password}</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+
+    <delete id="delete" parameterType="com.hy.entity.PlatFormUser">
+        delete from hy_platform_user where id = #{id}
+    </delete>
+
+    <select id="getList" parameterType="map" resultMap="userResult">
+        SELECT  * FROM  hy_platform_user where 1=1
+        <if test="state !=null and state != ''">and state = #{state}</if>
+        <if test="usertype !=null and usertype != ''">and usertype = #{usertype}</if>
+        <if test="gendar !=null and gendar != ''">and gendar = #{gendar}</if>
+        <if test="username !=null and username != ''"> and instr(username,#{username})>0</if>
+        <if test="fullname !=null and fullname != ''"> and instr(fullname,#{fullname})>0</if>
+        <if test="username1 !=null and username1 != ''"> and username=#{username1}</if>
+        <if test="phone !=null and phone != ''"> and  instr(phone,#{phone})>0</if>
+    </select>
+
+    <select id="getListCount" parameterType="map" resultType="int">
+        SELECT  count(*) FROM  hy_platform_user where 1=1
+        <if test="state !=null and state != ''">and state = #{state}</if>
+        <if test="usertype !=null and usertype != ''">and usertype = #{usertype}</if>
+        <if test="gendar !=null and gendar != ''">and gendar = #{gendar}</if>
+        <if test="username !=null and username != ''"> and instr(username,#{username})>0 </if>
+        <if test="fullname !=null and fullname != ''"> and instr(fullname,#{fullname})>0</if>
+        <if test="username1 !=null and username1 != ''">and username=#{username1}</if>
+        <if test="phone !=null and phone != ''">and instr(phone,#{phone})>0</if>
+    </select>
+
+
+</mapper>

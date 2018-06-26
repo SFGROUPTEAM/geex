@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>游戏币种信息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <script th:src="@{/layui/layui.js}"></script>
+</head>
+<body>
+<!-- 此处class dellAllComment 对应于最下面一个绑定click事件 -->
+<div class="equipmentTable" style="margin-top: 15px;margin-left: 2px;">
+    <div class="layui-form">
+        <div class="layui-form-item">
+            <form id="balancedata" name="balancedata" class="layui-form">
+                <div class="layui-inline">
+                    <label class="layui-form-label">游戏名称:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="gamename" name="gamename"  autocomplete="off" class="layui-input" maxlength="11">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">游戏币名:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="name" name="name"  autocomplete="off" class="layui-input" maxlength="11">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">供应商名称:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="suppliername" name="suppliername"  autocomplete="off" class="layui-input" maxlength="11">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">备注:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="remark" name="remark"  autocomplete="off" class="layui-input" maxlength="11">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="layui-btn" style="margin-top: 0px;margin-left: 2px;"
+            data-type="reload">
+        <i class="layui-icon">&#xe615;</i>搜索
+    </button>
+</div>
+<table class="layui-hide" id="currency_table" lay-filter="tableList"></table>
+<script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+<script th:inline="javascript" type="text/javascript">
+    /****查询页面加载列表 *****/
+    var arr = new Array();
+    var cLen = 4;
+
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            elem: '#currency_table'
+            , url: '/platformGameCurrency/currency_render_list'
+            , skin: "line"
+            , even: true
+            , page: true
+            , height: 'full-170'
+            , cols: [[
+                {field: 'gamename',  title: '游戏名称'},
+                {field: 'name', title: '币名'},
+                {field: 'suppliername', title: '供应商名称'},
+                {field: 'remark',  title: '备注'}//
+//                {title: '操作',templet: '#barDemo',fixed: 'right',width:'100'}
+                //   {width:lastwidth, title: '操作', toolbar: '#barDemo', fixed: 'right'}
+            ]]
+            , limit: 10   //默认十条数据一页
+            , limits: [10, 20, 30]  //数据分页条
+            , done: function (res, curr, count) {
+
+            }
+        });
+
+        var $ = layui.$,
+            active = {
+                /***定义函数绑定到按钮的data-type上 addEquipment*/
+                refresh: function () {
+                    table.reload('currency_table');
+                }, /* 搜索框 */
+                reload: function () {
+                    var gamename = $("#gamename").val();
+                    var suppliername = $("#suppliername").val();
+                    var remark = $("#remark").val();
+                    var name = $("#name").val();
+                    table.reload('currency_table', {
+                        url: '/platformGameCurrency/currency_render_list',
+                        where: {
+                            name:name,
+                            gamename: gamename,
+                            suppliername: suppliername,
+                            remark: remark
+                        }
+                    });
+                },
+            };
+
+        $('.equipmentTable .layui-btn').on('click',
+            function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+
+        //监听工具条
+//        table.on('tool(tableList)', function (obj) {
+//            layer.confirm('确认审核该运营商?', function(index){
+//                $.ajax({
+//                    type : 'POST',
+//                    contentType: "charset=utf-8",
+//                    url : '/platformSupplier/audit?id='+data.id,
+//                    datatype: 'json',
+//                    cache:false,
+//                    success : function(data) {
+//                        if(data=="SUCCESS"){
+//                            layer.alert("审核成功!",function () {
+//                                location.reload();
+//                            });
+//                        }else{
+//                            layer.alert(data);
+//                        }
+//                    },
+//                });
+//                layer.close(index);
+//            });
+//        });
+    });
+
+</script>
+<!--<script type="text/html" id="barDemo">-->
+    <!--{{#  if(d.status === 0) { }}-->
+    <!--<a class="layui-btn layui-btn-sm" style="width:44px;padding-left: 12px;" lay-event="audit">审核</a>-->
+    <!--{{#  }  else { }}-->
+    <!--<a class="layui-btn layui-btn-sm" style="width:44px;padding-left: 12px;background-color : grey; cursor: none">审核</a>-->
+    <!--{{#  } }}-->
+    <!--&lt;!&ndash;{{#  if(d.enableFlg === 'N') { }}&ndash;&gt;-->
+    <!--&lt;!&ndash;<a class="layui-btn layui-btn-sm" style="width:44px;padding-left: 12px;" lay-event="audit">审核</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;<a class="layui-btn layui-btn-sm" style="width:44px;padding-left: 12px;" lay-event="delete">删除</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;{{#  }  else { }}&ndash;&gt;-->
+    <!--&lt;!&ndash;{{#  if(d.usabilityflg === '1') { }}&ndash;&gt;-->
+    <!--&lt;!&ndash;<a class="layui-btn layui-btn-sm" style="background-color : darkgreen; cursor: none ">已启用</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;{{#  }  else { }}&ndash;&gt;-->
+    <!--&lt;!&ndash;<a class="layui-btn layui-btn-sm" style="background-color : darkred; cursor: none ">已禁用</a>&ndash;&gt;-->
+    <!--&lt;!&ndash;{{#  } }}&ndash;&gt;-->
+    <!--&lt;!&ndash;{{#  } }}&ndash;&gt;-->
+<!--</script>-->
+
+</body>
+</html>

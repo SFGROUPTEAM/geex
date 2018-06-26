@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>游戏信息</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
+</head>
+<body>
+<!-- 此处class dellAllComment 对应于最下面一个绑定click事件 -->
+<div class="gameTable" style="margin-top: 15px;margin-left: 2px;">
+    <div class="layui-form">
+        <div class="layui-form-item">
+            <form id="balancedata" name="balancedata" class="layui-form">
+                <div class="layui-inline">
+                    <label class="layui-form-label">游戏名称:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="name" name="name"  autocomplete="off" class="layui-input" maxlength="11">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">游戏分类:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="category" name="category"  autocomplete="off" class="layui-input" maxlength="11">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">游戏编号:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="gameno" name="gameno"  autocomplete="off" class="layui-input" maxlength="11">
+                    </div>
+                </div>
+                <br/>
+                <div class="layui-inline">
+                    <label class="layui-form-label">游戏公司:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="company" name="company"  autocomplete="off" class="layui-input" maxlength="11">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">启用状态:</label>
+                    <div class="layui-input-inline">
+                        <select id="state" name="state" lay-filter="qzhuangtai">
+                            <option value="" selected="">全部</option>
+                            <option value="1">启用</option>
+                            <option value="0">禁用</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">审核状态:</label>
+                    <div class="layui-input-inline">
+                        <select id="status" name="status" lay-filter="fzhuangtai">
+                            <option value="" selected="">全部</option>
+                            <option value="0">未审核</option>
+                            <option value="1">已审核</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="layui-btn" style="margin-top: 0px;margin-left: 2px;"
+            data-type="reload">
+        <i class="layui-icon">&#xe615;</i>搜索
+    </button>
+    <button class="layui-btn layui-btn-normal" data-type="addGame">
+        <i class="layui-icon">&#xe654;</i>新增
+    </button>
+</div>
+<script type="text/html" id="statsTpl">
+    {{#  if(d.state === 1){ }}
+    <span style="color: #09752f;">{{ '启用' }}</span>
+    {{#  } else if(d.state === 0) { }}
+    <span style="color: #FF0000;">{{ '禁用' }}</span>
+    {{#  } }}
+</script>
+<script type="text/html" id="statusTpl">
+    {{#  if(d.status === 1){ }}
+    <span style="color: #09752f;">{{ '已审核' }}</span>
+    {{#  } else if(d.status === 0) { }}
+    <span style="color: #FF0000;">{{ '未审核' }}</span>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="isenableTpl">
+    {{#  if(d.isenable === '1'){ }}
+    <span style="color: #09752f;">{{ '有效' }}</span>
+    {{#  } else if(d.isenable === '0') { }}
+    <span style="color: #FF0000;">{{ '无效' }}</span>
+    {{#  } }}
+</script>
+
+<table class="layui-hide" id="game_table" lay-filter="tableList"></table>
+
+<div class="layui-tab" lay-filter="equtab">
+    <ul class="layui-tab-title">
+        <li class="layui-this" lay-id="00">游戏图片</li>
+        <li class="layui-this" lay-id="01">游戏秘钥</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">
+            <table class="layui-hide" id="gamepic" lay-filter="gamepicList"></table>
+        </div>
+        <div class="layui-tab-item layui-show">
+            <table class="layui-hide" id="gamefunction" lay-filter="gamefuncList"></table>
+        </div>
+
+    </div>
+</div>
+<script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+<script th:inline="javascript" type="text/javascript">
+
+    var tabIndex=0;
+    var gid='';
+
+    /****查询页面加载列表 *****/
+    var arr = new Array();
+    var cLen = 4;
+
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            elem: '#game_table'
+            , url: '/platformGame/game_render_list'
+            , skin: "line"
+            , even: true
+            , page: true
+            , height: 'full-350'
+            , cols: [[
+                {field: 'name',  title: '游戏名称',event:'click',fixed: 'left',sort: true},
+                {field: 'category', title: '游戏分类',event:'click'},
+                {field: 'company',  title: '游戏公司',event:'click'},
+                {field: 'gameno',  title: '游戏编号',event:'click',sort: true},
+                {field: 'state', title: '启用状态',event:'click', templet: '#statsTpl'},
+                {field: 'status',  title: '审核状态',event:'click', templet: '#statusTpl'},
+                {field: 'remark', title: '备注',event:'click'},
+                {title: '操作',templet: '#barDemo',fixed: 'right'}
+                //   {width:lastwidth, title: '操作', toolbar: '#barDemo', fixed: 'right'}
+            ]]
+            , limit: 10   //默认十条数据一页
+            , limits: [10, 20, 30]  //数据分页条
+            , done: function (res, curr, count) {
+                if (res.data.length>0){
+//                    console.log(res.data.length)
+//                    console.log(res.data[0]);
+                    gid=res.data[0].id;
+                    qryGameTab(tabIndex,gid);
+                }
+            }
+        });
+        layui.use('element', function(){
+            var $ = layui.jquery
+                ,element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+            //alert(element);
+            $('.site-demo-active').on('click', function(){
+                var othis = $(this), type = othis.data('type');
+                active[type] ? active[type].call(this, othis) : '';
+            });
+            element.on('tab(equtab)', function(data){
+                tabIndex=data.index;
+                qryGameTab(tabIndex,gid);
+            });
+        });
+
+        function qryGameTab(idx,gid) {
+            if(gid ==''){
+                return ;
+            }
+            if(idx==0){
+                layui.use('table', function () {
+                    var table = layui.table;
+                    table.render({
+                        elem: '#gamepic'
+                        , url:'/platformGame/gamepic_List?gameid='+gid
+                        , skin: "line"
+                        , page: false
+                        , height: 'full'
+                        , cols: [[
+                            {field: 'gamename', event:'detail', title: '游戏名称'},
+                            {field: 'picurl',event:'detail', title: '图片路径'},
+                            {field: 'usetype',event:'detail',  title: '用途类型', templet: '#usetypeTpl'},
+                            {field: 'showlevel',event:'detail',  title: '优先级'},
+                            {field: 'remark',event:'detail',  title: '备注'},
+                            {field: 'createtime',event:'detail', title: '创建时间'},
+                            {field: 'createuser', event:'detail', title: '创建人'},
+                            {field: 'updatetime',event:'detail',  title: '修改时间'},
+                            {field: 'updateuser',event:'detail',title: '修改人'}
+                            //   {width:lastwidth, title: '操作', toolbar: '#barDemo', fixed: 'right'}
+
+                        ]]
+                        , done: function (res, curr, count) {
+                        }
+                        //  id: 'equPicTable'
+                    });
+//                    var $ = layui.$,
+//                        active = {
+//                            refresh: function () {
+//                                table.reload('gamepic');
+//                            }, /* 搜索框 */
+//                            reload: function () {
+//                                var name = $("#name").val();
+//                                table.reload('gamepic', {
+//                                    url: '/platformEquipment/equipmentpic_List',
+//                                    where: {
+//                                        gameid:gid
+//                                    }
+//                                });
+//                            },
+//                        };
+                    $('.gamepic .layui-btn').on('click',
+                        function () {
+                            var type = $(this).data('type');
+                            active[type] ? active[type].call(this) : '';
+                        });
+                });
+            }
+            if(idx==1){
+                layui.use('table', function () {
+                    var table = layui.table;
+                    table.render({
+                        elem: '#gamefunction'
+                        , url:'/platformGame/gameFunc_List?gameid='+gid
+                        , skin: "line"
+                        , page: false
+                        , height: 'full'
+                        , cols: [[
+                            {field: 'gamename',  title: '游戏名称'},
+                            {field: 'gameno',  title: '游戏编号'},
+                            {field: 'p_publickey', title: '平台公钥'},
+                            {field: 'p_privatekey',  title: '平台私钥'},
+                            {field: 'g_publickey',  title: '游戏方公钥'},
+                            {field: 'g_privatekey', title: '游戏方私钥'},
+                            {field: 'isenable', title: '状态',templet: '#isenableTpl'},
+                            {title: '操作',templet: '#barDemo2',fixed: 'right',width:'100'}
+                            //   {width:lastwidth, title: '操作', toolbar: '#barDemo', fixed: 'right'}
+                        ]]
+                        , done: function (res, curr, count) {
+                        }
+                        //  id: 'equPicTable'
+                    });
+                    //监听工具条
+                });
+            }
+
+        }
+
+
+
+        var $ = layui.$,
+            active = {
+                /***定义函数绑定到按钮的data-type上 addGame*/
+                refresh: function () {
+                    table.reload('game_table');
+                }, /* 搜索框 */
+                reload: function () {
+                    var category = $("#category").val();
+                    var state = $("#state").val();
+                    var status = $("#status").val();
+                    var name = $("#name").val();
+                    var gameno = $("#gameno").val();
+                    var company = $("#company").val();
+                    table.reload('game_table', {
+                        url: '/platformGame/game_render_list',
+                        where: {
+                            name:name,
+                            company:company,
+                            gameno:gameno,
+                            category: category,
+                            state: state,
+                            status: status
+                        }
+                    });
+                },
+                addGame: function () {
+                    parent.layer.open({
+                        type: 2,
+                        area: ['600px', '550px'],
+                        title: '游戏添加',
+                        shade: 0.6,
+                        anim: 2,
+                        content: '/platformGame/gameForm',
+                        end: function () {
+                            location.reload();
+                        }
+                    });
+                }
+            };
+
+        $('.gameTable .layui-btn').on('click',
+            function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+
+        //监听工具条
+        table.on('tool(tableList)', function (obj) {
+            var data = obj.data;
+            if(obj.event == 'audit') {
+                parent.layer.confirm('确认审核该游戏?', function (index) {
+                    $.ajax({
+                        contentType: "charset=utf-8",
+                        url: '/platformGame/auditGame?id=' + data.id+'&status=1',
+                        datatype: 'json',
+                        cache: false,
+                        success: function (data) {
+                        }
+                    });
+                    parent.layer.close(index);
+                    location.reload();
+                });
+            }
+            if (obj.event == 'loadpic') {
+                var title = "上传图片";
+                parent.layer.open({
+                    type: 2,
+                    area: ['686px', '400px'],
+                    title: '游戏图片',
+                    shade: 0.6,
+                    anim: 2,
+                    content: '/platformGame/qryGame?id=' + data.id,//
+                    end: function () {
+                        location.reload();
+                    }
+                });
+            }
+            if (obj.event == 'edit') {
+                var title = "修改游戏信息";
+                parent.layer.open({
+                    type: 2,
+                    area: ['600px', '550px'],
+                    title: '游戏信息',
+                    shade: 0.6,
+                    anim: 2,
+                    content: '/platformGame/gameForm?id=' + data.id,//
+                    end: function () {
+                        location.reload();
+                    }
+                });
+            }
+            if (obj.event == 'click') {
+                gid=data.id;
+                qryGameTab(tabIndex,gid);
+            }
+        });
+        table.on('tool(gamepicList)', function (obj) {
+            var data = obj.data;
+            //  alert(data);
+            if(obj.event == 'detail') {
+                var lastDate = $(this).attr('data-index');
+                var currDate = new Date();
+                var date3 = -1;
+                if (typeof(lastDate) != "undefined") {
+                    date3 = (currDate.getSeconds() - new Date(lastDate).getSeconds());
+                }
+                if (date3 >= 0 && date3 <= 1) { //一秒内连续点击两下，实现双击事件
+                    parent.layer.open({
+                        type: 1
+                        ,title: '图片信息'
+                        ,offset: 'auto' //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                        ,id: 'layerDemo'+'auto' //防止重复弹出
+                        ,content: ' <div > <img src="'+data.picurl+'"  id="demo1"> </div>'
+                        ,btn: '关闭全部'
+                        ,area: ['700px', '500px']
+                        ,btnAlign: 'c' //按钮居中
+                        ,shade: 0 //不显示遮罩
+                        ,yes: function(){
+                            parent.layer.closeAll();
+                        }
+                    });
+                }else{
+                    var date1=new Date();
+                    $(this).attr('data-index',date1);
+                }
+            }
+        });
+
+        table.on('tool(gamefuncList)', function (obj) {
+            var data = obj.data;
+            var path = /*[[@{/platformGame/export}]]*/'';
+
+            if(obj.event == 'export') {
+                window.open(path+'?gameid='+data.gameid+'&isenable=1',"_search");
+//                $.ajax({
+//                    type : 'POST',
+//                    contentType: "charset=utf-8",
+//                    url : path+'?gameid='+data.gameid+'&isenable=1',
+//                    datatype: 'json',
+//                    cache:false,
+//                    success : function(data) {
+//                        if(data=="SUCCESS"){
+//                            layer.alert("导出完成!",function () {
+//                                location.reload();
+//                            });
+//                        }else{
+//                            layer.alert(data);
+//                        }
+//                    },
+//                });
+
+            }
+        });
+
+    });
+
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-sm" style="width:44px;padding-left: 12px;" lay-event="edit">修改</a>
+    {{#  if(d.status === 0) { }}
+    <a class="layui-btn layui-btn-sm" style="width:44px;padding-left: 12px;" lay-event="audit">审核</a>
+    {{#  }  else { }}
+    <a class="layui-btn layui-btn-sm" style="width:44px;padding-left: 12px;background-color : grey; cursor: none">审核</a>
+    {{#  } }}
+    <a class="layui-btn layui-btn-sm"  lay-event="loadpic">图片上传</a>
+</script>
+
+<script type="text/html" id="barDemo2">
+    <a class="layui-btn layui-btn-sm" style="width:44px;padding-left: 12px;" lay-event="export">导出</a>
+</script>
+
+</body>
+</html>

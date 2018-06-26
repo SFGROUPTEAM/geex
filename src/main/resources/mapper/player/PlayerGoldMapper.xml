@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.player.IPlayerGoldDao">
+    <resultMap type="com.hy.entity.PlayerGold" id="playerGoldResult"/>
+
+    <select id="getPlayerGold" parameterType="com.hy.entity.PlayerGold" resultType="com.hy.entity.PlayerGold">
+        SELECT  * from hy_player_gold where playerid = #{playerid}
+    </select>
+
+    <select id="getList" parameterType="map" resultMap="playerGoldResult">
+          SELECT  * from hy_player_gold where 1=1
+          <if test="playerid != null and playerid != ''">
+             and  playerid = #{playerid}
+          </if>
+        <if test="playerid != null and playerid != ''">
+            and equipmentid = #{equipmentid}
+        </if>
+    </select>
+
+    <select id="getListCount" parameterType="map" resultType="int">
+        SELECT  count(*) from hy_player_gold where 1=1
+        <if test="playerid != null and playerid != ''">
+            and  playerid = #{playerid}
+        </if>
+        <if test="playerid != null and playerid != ''">
+            and equipmentid = #{equipmentid}
+        </if>
+    </select>
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.api.IPlayerLoginLengthDao">
+    <resultMap type="com.hy.entity.PlayerLoginLength" id="playerLoginLengthResult"/>
+    <insert id="add" parameterType="com.hy.entity.PlayerLoginLength">
+        INSERT INTO HY_PLAYER_LOGIN_LENGTH
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
+            <if test="playerid != null and playerid != ''">playerid,</if>
+            <if test="gameno != null and gameno!=''">gameno,</if>
+            <if test="loginlength != null and loginlength!=''">loginlength,</if>
+            <if test="voucherno != null and voucherno!=''">voucherno,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="playerid != null and playerid != ''">#{playerid},</if>
+            <if test="gameno != null and gameno!=''">#{gameno},</if>
+            <if test="loginlength != null and loginlength!=''">#{loginlength},</if>
+            <if test="voucherno != null and voucherno!=''">#{voucherno},</if>
+        </trim>
+    </insert>
+    <select id="getPlayerLoginLengthByGameNoAndVoucherNo" parameterType="map" resultMap="playerLoginLengthResult">
+        SELECT  *  from HY_PLAYER_LOGIN_LENGTH where 1=1
+        <if test="gameno != null and gameno != ''">
+            AND gameno = #{gameno}
+        </if>
+        <if test="voucherno != null and voucherno != ''">
+           and  voucherno = #{voucherno}
+        </if>
+        and rownum = 1
+    </select>
+
+</mapper>

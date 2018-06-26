@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.api.IPlayerRechargeDao">
+    <resultMap type="com.hy.entity.PlayerRecharge" id="playerRechargeResult"/>
+    <insert id="add" parameterType="com.hy.entity.PlayerRecharge">
+        INSERT INTO HY_PLAYER_RECHARGE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
+            <if test="playerid != null and playerid != ''">playerid,</if>
+            <if test="gameno != null and gameno!=''">gameno,</if>
+            <if test="amount != null and amount!=''">amount,</if>
+            <if test="orderno != null and orderno!=''">orderno,</if>
+            <if test="currency != null and currency!=''">currency,</if>
+            <if test="param1 != null and param1!=''">param1,</if>
+            <if test="param2 != null and param2!=''">param2,</if>
+            <if test="param3 != null and param3!=''">param3,</if>
+            <if test="param4 != null and param4!=''">param4,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="playerid != null and playerid != ''">#{playerid},</if>
+            <if test="gameno != null and gameno!=''">#{gameno},</if>
+            <if test="amount != null and amount!=''">#{amount},</if>
+            <if test="orderno != null and orderno!=''">#{orderno},</if>
+            <if test="currency != null and currency!=''">#{currency},</if>
+            <if test="param1 != null and param1!=''">#{param1},</if>
+            <if test="param2 != null and param2!=''">#{param2},</if>
+            <if test="param3 != null and param3!=''">#{param3},</if>
+            <if test="param4 != null and param4!=''">#{param4},</if>
+        </trim>
+    </insert>
+    <select id="getPlayerRechargeByGameNoAndOrderNo" parameterType="map" resultMap="playerRechargeResult">
+        SELECT * from HY_PLAYER_RECHARGE where 1=1
+        <if test="gameno != null and gameno !=''">
+            and gameno = #{gameno}
+        </if>
+        <if test="orderno != null and orderno !=''">
+            and orderno = #{orderno}
+        </if>
+        and rownum = 1
+    </select>
+
+</mapper>

@@ -1,0 +1,39 @@
+2018-06-21 11:09:59.951  INFO 57000 --- [http-nio-8083-exec-1] com.hy.controller.api.AppUser            : Register requestMap:null
+2018-06-21 11:10:00.102  INFO 57000 --- [http-nio-8083-exec-7] com.hy.controller.api.AppUser            : Register requestMap:null
+2018-06-21 11:10:00.246  INFO 57000 --- [http-nio-8083-exec-3] com.hy.controller.api.AppUser            : Register requestMap:null
+2018-06-21 11:09:59.951  INFO 57000 --- [http-nio-8083-exec-9] com.hy.controller.api.AppUser            : Register requestMap:null
+2018-06-21 11:10:26.403  INFO 57000 --- [http-nio-8083-exec-2] com.hy.controller.api.AppUser            : Login requestMap:null
+2018-06-21 11:10:27.615 DEBUG 57000 --- [http-nio-8083-exec-2] c.h.d.p.IPlayerUserDao.getPlayerUser     : ==>  Preparing: select a.*,nvl(b.goldcnt,0) goldcnt,nvl(t.equipcnt,0) equipcnt from hy_player a left join hy_player_gold b on a.id=b.playerid left join (select playerid,count(*) equipcnt from hy_player_equipment group by playerid) t on a.id=t.playerid where 1=1 and a.username=? 
+2018-06-21 11:10:27.727 DEBUG 57000 --- [http-nio-8083-exec-2] c.h.d.p.IPlayerUserDao.getPlayerUser     : ==> Parameters: jinxiaoyu(String)
+2018-06-21 11:10:27.811 DEBUG 57000 --- [http-nio-8083-exec-2] c.h.d.p.IPlayerUserDao.getPlayerUser     : <==      Total: 1
+2018-06-21 11:10:27.857 DEBUG 57000 --- [http-nio-8083-exec-2] com.hy.dao.player.IPlayerUserDao.update  : ==>  Preparing: update hy_player SET username=?, password=?, nickname=?, gendar=?, birthday=?, qq=?, email=?, phone=?, status=?, remark=?, updatetime=to_char(sysdate,'yyyymmddHH24mmss') where id=? 
+2018-06-21 11:10:27.870 DEBUG 57000 --- [http-nio-8083-exec-2] com.hy.dao.player.IPlayerUserDao.update  : ==> Parameters: jinxiaoyu(String), 96e79218965eb72c92a549dd5a330112(String), 88(String), 1(Integer), 2018-06-07(String), 888 888(String), 778788 8888 8888(String), 888   8888    8888  8(String), 1(Integer), 666 888(String), 6D171AAE7AE11B3FE050000ACE004405(String)
+2018-06-21 11:10:27.884 DEBUG 57000 --- [http-nio-8083-exec-2] com.hy.dao.player.IPlayerUserDao.update  : <==    Updates: 1
+2018-06-21 11:10:37.825  INFO 57000 --- [http-nio-8083-exec-8] com.hy.controller.api.AppUserEquipment   : UserEquipment requestMap:null
+2018-06-21 11:10:37.860 DEBUG 57000 --- [http-nio-8083-exec-8] c.h.d.p.IPlayerUserDao.getPlayerUser     : ==>  Preparing: select a.*,nvl(b.goldcnt,0) goldcnt,nvl(t.equipcnt,0) equipcnt from hy_player a left join hy_player_gold b on a.id=b.playerid left join (select playerid,count(*) equipcnt from hy_player_equipment group by playerid) t on a.id=t.playerid where 1=1 and a.id=? 
+2018-06-21 11:10:37.865 DEBUG 57000 --- [http-nio-8083-exec-8] c.h.d.p.IPlayerUserDao.getPlayerUser     : ==> Parameters: 6D171AAE7AE11B3FE050000ACE004405(String)
+2018-06-21 11:10:37.871 DEBUG 57000 --- [http-nio-8083-exec-8] c.h.d.p.IPlayerUserDao.getPlayerUser     : <==      Total: 1
+2018-06-21 11:10:37.874  INFO 57000 --- [http-nio-8083-exec-8] com.hy.controller.api.AppUserEquipment   : param:{pagenum=[Ljava.lang.String;@5556a77e, pagesize=[Ljava.lang.String;@727a0089, sessionId=[Ljava.lang.String;@5db5353f, userId=[Ljava.lang.String;@36a238e6}
+2018-06-21 11:10:38.129 DEBUG 57000 --- [http-nio-8083-exec-8] c.hy.dao.IEquipmentLogDao.getList_COUNT  : ==>  Preparing: SELECT count(0) FROM (SELECT t.equipmentid, t.type, t.subtype, t.quantity, t.beforequantity, t.afterquantity, t.playerid, t.price, t.operationuser, t.id, t.remark, to_char(to_date(t.operationtime, 'yyyy-mm-dd HH24:mi:ss'), 'yyyy-mm-dd HH24:mi:ss') operationtime, e.equipmentno, e.name equipmentname, p.username playername FROM hy_equipment_log t LEFT JOIN hy_equipment e ON t.equipmentid = e.id LEFT JOIN hy_player p ON t.playerid = p.id WHERE 1 = 1 AND t.playerid = ?) table_count 
+2018-06-21 11:10:38.130 DEBUG 57000 --- [http-nio-8083-exec-8] c.hy.dao.IEquipmentLogDao.getList_COUNT  : ==> Parameters: 6D171AAE7AE11B3FE050000ACE004405(String)
+2018-06-21 11:10:38.134 DEBUG 57000 --- [http-nio-8083-exec-8] c.hy.dao.IEquipmentLogDao.getList_COUNT  : <==      Total: 1
+2018-06-21 11:10:38.152 DEBUG 57000 --- [http-nio-8083-exec-8] com.hy.dao.IEquipmentLogDao.getList      : ==>  Preparing: SELECT TMP_PAGE.*, ROWNUM ROW_ID FROM ( SELECT t.equipmentid,t.type,t.subtype,t.quantity,t.beforequantity,t.afterquantity,t.playerid,t.price,t.operationuser,t.id,t.remark, to_char(to_date(t.operationtime,'yyyy-mm-dd HH24:mi:ss'),'yyyy-mm-dd HH24:mi:ss') operationtime ,e.equipmentno, e.name equipmentname,p.username playername FROM hy_equipment_log t left join hy_equipment e on t.equipmentid=e.id left join hy_player p on t.playerid=p.id where 1=1 and t.playerid = ? ORDER BY t.OPERATIONTIME DESC ) TMP_PAGE WHERE ROWNUM <= ? 
+2018-06-21 11:10:38.154 DEBUG 57000 --- [http-nio-8083-exec-8] com.hy.dao.IEquipmentLogDao.getList      : ==> Parameters: 6D171AAE7AE11B3FE050000ACE004405(String), 10(Integer)
+2018-06-21 11:10:38.242 DEBUG 57000 --- [http-nio-8083-exec-8] com.hy.dao.IEquipmentLogDao.getList      : <==      Total: 8
+2018-06-21 11:10:38.244 DEBUG 57000 --- [http-nio-8083-exec-8] c.hy.dao.IEquipmentLogDao.getListCount   : ==>  Preparing: SELECT count(*) FROM hy_equipment_log t left join hy_equipment e on t.equipmentid=e.id left join hy_player p on t.playerid=p.id where 1=1 and t.playerid = ? 
+2018-06-21 11:10:38.245 DEBUG 57000 --- [http-nio-8083-exec-8] c.hy.dao.IEquipmentLogDao.getListCount   : ==> Parameters: 6D171AAE7AE11B3FE050000ACE004405(String)
+2018-06-21 11:10:38.251 DEBUG 57000 --- [http-nio-8083-exec-8] c.hy.dao.IEquipmentLogDao.getListCount   : <==      Total: 1
+2018-06-21 11:10:59.136  INFO 57000 --- [http-nio-8083-exec-1] com.hy.controller.api.AppUser            : Login requestMap:null
+2018-06-21 11:41:47.854 ERROR 57000 --- [Druid-ConnectionPool-Destroy-1249890505] com.alibaba.druid.util.JdbcUtils         : close connection error
+
+java.sql.SQLException: Io 异常: Socket read timed out
+	at oracle.jdbc.driver.DatabaseError.throwSqlException(DatabaseError.java:112) ~[ojdbc14-10.2.0.4.0.jar:Oracle JDBC Driver version - "10.2.0.1.0"]
+	at oracle.jdbc.driver.DatabaseError.throwSqlException(DatabaseError.java:146) ~[ojdbc14-10.2.0.4.0.jar:Oracle JDBC Driver version - "10.2.0.1.0"]
+	at oracle.jdbc.driver.DatabaseError.throwSqlException(DatabaseError.java:255) ~[ojdbc14-10.2.0.4.0.jar:Oracle JDBC Driver version - "10.2.0.1.0"]
+	at oracle.jdbc.driver.T4CConnection.logoff(T4CConnection.java:480) ~[ojdbc14-10.2.0.4.0.jar:Oracle JDBC Driver version - "10.2.0.1.0"]
+	at oracle.jdbc.driver.PhysicalConnection.close(PhysicalConnection.java:1175) ~[ojdbc14-10.2.0.4.0.jar:Oracle JDBC Driver version - "10.2.0.1.0"]
+	at com.alibaba.druid.util.JdbcUtils.close(JdbcUtils.java:73) ~[druid-1.1.5.jar:1.1.5]
+	at com.alibaba.druid.pool.DruidDataSource.shrink(DruidDataSource.java:2662) [druid-1.1.5.jar:1.1.5]
+	at com.alibaba.druid.pool.DruidDataSource$DestroyTask.run(DruidDataSource.java:2427) [druid-1.1.5.jar:1.1.5]
+	at com.alibaba.druid.pool.DruidDataSource$DestroyConnectionThread.run(DruidDataSource.java:2414) [druid-1.1.5.jar:1.1.5]
+

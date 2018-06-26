@@ -1,0 +1,96 @@
+
+.user-bottom-box {
+	border: 1px solid #EFF0F1;
+	background-color: #F8F9FA;
+	margin-top: 20px;
+}
+
+.user-bottom-ul, .user-bottom-edit-ul {
+	overflow: hidden;
+}
+
+.user-bottom-ul > li, .user-bottom-edit-ul > li {
+	float: left;
+	width: 50%;
+	padding: 10px 20px;
+	box-sizing: border-box;
+	position: relative;
+}
+
+.user-bottom-ul > li > span {
+	color: #555;
+	font-size: 14px;
+}
+
+.user-bottom-ul > li > span.span-title {
+	color: #767778;
+	font-size: 14px;
+	padding-right: 10px;
+}
+
+.user-bottom-edit-ul > li > span.span-title {
+	position: absolute;
+	left: 0;
+	width: 100px;
+	box-sizing: border-box;
+	line-height: 30px;
+	height: 30px;
+	text-align: right;
+}
+
+.user-bottom-ul > li.introduction-box {
+	width: 100%;
+}
+
+.user-bottom-edit-ul > li > .layui-input-inline {
+	width: 100%;
+	padding-left: 120px;
+	box-sizing: border-box;
+	position: relative;
+}
+
+.select-icon {
+	height: 30px;
+	width: 30px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	line-height: 30px;
+	text-align: center;
+	font-size: 20px;
+	color: #999;
+}
+
+.user-bottom-ul > li.introduction-box > span.span-title {
+	display: block;
+	text-indent: 0;
+}
+
+.user-bottom-edit-ul > li.introduction-box > span.span-title {
+	width: 150px;
+	position: absolute;
+	left: 0;
+	margin-bottom: -1000px;
+	padding-bottom: 1000px;
+	padding-left: 0;
+}
+
+.user-bottom-ul > li.introduction-box > span {
+	display: block;
+	text-align: justify;
+	text-indent: 2em;
+	line-height: 20px;
+}
+
+.user-bottom-edit-ul > li.introduction-box > span {
+	width: 100%;
+	padding-left: 100px;
+	text-align: justify;
+	text-indent: 2em;
+	line-height: 20px;
+}
+
+.user-bottom-edit-ul > li.introduction-box {
+	width: 100%;
+}
+/*--//responsive--*/

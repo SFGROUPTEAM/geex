@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.IGameCategoryDao">
+    <resultMap type="com.hy.entity.GameCategory" id="gameCategoryResult"/>
+    <resultMap type="com.hy.entity.GameCategory1" id="gameCategory1Result"/>
+    <insert id="add" parameterType="com.hy.entity.GameCategory">
+        INSERT  INTO hy_GAME_CATEGORY
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">
+                id,
+            </if>
+            <if test="parentid != null and parentid != ''">
+                parentid,
+            </if>
+            <if test="name != null and name != ''">
+                name,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="showlevel != null">
+                showlevel,
+            </if>
+            <if test="createuser != null">
+                createuser,
+            </if>
+            createtime,
+            <if test="remark != null and remark != ''">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">
+                #{id},
+            </if>
+            <if test="parentid != null and parentid != ''">
+                #{parentid},
+            </if>
+            <if test="name != null and name != ''">
+                #{name},
+            </if>
+            <if test="state != null">
+                #{state},
+            </if>
+            <if test="showlevel != null">
+                #{showlevel},
+            </if>
+            <if test="createuser != null">
+                #{createuser},
+            </if>
+            to_char(sysdate,'yyyymmddHH24mmss'),
+            <if test="remark != null and remark != ''">
+                #{remark},
+            </if>
+
+        </trim>
+    </insert>
+    <update id="update" parameterType="com.hy.entity.GameCategory">
+        UPDATE hy_GAME_CATEGORY
+        <set>
+            <if test="parentid != null and parentid != ''">
+              parentid = #{parentid},
+            </if>
+            <if test="name != null and name != ''">
+            name = #{name},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+            <if test="showlevel != null and showlevel != ''">
+                showlevel = #{showlevel},
+            </if>
+            <if test="updateuser != null and updateuser != ''">
+                updateuser = #{updateuser},
+            </if>
+            updatetime = to_char(sysdate,'yyyymmddHH24mmss'),
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="delete" parameterType="com.hy.entity.GameCategory">
+        DELETE from hy_GAME_CATEGORY where id= #{id}
+    </delete>
+    <select id="getGameCategory" parameterType="com.hy.entity.GameCategory" resultMap="gameCategoryResult">
+        SELECT  *  from  hy_GAME_CATEGORY where id = #{id}
+    </select>
+
+    <select id="getList" parameterType="map" resultMap="gameCategory1Result">
+      SELECT  * from hy_GAME_CATEGORY  where 1=1
+        <if test="state != null ">
+           and state = #{state}
+        </if>
+        <if test="parentid != null and parentid != '' ">
+            and parentid = #{parentid}
+        </if>
+      order by  showlevel ,createtime
+    </select>
+    <select id="getListCount" parameterType="map" resultType="int">
+        SELECT  count(*) from hy_GAME_CATEGORY  where 1=1
+        <if test="state != null ">
+            and state = #{state}
+        </if>
+        <if test="parentid != null and parentid != '' ">
+            and parentid = #{parentid}
+        </if>
+    </select>
+</mapper>

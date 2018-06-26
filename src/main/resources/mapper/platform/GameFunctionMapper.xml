@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.platform.IGameFunctionDao">
+    <resultMap type="com.hy.entity.GameFunction" id="gameFunctionResult"/>
+    <resultMap type="com.hy.entity.GameFunction1" id="gameFunction1Result"/>
+    <select id="getGameFunctionByGameNo" parameterType="String" resultMap="gameFunction1Result">
+        SELECT  a.*,b.status gamestatus,b.state gamestate  from hy_gamefunction a,hy_game_info b where a.gameid = b.id and b.gameno = #{gameno}
+    </select>
+
+    <insert id="add" parameterType="com.hy.entity.GameFunction">
+        insert  into hy_gamefunction(id,
+        <if test="gameid != null and gameid != ''">  gameid,</if>
+        <if test="funcnum != null and funcnum != ''"> funcnum,</if>
+        <if test="p_privatekey != null and p_privatekey != ''"> p_privatekey,</if>
+        <if test="p_publickey != null and p_publickey != ''">  p_publickey,</if>
+        <if test="g_privatekey != null and g_privatekey != ''"> g_privatekey,</if>
+        <if test="g_publickey != null and g_publickey != ''"> g_publickey,</if>
+        <if test="isenable != null and isenable != ''"> isenable </if>
+        ) VALUES (sys_guid(),
+        <if test="gameid != null and gameid != ''">#{gameid},</if>
+        <if test="funcnum != null and funcnum != ''">#{funcnum},</if>
+        <if test="p_privatekey != null and p_privatekey != ''">#{p_privatekey},</if>
+        <if test="p_publickey != null and p_publickey != ''">#{p_publickey},</if>
+        <if test="g_privatekey != null and g_privatekey != ''">#{g_privatekey},</if>
+        <if test="g_publickey != null and g_publickey != ''">#{g_publickey},</if>
+        <if test="isenable != null and isenable != ''">#{isenable} </if>
+        )
+    </insert>
+
+    <select id="getList" parameterType="map" resultMap="gameFunction1Result">
+        SELECT t.*,g.gameno gameno,g.name gamename,g.status gamestatus,g.state gamestate FROM hy_gamefunction t inner join hy_game_info g on t.gameid=g.id  where 1=1
+        <if test="gameid != null and gameid != ''">
+            and t.gameid = #{gameid}
+        </if>
+        <if test="id != null and id != ''">
+            and  t.id = #{id}
+        </if>
+    </select>
+    <select id="getListCount" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM hy_gamefunction t inner join hy_game_info g on t.gameid=g.id  where 1=1
+        <if test="gameid != null and gameid != ''">
+            and t.gameid = #{gameid}
+        </if>
+        <if test="id != null and id != ''">
+            and  t.id = #{id}
+        </if>
+    </select>
+
+</mapper>

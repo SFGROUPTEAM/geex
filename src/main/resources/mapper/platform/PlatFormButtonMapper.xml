@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.platform.IPlatFormButtonDao">
+    <resultMap type="com.hy.entity.PlatFormButton" id="buttonResult"/>
+    <resultMap type="com.hy.entity.PlatFormButton1" id="buttonResult1"/>
+
+    <insert id="add" parameterType="com.hy.entity.PlatFormButton">
+        INSERT INTO hy_PLATFORM_BUTTON (id,menuid,
+        <if test="code != null and code != ''">code,</if>
+        <if test="showlevel != null and showlevel != ''">showlevel,</if>
+        <if test="iconcls != null and iconcls != ''">iconcls,</if>
+        name)VALUES (#{id},#{menuid},
+        <if test="code != null and code != ''">#{code},</if>
+        <if test="showlevel != null and showlevel != ''">#{showlevel},</if>
+        <if test="iconcls != null and iconcls != ''">#{iconcls},</if>
+        #{name})
+    </insert>
+    <update id="update" parameterType="com.hy.entity.PlatFormButton">
+        UPDATE hy_PLATFORM_BUTTON set
+        <trim  suffixOverrides=",">
+        <if test="menuid != null and menuid != ''">menuid = #{menuid},</if>
+        <if test="name != null and name != ''">name = #{name},</if>
+        <if test="code != null and code != ''">code= #{code},</if>
+        <if test="showlevel != null and showlevel != ''">showlevel= #{showlevel},</if>
+        <if test="iconcls != null and iconcls != ''">iconcls= #{iconcls},</if>
+        </trim>
+        where id = #{id}
+    </update>
+    <delete id="delete" parameterType="com.hy.entity.PlatFormButton">
+        DELETE from hy_PLATFORM_BUTTON where id = #{id}
+    </delete>
+    <select id="getPlatFormButton" parameterType="com.hy.entity.PlatFormButton" resultMap="buttonResult">
+          SELECT  * FROM  hy_PLATFORM_BUTTON where id = #{id}
+     </select>
+    <select id="getList" parameterType="map" resultMap="buttonResult">
+        SELECT  * FROM  hy_PLATFORM_BUTTON where 1=1
+        <if test="menuid != null and menuid != ''">AND menuid = #{menuid}</if>
+        ORDER BY showlevel
+    </select>
+    <select id="getListCount" parameterType="map" resultType="int">
+        SELECT  count(*) FROM  hy_PLATFORM_BUTTON where 1=1
+        <if test="menuid != null and menuid != ''">AND menuid = #{menuid}</if>
+    </select>
+
+    <select id="getRoleButtonList" parameterType="map" resultMap="buttonResult1">
+        SELECT b.*,case when r.buttonid is not null then 'true' else '' end checked FROM hy_platform_button b
+        left join hy_platform_rolebutton r on b.id=r.buttonid  and r.roleid=#{roleid}
+        where 1=1
+        <if test="menuid != null and menuid != ''"> and b.menuid=#{menuid}   </if>
+        order by b.showlevel
+    </select>
+
+
+</mapper>

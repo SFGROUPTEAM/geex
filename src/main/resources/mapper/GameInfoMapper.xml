@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.IGameInfoDao">
+    <resultMap type="com.hy.entity.GameInfo" id="gameInfoResult"/>
+    <resultMap type="com.hy.entity.GameInfo1" id="gameInfo1Result"/>
+    <resultMap type="com.hy.entity.GameInfo2" id="gameInfo2Result"/>
+    <resultMap type="com.hy.entity.GameFunctionExport" id="fcExport"/>
+
+    <insert id="add" parameterType="com.hy.entity.GameInfo">
+        INSERT into hy_game_info (id,gameno,
+        <if test="categoryid != null and categoryid != ''">categoryid,</if>
+        <if test="company != null and company != ''">company,</if>
+        <if test="name != null and name != ''">name,</if>
+        <if test="state != null">state,</if>
+        <if test="status != null">status,</if>
+        <if test="showlevel != null">showlevel,</if>
+        <if test="remark != null and remark != ''">remark,</if>
+        <if test="describe != null and describe != ''">describe,</if>
+        <if test="createuser != null and createuser != ''">createuser,</if>
+        createtime)VALUES (#{id},#{gameno},
+        <if test="categoryid != null and categoryid != ''">#{categoryid},</if>
+        <if test="company != null and company != ''">#{company},</if>
+        <if test="name != null and name != ''">#{name},</if>
+        <if test="state != null">#{state},</if>
+        <if test="status != null">#{status},</if>
+        <if test="showlevel != null">#{showlevel},</if>
+        <if test="remark != null and remark != ''">#{remark},</if>
+        <if test="describe != null and describe != ''">#{describe},</if>
+        <if test="createuser != null and createuser != ''">#{createuser},</if>
+        to_char(sysdate,'yyyymmddHH24mmss'))
+    </insert>
+
+    <update id="update" parameterType="com.hy.entity.GameInfo">
+        UPDATE hy_game_info
+        <set>
+            <if test="gameno != null and gameno != ''">gameno = #{gameno},</if>
+            <if test="categoryid != null and categoryid != ''">categoryid = #{categoryid},</if>
+            <if test="company != null and company != ''">company = #{company},</if>
+            <if test="name != null and name != ''"> name = #{name},</if>
+            <if test="state != null ">state = #{state},</if>
+            <if test="status != null ">status = #{status},</if>
+            <if test="showlevel != null ">showlevel = #{showlevel},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="describe != null and describe != ''">describe = #{describe},</if>
+            updatetime = to_char(sysdate,'yyyymmddHH24miss'),
+            <if test="updateuser != null and updateuser != ''">updateuser = #{updateuser}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="getList" parameterType="map" resultMap="gameInfo2Result">
+        select t.*,t2.name category,t4.picurl from hy_game_info t,hy_game_category t2,hy_game_pic t4
+        where  t.categoryid=t2.id and t4.gameid=t.id and t4.usetype='0'
+        <if test="company!=null and company!=''">
+            and t.company=#{company}
+        </if>
+        <if test="name!=null and name!=''">
+            and instr(t.name,#{name})>0
+        </if>
+        <if test="state!=null">
+            and t.state=#{state}
+        </if>
+        <if test="status!=null">
+            and t.status=#{status}
+        </if>
+
+        <if test="topCategoryId!=null and topCategoryId!=''">
+            and exists(select 1 from (
+            SELECT id FROM hy_game_category START WITH id =#{topCategoryId} CONNECT BY PRIOR parentid = id
+            union
+            SELECT id FROM hy_game_category START WITH id =#{topCategoryId} CONNECT BY parentid = PRIOR id)
+             ttt where ttt.id=t.categoryid)
+        </if>
+           order by t2.showlevel
+    </select>
+
+    <select id="getListCount" parameterType="map" resultType="int">
+        select count(*) from hy_game_info t,hy_game_category t2 where  t.categoryid=t2.id
+        <if test="company!=null and company!=''">
+            and t.company=#{company}
+        </if>
+        <if test="name!=null and name!=''">
+            and instr(t.name,#{name})>0
+        </if>
+        <if test="state!=null">
+            and t.state=#{state}
+        </if>
+        <if test="status!=null">
+            and t.status=#{status}
+        </if>
+
+        <if test="topCategoryId!=null and topCategoryId!=''">
+            and exists(select 1 from (
+            SELECT id FROM hy_game_category START WITH id =#{topCategoryId} CONNECT BY PRIOR parentid = id
+            union
+            SELECT id FROM hy_game_category START WITH id =#{topCategoryId} CONNECT BY parentid = PRIOR id)
+            ttt where ttt.id=t.categoryid)
+        </if>
+    </select>
+
+
+    <select id="getAllGameList" parameterType="map" resultMap="gameInfo2Result">
+        select a.*,b.picurl gamepic ,c.name category from hy_game_info a,
+        (select * from (
+        select aa.*,row_number() over (partition by aa.gameid  order by showlevel desc) cnt
+        from hy.hy_game_pic aa where aa.usetype='1')
+        where cnt=1) b,hy_game_category c where a.id=b.gameid(+) and a.categoryid = c.id
+        <if test="state!=null">
+            and a.state=#{state}
+        </if>
+        <if test="status!=null">
+            and a.status=#{status}
+        </if>
+        <if test="topCategoryId!=null and topCategoryId!=''">
+            and exists(select 1 from (
+            SELECT id FROM hy_game_category START WITH id =#{topCategoryId} CONNECT BY PRIOR parentid = id
+            union
+            SELECT id FROM hy_game_category START WITH id =#{topCategoryId} CONNECT BY parentid = PRIOR id)
+            ttt where ttt.id=a.categoryid)
+        </if>
+        order by a.showlevel DESC
+    </select>
+
+    <select id="getAllGameCount" parameterType="map" resultType="int">
+        select count(*) from hy_game_info a,
+        (select * from (
+        select aa.*,row_number() over (partition by aa.gameid  order by showlevel desc) cnt
+        from hy.hy_game_pic aa where aa.usetype='1')
+        where cnt=1) b,hy_game_category c where a.id=b.gameid(+) and a.categoryid = c.id
+        <if test="state!=null">
+            and a.state=#{state}
+        </if>
+        <if test="status!=null">
+            and a.status=#{status}
+        </if>
+        <if test="topCategoryId!=null and topCategoryId!=''">
+            and exists(select 1 from (
+            SELECT id FROM hy_game_category START WITH id =#{topCategoryId} CONNECT BY PRIOR parentid = id
+            union
+            SELECT id FROM hy_game_category START WITH id =#{topCategoryId} CONNECT BY parentid = PRIOR id)
+            ttt where ttt.id=a.categoryid)
+        </if>
+    </select>
+
+
+
+    <select id="getNewList" parameterType="map" resultType="map">
+        select a.id,a.name,b.picurl from hy_game_info a,hy_game_pic b where a.id=b.gameid
+        and rownum &lt;= 8 order by a.createtime desc
+    </select>
+
+    <select id="getGameInfo" parameterType="com.hy.entity.GameInfo" resultType="com.hy.entity.GameInfo1">
+        select t.*,t2.name category from  hy_game_info t,hy_game_category t2 where t.categoryid=t2.id and t.id=#{id}
+    </select>
+
+
+    <!--<select id="getPlayerGameInfoList" parameterType="map" resultType="map">
+        select a.id,a.categoryid,a.name,b.name from hy_game_info a,hy_game_category b where a.categoryid=b.id
+        <if test="categoryid!=null and categoryid!=''">
+        start with a.categoryid=#{categoryid}
+        </if>
+        connect by prior a.categoryid=b.parentid
+    </select>-->
+
+    <select id="getList1" parameterType="map" resultMap="gameInfo1Result">
+        SELECT a.*,c.name category from hy_game_info a ,hy_GAME_CATEGORY c
+        where a.categoryid = c.id(+)
+        <if test="category != null and category != ''">
+            and instr(c.name,#{category})>0
+        </if>
+        <if test="gameno != null and gameno !=''">
+            and instr(a.gameno,#{gameno})>0
+        </if>
+        <if test="company != null and company !=''">
+            and instr(a.company,#{company})>0
+        </if>
+        <if test="name != null and name != ''">
+            and instr(a.name,#{name})>0
+        </if>
+        <if test="state != null">
+            and a.state = #{state}
+        </if>
+        <if test="status != null">
+            and a.status = #{status}
+        </if>
+    </select>
+    <select id="getListCount1" parameterType="map" resultType="int">
+        SELECT count(*) from hy_game_info a ,hy_GAME_CATEGORY c
+        where a.categoryid = c.id(+)
+        <if test="category != null and category != ''">
+            and instr(c.name,#{category})>0
+        </if>
+        <if test="gameno != null and gameno !=''">
+            and instr(a.gameno,#{gameno})>0
+        </if>
+        <if test="company != null and company !=''">
+            and instr(a.company,#{company})>0
+        </if>
+        <if test="name != null and name != ''">
+            and instr(a.name,#{name})>0
+        </if>
+        <if test="state != null">
+            and a.state = #{state}
+        </if>
+        <if test="status != null">
+            and a.status = #{status}
+        </if>
+    </select>
+
+
+
+    <!--<select id="getPlayerGameList" parameterType="map" resultType="map">
+       select a.id ,a.name,'' gameid,'' gamename,'0' parentid,'' picurl from hy_game_category a
+        union
+        select '0' id ,'0' name, g.id,g.name,g.categoryid parentid , c.picurl from hy_game_info g,
+        hy_game_pic c where c.gameid=g.id and c.usetype='0'
+        order by parentid
+    </select>-->
+
+    <select id="getPlayerGameClassList1" parameterType="map" resultType="com.hy.entity.GameCategory">
+        select t.name,t.id from hy_game_category t  where t.parentid='00' order by t.showlevel
+    </select>
+
+    <!--<select id="qryGameCateChildren" parameterType="String" resultType="com.hy.entity.GameCategory" >
+        select * from hy_game_category start with id = #{id} connect  by  parentid= prior id
+    </select>
+-->
+    <!--<select id="getPlayerGameList1" parameterType="String" resultMap="gameInfo2Result">
+        select a.*,b.picurl gamepic from hy_game_info a inner JOIN  hy_game_pic b on a.id = b.gameid and b.usetype = 0  where a.categoryid = #{categoryid} and a.status = 20 and a.state = 1
+        order by a.showlevel
+    </select>-->
+
+    <select id="getclassGameList" parameterType="map" resultMap="gameInfo2Result">
+        select a.*,b.picurl gamepic ,c.name category from hy_game_info a,
+        (select * from (
+        select aa.*,row_number() over (partition by aa.gameid  order by showlevel desc) cnt
+        from hy.hy_game_pic aa where aa.usetype='1')
+        where cnt=1) b,hy_game_category c where a.id=b.gameid(+) and a.categoryid = c.id
+        <if test="ID != null and ID != ''">
+            and a.categoryid in(
+            SELECT id FROM hy_game_category START WITH id =#{ID} CONNECT BY PRIOR parentid = id
+            union
+            SELECT id FROM hy_game_category START WITH id =#{ID} CONNECT BY parentid = PRIOR id)
+        </if>
+        <if test="state != null">
+            and a.state = #{state}
+        </if>
+        <if test="status != null">
+            and a.status = #{status}
+        </if>
+        <if test="nameOrRemark != null and nameOrRemark != ''">
+            and (instr(a.name,#{nameOrRemark})>0 OR instr(a.remark,#{nameOrRemark})>0)
+        </if>
+        order by a.showlevel DESC
+    </select>
+    <select id="getClassGameListCount" parameterType="map" resultType="int">
+        select COUNT(*) from hy_game_info a,
+        (select * from (
+        select aa.*,row_number() over (partition by aa.gameid  order by showlevel desc) cnt
+        from hy.hy_game_pic aa where aa.usetype='1')
+        where cnt=1) b,hy_game_category c where a.id=b.gameid(+) and a.categoryid = c.id
+        <if test="ID != null and ID != ''">
+            and a.categoryid in(
+            SELECT id FROM hy_game_category START WITH id =#{ID} CONNECT BY PRIOR parentid = id
+            union
+            SELECT id FROM hy_game_category START WITH id =#{ID} CONNECT BY parentid = PRIOR id)
+        </if>
+        <if test="state != null">
+            and a.state = #{state}
+        </if>
+        <if test="status != null">
+            and a.status = #{status}
+        </if>
+        <if test="nameOrRemark != null and nameOrRemark != ''">
+            and (instr(a.name,#{nameOrRemark})>0 OR instr(a.remark,#{nameOrRemark})>0)
+        </if>
+    </select>
+
+    <select id="getFunctionList" parameterType="map" resultMap="fcExport">
+        SELECT g.name gamename ,g.gameno gameno,a.p_publickey publickey,a.g_privatekey privatekey FROM HY_GAMEFUNCTION a inner join  hy_game_info g on a.gameid=g.id
+        where 1=1
+        <if test="id != null and id != ''">
+            and a.id=#{id}
+        </if>
+        <if test="gameid != null and gameid != ''">
+            and a.gameid=#{gameid}
+        </if>
+        <if test="gameno != null and gameno != ''">
+            and g.gameno=#{gameno}
+        </if>
+    </select>
+
+
+</mapper>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>玩家管理</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+    <script th:src="@{/layui/layui.js}"></script>
+</head>
+<body>
+<!-- 此处class dellAllComment 对应于最下面一个绑定click事件 -->
+<div class="equipmentTable" style="margin-top: 15px;margin-left: 2px;">
+    <div class="layui-form">
+        <div class="layui-form-item">
+            <form id="balancedata" name="balancedata" class="layui-form">
+                <div class="layui-inline">
+                    <label class="layui-form-label">玩家用户名:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="username" name="username"  autocomplete="off" class="layui-input" maxlength="11">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">玩家昵称:</label>
+                    <div class="layui-input-inline">
+                        <input type="text" id="nickname" name="nickname"  autocomplete="off" class="layui-input" maxlength="11">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">性别:</label>
+                    <div class="layui-input-inline">
+                        <select id="gendar" name="gendar" lay-filter="qzhuangtai">
+                            <option value="" selected="">全部</option>
+                            <option value="0">未知</option>
+                            <option value="1">男</option>
+                            <option value="2">女</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">状态:</label>
+                    <div class="layui-input-inline">
+                        <select id="status" name="status" lay-filter="fzhuangtai">
+                            <option value="" selected="">全部</option>
+                            <option value="0">无效</option>
+                            <option value="1">有效</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <button class="layui-btn" style="margin-top: 0px;margin-left: 2px;"
+            data-type="reload">
+        <i class="layui-icon">&#xe615;</i>搜索
+    </button>
+</div>
+<script type="text/html" id="gendarTpl">
+    {{#  if(d.gendar=== 0){ }}
+    <span>{{ '未知' }}</span>
+    {{#  } else if(d.gendar === 1) { }}
+    <span>{{ '男' }}</span>
+    {{#  } else if(d.gendar === 2) { }}
+    <span>{{ '女' }}</span>
+    {{#  } }}
+</script>
+<script type="text/html" id="statusTpl">
+    {{#  if(d.status === 1){ }}
+    <span style="color: #09752f;">{{ '有效' }}</span>
+    {{#  } else if(d.status === 0) { }}
+    <span style="color: #FF0000;">{{ '无效' }}</span>
+    {{#  } }}
+</script>
+<table class="layui-hide" id="player_table" lay-filter="tableList"></table>
+<script th:src="@{/layui/layui.js}" charset="utf-8"></script>
+<script th:inline="javascript" type="text/javascript">
+    /****查询页面加载列表 *****/
+    var arr = new Array();
+    var cLen = 4;
+
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            elem: '#player_table'
+            , url: '/platformPlayer/player_render_list'
+            , skin: "line"
+            , even: true
+            , page: true
+            , height: 'full-170'
+            , cols: [[
+                {field: 'username',  title: '用户名',fixed: 'left'},
+                {field: 'nickname', title: '昵称'},
+                {field: 'gendar',  title: '性别', templet: '#gendarTpl'},//
+                {field: 'birthday',  title: '生日'},//
+                {field: 'qq',  title: 'QQ'},
+                {field: 'skype', title: 'SKYPE'},
+                {field: 'email',  title: '邮箱'},
+                {field: 'phone',  title: '手机号'},
+                {field: 'status', title: '状态', templet: '#statusTpl'},
+                {field: 'lastvisittime', title: '最后访问时间'},
+                {field: 'lastvisitip',  title: '最后访问IP'},
+                {field: 'registsertime', title: '注册时间'},
+                {field: 'registerip', title: '注册IP'},
+                {field: 'updateuser', title: '更新人'},
+                {field: 'updatetime', title: '更新时间'},
+                {field: 'remark', title: '备注',fixed: 'right'}
+//                {title: '操作',templet: '#barDemo',fixed: 'right',width:'100'}
+                //   {width:lastwidth, title: '操作', toolbar: '#barDemo', fixed: 'right'}
+            ]]
+            , limit: 10   //默认十条数据一页
+            , limits: [10, 20, 30]  //数据分页条
+            , done: function (res, curr, count) {
+
+            }
+        });
+
+        var $ = layui.$,
+            active = {
+                /***定义函数绑定到按钮的data-type上 addEquipment*/
+                refresh: function () {
+                    table.reload('player_table');
+                }, /* 搜索框 */
+                reload: function () {
+                    var gendar = $("#gendar").val();
+                    var nickname = $("#nickname").val();
+                    var status = $("#status").val();
+                    var username = $("#username").val();
+                    table.reload('player_table', {
+                        url: '/platformPlayer/player_render_list',
+                        where: {
+                            username:username,
+                            gendar: gendar,
+                            nickname: nickname,
+                            status: status
+                        }
+                    });
+                },
+            };
+
+        $('.equipmentTable .layui-btn').on('click',
+            function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+
+
+        //监听工具条
+//        table.on('tool(tableList)', function (obj) {
+//            layer.confirm('确认审核该运营商?', function(index){
+//                $.ajax({
+//                    type : 'POST',
+//                    contentType: "charset=utf-8",
+//                    url : '/platformSupplier/audit?id='+data.id,
+//                    datatype: 'json',
+//                    cache:false,
+//                    success : function(data) {
+//                        if(data=="SUCCESS"){
+//                            layer.alert("审核成功!",function () {
+//                                location.reload();
+//                            });
+//                        }else{
+//                            layer.alert(data);
+//                        }
+//                    },
+//                });
+//                layer.close(index);
+//            });
+//        });
+    });
+
+</script>
+<!--<script type="text/html" id="barDemo">-->
+<!--{{#  if(d.status === 0) { }}-->
+<!--<a class="layui-btn layui-btn-sm" style="width:44px;padding-left: 12px;" lay-event="audit">审核</a>-->
+<!--{{#  }  else { }}-->
+<!--<a class="layui-btn layui-btn-sm" style="width:44px;padding-left: 12px;background-color : grey; cursor: none">审核</a>-->
+<!--{{#  } }}-->
+<!--&lt;!&ndash;{{#  if(d.enableFlg === 'N') { }}&ndash;&gt;-->
+<!--&lt;!&ndash;<a class="layui-btn layui-btn-sm" style="width:44px;padding-left: 12px;" lay-event="audit">审核</a>&ndash;&gt;-->
+<!--&lt;!&ndash;<a class="layui-btn layui-btn-sm" style="width:44px;padding-left: 12px;" lay-event="delete">删除</a>&ndash;&gt;-->
+<!--&lt;!&ndash;{{#  }  else { }}&ndash;&gt;-->
+<!--&lt;!&ndash;{{#  if(d.usabilityflg === '1') { }}&ndash;&gt;-->
+<!--&lt;!&ndash;<a class="layui-btn layui-btn-sm" style="background-color : darkgreen; cursor: none ">已启用</a>&ndash;&gt;-->
+<!--&lt;!&ndash;{{#  }  else { }}&ndash;&gt;-->
+<!--&lt;!&ndash;<a class="layui-btn layui-btn-sm" style="background-color : darkred; cursor: none ">已禁用</a>&ndash;&gt;-->
+<!--&lt;!&ndash;{{#  } }}&ndash;&gt;-->
+<!--&lt;!&ndash;{{#  } }}&ndash;&gt;-->
+<!--</script>-->
+
+</body>
+</html>

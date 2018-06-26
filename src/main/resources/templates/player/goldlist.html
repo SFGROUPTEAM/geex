@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+    <link rel="shortcut icon" th:href="@{/images/icon/bitbug_favicon.ico}"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=1200"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <title>[[#{player.memberCenter.menu2}]]</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}"/>
+    <link rel="stylesheet" th:href="@{/css/global.css}"/>
+    <link rel="stylesheet" th:href="@{/css/newIndex.css}"/>
+    <link rel="stylesheet" th:href="@{/css/highlight.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/pagination.css}"/>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/jquery.pagination.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/jquery.datetimepicker.css}"/>
+    <script th:src="@{/js/jquery.datetimepicker.full.min.js}"></script>
+
+    <link rel="stylesheet" th:href="@{/css/equipmentdetail.css}"/>
+    <link rel="stylesheet" th:href="@{/css/player_gold.css}"/>
+    <style type="text/css">
+        .title_li {
+            width: 16%;
+        }
+    </style>
+    <script th:inline="javascript">
+        $().ready(function () {
+            //设置日历语言
+            var lang = [[${session.lang}]];
+            if (lang == 'en_US') {
+                $.datetimepicker.setLocale('en');
+            } else {
+                $.datetimepicker.setLocale('ch');
+            }
+            $('.some_class').datetimepicker();
+
+            var totalData = [[${listCount}]];
+            var pagenum = [[${pagenum}]];
+            var pagesize = [[${pagesize}]];
+            $('.M-box1').pagination({
+                totalData: totalData,
+                showData: pagesize,
+                current: pagenum,
+                coping: true,
+                homePage: [[#{player.page.desc0}]],
+                endPage: [[#{player.page.desc1}]],
+                prevContent: [[#{player.page.desc2}]],
+                nextContent: [[#{player.page.desc3}]],
+                callback: function (api) {
+                    console.log(api.getCurrent())
+                    location.href = "/Player/gold.html?pagenum=" + api.getCurrent();
+                }
+            });
+        });
+
+        function format(num) {
+            return (num.toFixed(2) + '').replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
+        }
+
+    </script>
+</head>
+<body class="layout" onmousemove="return false" oncontextmenu="return false" ondragstart="return false"
+      oncopy="document.selection.empty()" onbeforecopy="return false">
+<div class="web-top">
+    <div class="topBar" th:include="@{common/top.html}"></div>
+    <div class="logoBar" th:include="@{common/header.html}"></div>
+    <!--导航-->
+    <div class="logoBar" th:include="@{common/navBar.html}"></div>
+</div>
+<div class="wrapper" style="padding-top: 75px;">
+    <div class="container" style="border: 1px;width:90%;min-height: 500px;">
+        <div class="col-md-12 column">
+            <div class="row clearfix">
+                <!--左侧-->
+                <div th:include="@{player/left.html}"></div>
+
+                <!--右侧-->
+                <div class="col-md-10 column">
+                    <div style="height: 60px;border-bottom:1px solid #E5E5E5">
+                        <div class="w1200 clearfix">
+                            <div style="display: block;" class="clearfix">
+                                <div class="clearfix" style="float:left;width:25%;">
+                                    <p style="font-size:18px;padding-top:15px;color:black;float: left;vertical-align: middle">
+                                        [[#{player.memberCenter.menu2}]]:&nbsp;&nbsp;</p>
+                                    <p style="font-size:26px;color:red;padding-top:5px;"
+                                       th:text="${playerGold.goldcnt}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="height: 60px;">
+                        <form th:action="@{/Player/gold.html}" method="post">
+                            <div style="display: block;" class="clearfix">
+                                <div class="clearfix" style="float:left;width:25%;">
+                                    <p style="font-size:18px;padding-top:23px;color:black;float: left;vertical-align: middle;width: 150%">
+                                        [[#{player.memberCenter.recordOfRevenueAndExpenditure}]]:&nbsp;&nbsp;</p>
+                                </div>
+                                <ul style="list-style: none;float: right;padding-top: 10px" class="clearfix">
+                                    <li class="query_li"><p style="padding-top:15px;">[[#{player.query.des0}]]</p></li>
+                                    <li class="query_li">
+                                        <input type="text" class="some_class" name="data1" autocomplete="off"
+                                               th:placeholder="#{player.query.des1}" style="width: 150px;color:black;"/>
+                                    </li>
+                                    <li class="query_li"><p style="padding-top:15px;">[[#{player.query.des2}]]</p></li>
+                                    <li class="query_li">
+                                        <input type="text" class="some_class" name="data2" autocomplete="off"
+                                               th:placeholder="#{player.query.des3}" style="width: 150px;color:black;"/>
+                                    </li>
+                                    <li class="query_li"><input type="submit" class="btnQuery"
+                                                                th:value="#{player.query.des4}"/></li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="panel-collapse collapse in" style="padding-top: 15px;">
+                        <div th:if="${listCount>0}" class="header nav">
+                            <div class="clearfix">
+                                <ul class="title_ul clearfix">
+                                    <li class="title_li li_sub_con"><span>[[#{player.gold.des0}]]</span></li>
+                                    <li class="title_li li_sub_con">[[#{player.gold.des1}]]</li>
+                                    <!--<li class="title_li li_sub_con">[[#{player.gold.des2}]]</li>-->
+                                    <li class="title_li li_sub_con">[[#{player.gold.des3}]]</li>
+                                    <li class="title_li li_sub_con">[[#{player.gold.des4}]]</li>
+                                    <li class="title_li li_sub_con">[[#{player.gold.des5}]]</li>
+                                    <li class="title_li li_sub_con">[[#{player.gold.des10}]]</li>
+                                </ul>
+
+                                <ul class="detail_ul" th:each="gold,iterStat:${goldLogList}">
+                                    <li class="title_li li_sub_con">
+                                        <span th:if="${gold.type eq '1' && gold.subtype eq '01'}">[[#{player.gold.des6}]]</span>
+                                        <span th:if="${gold.type eq '1' && gold.subtype eq '02'}">[[#{player.gold.des7}]]</span>
+                                        <span th:if="${gold.type eq '1' && gold.subtype eq '03'}">[[#{player.gold.des8}]]</span>
+                                        <span th:if="${gold.type eq '2' && gold.subtype eq 'A1'}">[[#{player.gold.des9}]]</span>
+                                    </li>
+                                    <li class="title_li li_sub_con">
+                                        <spanspan th:text="${gold.operationtime}"></spanspan>
+                                    </li>
+                                    <!--<li class="title_li li_sub_con" style="text-align: center"><a th:text="详情"></a></li>-->
+                                    <li class="title_li li_sub_con">
+                                        <span th:if="${gold.type == '1'}" style="color: green">+</span><span
+                                            th:if="${gold.type == '1'}" th:text="${gold.quantity}"
+                                            style="color: green"></span>
+                                        <span th:if="${gold.type == '2'}" style="color: red">-</span><span
+                                            th:if="${gold.type == '2'}" th:text="${gold.quantity}"
+                                            style="color: red"></span>
+                                    </li>
+                                    <li class="title_li li_sub_con">
+                                        <span th:text="${gold.beforequantity}"></span>
+                                    </li>
+                                    <li class="title_li li_sub_con"><span th:text="${gold.afterquantity}"></span></li>
+                                    <li class="title_li li_sub_con"><span th:text="${gold.remark}"></span></li>
+                                </ul>
+
+                            </div>
+
+                            <div class="m-style M-box1" style="float:right;padding: 5px;"></div>
+                        </div>
+
+                        <div th:if="${listCount<=0}">
+                            <ul style="list-style: none;height: 330px;text-align: center" class="title_ul">
+                                <li style="padding-top: 50px;">
+                                    <label>[[#{player.query.des5}]] &nbsp;&nbsp;&nbsp;</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:include="@{common/memberFooter.html}"></div>
+<!--bottom-->
+</body>
+<script>
+    $("#memberMenu2").addClass("hover")
+</script>
+</html>

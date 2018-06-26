@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.IGoldLogDao">
+    <resultMap type="com.hy.entity.GoldLog" id="goldLogResult"/>
+    <insert id="add" parameterType="com.hy.entity.GoldLog">
+        INSERT into hy_gold_log (id,
+        <if test="type != null and type != ''">type,</if>
+        <if test="subtype != null and subtype != ''">subtype,</if>
+        <if test="quantity != null">quantity,</if>
+        <if test="beforequantity != null">beforequantity,</if>
+        <if test="afterquantity != null">afterquantity,</if>
+        <if test="playerid != null and playerid != ''">playerid,</if>
+        <if test="equipmentlogid != null and equipmentlogid != ''">equipmentlogid,</if>
+        <if test="operationuser != null and operationuser != ''">operationuser,</if>
+        operationtime)VALUES (#{id},
+        <if test="type != null and type != ''">#{type},</if>
+        <if test="subtype != null and subtype != ''">#{subtype},</if>
+        <if test="quantity != null">#{quantity},</if>
+        <if test="beforequantity != null">#{beforequantity},</if>
+        <if test="afterquantity != null">#{afterquantity},</if>
+        <if test="playerid != null and playerid != ''">#{playerid},</if>
+        <if test="equipmentlogid != null and equipmentlogid != ''">#{equipmentlogid},</if>
+        <if test="operationuser != null and operationuser != ''">#{operationuser},</if>
+        to_char(sysdate,'yyyymmddHH24mmss'))
+    </insert>
+
+    <select id="getGoldLog" parameterType="com.hy.entity.GoldLog" resultMap="goldLogResult">
+        SELECT  * FROM  hy_gold_log a where  1=1 and  a.id=#{id} AND  rownum=1
+    </select>
+
+    <select id="getList" parameterType="map" resultMap="goldLogResult">
+        SELECT a.id,a.type,a.subtype,to_char(a.quantity,'FM999,999,999,990.00') quantity,to_char(a.beforequantity,'FM999,999,999,990.00') beforequantity,to_char(a.afterquantity,'FM999,999,999,990.00') afterquantity,a.playerid,
+                to_char(to_date(a.operationtime,'yyyy-mm-dd HH24:mi:ss'),'yyyy-mm-dd HH24:mi:ss') operationtime,
+                a.operationuser,a.equipmentlogid,a.remark,p.username playername
+        FROM hy_gold_log a left join hy_player p on a.playerid=p.id  where  1=1
+        <if test="id != null and id != ''">
+            and a.id  = #{id}
+        </if>
+        <if test="type != null and type != ''">
+            and a.type  = #{type}
+        </if>
+        <if test="subtype != null and subtype != ''">
+            and a.subtype  = #{subtype}
+        </if>
+        <if test="playerid != null and playerid != ''">
+            and a.playerid  = #{playerid}
+        </if>
+        <if test="playername != null and playername != ''">
+            and p.username  = #{playername}
+        </if>
+        <if test="data1 != null and data1 != ''">
+            and a.operationtime >= to_char(to_date(#{data1},'yyyy-mm-dd HH24:mi:ss'),'yyyymmddHH24miss')
+        </if>
+        <if test="data2 != null and data2 != ''">
+            and a.operationtime &lt;= to_char(to_date(#{data2},'yyyy-mm-dd HH24:mi:ss'),'yyyymmddHH24miss')
+        </if>
+
+        ORDER  BY  a.OPERATIONTIME DESC
+    </select>
+    <select id="getListCount" parameterType="map" resultType="int">
+        SELECT count(*) FROM hy_gold_log a left join hy_player p on a.playerid=p.id  where  1=1
+        <if test="id != null and id != ''">
+            and a.id  = #{id}
+        </if>
+        <if test="type != null and type != ''">
+            and a.type  = #{type}
+        </if>
+        <if test="subtype != null and subtype != ''">
+            and a.subtype  = #{subtype}
+        </if>
+        <if test="playerid != null and playerid != ''">
+            and a.playerid  = #{playerid}
+        </if>
+        <if test="playername != null and playername != ''">
+            and p.username  = #{playername}
+        </if>
+        <if test="data1 != null and data1 != ''">
+            and a.operationtime >= to_char(to_date(#{data1},'yyyy-mm-dd HH24:mi:ss'),'yyyymmddHH24miss')
+        </if>
+        <if test="data2 != null and data2 != ''">
+            and a.operationtime &lt;= to_char(to_date(#{data2},'yyyy-mm-dd HH24:mi:ss'),'yyyymmddHH24miss')
+        </if>
+
+    </select>
+</mapper>

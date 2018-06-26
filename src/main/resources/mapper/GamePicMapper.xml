@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.IGamePicDao">
+    <resultMap type="com.hy.entity.GamePic" id="gamePicResult"/>
+    <resultMap type="com.hy.entity.GamePic1" id="gamePic1Result"/>
+    <insert id="add" parameterType="com.hy.entity.GamePic">
+        INSERT into hy_game_pic (
+        id,
+        <if test="picurl !=null and picurl !=''">picurl,</if>
+        <if test="showlevel !=null and showlevel !=''">showlevel,</if>
+        <if test="usetype !=null and usetype !=''">usetype,</if>
+        <if test="remark !=null and remark !=''">remark,</if>
+        createtime,
+        <if test="createuser !=null and createuser !=''">createuser,</if>
+        gameid
+        ) VALUES (
+        #{id},
+        <if test="picurl !=null and picurl !=''">#{picurl},</if>
+        <if test="showlevel !=null and showlevel !=''">#{showlevel},</if>
+        <if test="usetype !=null and usetype !=''">#{usetype},</if>
+        <if test="remark !=null and remark !=''">#{remark},</if>
+        to_char(sysdate,'yyyymmddHH24mmss'),
+        <if test="createuser !=null and createuser !=''">#{createuser},</if>
+        #{gameid}
+        )
+    </insert>
+    <update id="update" parameterType="com.hy.entity.GamePic">
+        UPDATE hy_game_pic set
+        <trim  suffixOverrides=",">
+            <if test="picurl != null and picurl != ''" >
+                picurl = #{picurl},
+            </if>
+            <if test="gameid != null and gameid != ''" >
+                gameid = #{gameid},
+            </if>
+            <if test="showlevel != null and showlevel != ''" >
+                showlevel = #{showlevel},
+            </if>
+            <if test="usetype != null and usetype != ''" >
+                usetype = #{usetype},
+            </if>
+            <if test="remark != null and remark != ''" >
+                remark = #{remark},
+            </if>
+            updatetime = to_char(sysdate,'yyyymmddHH24mmss'),
+            <if test="updateuser != null and updateuser != ''" >
+                updateuser = #{updateuser},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+    <delete id="delete" parameterType="com.hy.entity.GamePic">
+        DELETE FROM hy_game_pic where id = #{id}
+    </delete>
+    <select id="getGamePic1" parameterType="com.hy.entity.GamePic1" resultMap="gamePic1Result">
+        SELECT a.*,b.name gamename from hy_game_pic a,hy_game_info b  where a.gameid = b.id and a.id = #{id}
+    </select>
+    <select id="getList" parameterType="map" resultMap="gamePic1Result">
+        SELECT a.*,b.name gamename from hy_game_pic a,hy_game_info b
+
+        where a.gameid = b.id
+        <if test="gameid != null and gameid != ''">
+            and a.gameid = #{gameid}
+        </if>
+        <if test="usetype != null and usetype != ''">
+            and a.usetype = #{usetype}
+        </if>
+    </select>
+    <select id="getListCount" parameterType="map" resultType="int">
+        SELECT count(*) from hy_game_pic a,hy_game_info b  where a.gameid = b.id
+        <if test="gameid != null and gameid != ''">
+            and a.gameid = #{gameid}
+        </if>
+    </select>
+</mapper>

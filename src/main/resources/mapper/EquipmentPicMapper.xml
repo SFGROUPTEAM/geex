@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.IEquipmentPicDao">
+    <resultMap type="com.hy.entity.EquipmentPic" id="equipmentPicResult"/>
+    <resultMap type="com.hy.entity.EquipmentPic1" id="equipmentPic1Result"/>
+
+
+    <insert id="add" parameterType="com.hy.entity.EquipmentPic">
+        INSERT into hy_equipmentpic (
+        id,
+        <if test="picurl !=null and picurl !=''">picurl,</if>
+        <if test="showlevel !=null and showlevel !=''">showlevel,</if>
+        <if test="usetype !=null and usetype !=''">usetype,</if>
+        <if test="remark !=null and remark !=''">remark,</if>
+        createtime,
+        <if test="createuser !=null and createuser !=''">createuser,</if>
+        equipmentid
+        ) VALUES (
+        #{id},
+        <if test="picurl !=null and picurl !=''">#{picurl},</if>
+        <if test="showlevel !=null and showlevel !=''">#{showlevel},</if>
+        <if test="usetype !=null and usetype !=''">#{usetype},</if>
+        <if test="remark !=null and remark !=''">#{remark},</if>
+        to_char(sysdate,'yyyymmddHH24mmss'),
+        <if test="createuser !=null and createuser !=''">#{createuser},</if>
+        #{equipmentid}
+        )
+    </insert>
+
+
+    <update id="update" parameterType="com.hy.entity.EquipmentPic">
+        UPDATE hy_equipmentpic set
+        <trim  suffixOverrides=",">
+        <if test="picurl != null and picurl != ''" >
+            picurl = #{picurl},
+        </if>
+        <if test="equipmentid != null and equipmentid != ''" >
+        equipmentid = #{equipmentid},
+        </if>
+        <if test="showlevel != null and showlevel != ''" >
+            showlevel = #{showlevel},
+        </if>
+        <if test="usetype != null and usetype != ''" >
+            usetype = #{usetype},
+        </if>
+        <if test="remark != null and remark != ''" >
+        remark = #{remark},
+        </if>
+
+            updatetime = to_char(sysdate,'yyyymmddHH24mmss'),
+
+        <if test="updateuser != null and updateuser != ''" >
+            updateuser = #{updateuser},
+        </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+
+
+    <delete id="delete" parameterType="com.hy.entity.EquipmentPic">
+        delete from hy_equipmentpic where id = #{id}
+    </delete>
+
+
+    <select id="getList" parameterType="map" resultMap="equipmentPic1Result">
+        SELECT  a.*,b.name equipmentname  from hy_equipmentpic a,hy_equipment b where a.equipmentid = b.id
+        <if test="equipmentid != null and equipmentid != ''">
+              and a.equipmentid = #{equipmentid}
+        </if>
+        <if test="showlevel != null and showlevel != ''">
+            and a.showlevel = #{showlevel}
+        </if>
+        <if test="usetype != null and usetype != ''">
+            and a.usetype = #{usetype}
+        </if>
+    </select>
+
+    <select id="getListCount" parameterType="map" resultType="int">
+        SELECT count(*)  from hy_equipmentpic a,hy_equipment b where a.equipmentid = b.id
+        <if test="equipmentid != null and equipmentid != ''">
+            and a.equipmentid = #{equipmentid}
+        </if>
+        <if test="showlevel != null and showlevel != ''">
+            and a.showlevel = #{showlevel}
+        </if>
+        <if test="usetype != null and usetype != ''">
+            and a.usetype = #{usetype}
+        </if>
+    </select>
+
+    <select id="getEquipmentPic1" parameterType="com.hy.entity.EquipmentPic" resultMap="equipmentPic1Result">
+        SELECT a.*,b.name equipmentname  from hy_equipmentpic a,hy_equipment b where a.equipmentid = b.id and  a.id = #{id}
+    </select>
+
+
+</mapper>

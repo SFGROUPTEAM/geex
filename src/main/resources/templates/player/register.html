@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=1200" />
+	<meta name="renderer" content="webkit" />
+	<link rel="shortcut icon" th:href="@{/images/icon/bitbug_favicon.ico}"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+	<meta http-equiv="expires" content="0">
+	<meta property="wb:webmaster" content="8feadf206f24dc4f" />
+	<title>[[#{player.register.title}]]</title>
+
+	<link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">
+	<link rel="stylesheet" th:href="@{/player/css/player_common.css}" media="all">
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+	<link rel="stylesheet" th:href="@{/css/font-awesome.css}" />
+	<link rel="stylesheet" th:href="@{/css/global.css}" />
+	<link rel="stylesheet" th:href="@{/css/newIndex.css}"/>
+    <link rel="stylesheet" th:href="@{/css/register.css}"/>
+	<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
+
+	<script type="text/javascript" th:src="@{/js/jquery.validate.min.js}"></script>
+	<script type="text/javascript" th:src="@{/js/jquery.validate.addmethod.js}"></script>
+	<script th:src="@{/js/md5.js}"></script>
+	<script th:src="@{/layui/layui.js}"></script>
+	<script th:src="@{/js/moduleUse2.js}"></script>
+	<script th:inline="javascript" type="text/javascript">
+        /* jquery 表单简单验证 */
+        $().ready(function() {
+            var regRead="false";
+            $("#register_form").validate({
+                rules : {
+                    username:{
+                        required:true,
+                        remote: "/Player/checkUser?phone="+$("#phone").val()
+                    },
+                    password : {
+                        required : true,
+                        minlength : 5,
+                    },
+                    confirmPassword : "required",
+                },
+                messages : {
+                    username : {
+                        required:[[#{player.register.tip1}]],
+                    	remote: [[#{player.register.tip2}]]
+					},
+                    password : {
+                        required : [[#{player.register.tip4}]],
+                        minlength : jQuery.format([[#{player.register.tip6}]])
+                    },
+                    confirmPassword: {required:[[#{player.register.tip5}]],equalTo: [[#{player.register.tip7}]]}
+                },errorPlacement: function(error, element){
+                    error.insertAfter(element.parent());
+                },errorClass: "invalid"
+            });
+
+            $('#kaptchaImgObj').on({
+                click:function(){
+                    $("#kaptchaImgObj").attr('src',"/Player/captcha.jpg?t=" + $.now());
+                }
+            });
+        });
+
+
+        function beforeSubmit() {
+            var password = $("#password").val();
+            var confirmPassword = $("#confirmPassword").val();
+            if(password=='' || password.length==0) {
+                return false;
+            }
+            if(confirmPassword=='' || confirmPassword.length==0) {
+                return false;
+            }
+            //加密成md5
+            var passwd = $.md5(password);
+            $("#password").val(passwd);
+            $("#confirmPassword").val(passwd);
+            return true;
+        }
+
+        function agreement(){//同意协议
+			// alert($("#regRead").val());
+			if(regRead=="true"){
+                $("#btnSubmit").attr("disabled",true);
+                $("#btnSubmit").removeClass("checkRegister");
+                $("#btnSubmit").addClass("unCheckRegister");
+                regRead="false";
+			}else{
+                $("#btnSubmit").attr("disabled",false);
+                $("#btnSubmit").removeClass("unCheckRegister");
+                $("#btnSubmit").addClass("checkRegister");
+                regRead="true";
+			}
+		}
+
+		function showAgreement(){//弹出用户服务协议
+            layer.open({
+                type: 2,
+                area: ['750px', '95%'],
+                title: [[#{player.register.tip11}]],
+                shade: 0.6,
+                anim: 2,
+                content: /*[[@{/Player/agreement.html}]]*/'',
+				time:false
+            });
+		}
+	</script>
+
+</head>
+<style>
+    .form-pb30-h48 .ZForm-wrap {
+        position: relative;
+        padding-bottom: 15px;
+        width: 132%;
+    }
+    .layui-input{
+        width: 406px;
+        height: 60px;
+        float: left;
+    }
+    label{float: left;line-height: 343%;margin-left: 4%;}
+</style>
+<body>
+<div class="web-top" style="height: 0px;">
+	<div class="topBar" th:include="@{common/top.html}"></div>
+	<!--<div class="logoBar" th:include="@{/common/header.html}"></div>
+	&lt;!&ndash;导航&ndash;&gt;
+	<div class="logoBar" th:include="@{/common/navBar.html}"></div>-->
+</div>
+<div style="height: 650px;margin-top: 60px;min-height: 500px;">
+	<div class="header_div">
+		<div class="clearfix">
+            <div class="header_des0 clearfix">
+                <a href="/index.html/" ><img th:src="@{/images1/logo_huiyou.png}" style="height:50px;padding-right:15px;" /></a>
+                <!--<span class="header_span0"><nobr><a href="/index.html/" style="text-decoration: none;color:black">[[#{AppTitle}]]</a></nobr></span>-->
+            </div>
+            <div class="header_des1 clearfix">
+                <span class="header_span1">[[#{player.register.title1}]]</span>
+            </div>
+			<p style="float:right;width: 50%;text-align: center;">
+				[[#{player.register.tip8}]]&nbsp;&nbsp;<a style="font-size: 20px;color:red;" th:href="@{/Player/}">[[#{player.register.tip9}]]</a>
+			</p>
+		</div>
+	</div>
+
+	<div style="padding-top: 40px;">
+        <form id="register_form" name="register_form" th:action="@{/Player/register}" method="post">
+            <div class="page-passport page-passport-register page-passport-register-lr">
+                <div class="w1200 clearfix">
+                    <div class="form-box form-user form-pb30-h48">
+                        <div class="ZForm-wrap clearfix">
+                            <!--<p class="key1">用户名</p>-->
+                            <div>
+                                <div class="relative-box">
+                                    <input id="username" class="layui-input" style="width: 406px;height:60px;" name="username" tabindex="1" th:placeholder="#{player.register.tip0}" type="text" maxlength="20" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ZForm-wrap clearfix">
+                            <!--<p class="key1"><nobr>[[#{player.login.tip5}]]</nobr></p>-->
+                            <div class="form-group clearfix">
+                                <!--<i class="fa fa-unlock fa-lg"></i>-->
+                                <input type="text" name="kaptcha" id="kaptcha" tabindex="3" style="width: 255px;height:50px;float: left;" class="layui-input clearfix" th:placeholder="#{player.register.tip3}"
+                                       autocomplete="off" >
+                                <img id="kaptchaImgObj" th:alt="#{player.login.tip7}" style="width:145px;height:50px;margin-left: 7px;" th:src="@{/Player/captcha.jpg}" />
+                            </div>
+                        </div>
+
+                        <!--<div class="ZForm-wrap clearfix">
+                            <p class="key1">邮箱</p>
+                            <div>
+                                <div class="relative-box">
+                                    <input id="email" class="layui-input" style="width: 320px;height:50px;" name="email" tabindex="1" placeholder="请输入您的用户名" type="text" maxlength="11" />
+                                </div>
+                            </div>
+                        </div>-->
+
+                        <div class="ZForm-wrap clearfix">
+                            <!--<p class="key1">密码</p>-->
+                            <div>
+                                <div class="relative-box">
+                                    <input id="password" name="password" class="layui-input" style="width: 406px;height:60px;" tabindex="3" onpaste="return false" th:placeholder="#{player.register.tip4}"  type="password" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ZForm-wrap clearfix">
+                            <!--<p class="key1">确认密码</p>-->
+                            <div>
+                                <div class="relative-box">
+                                    <input id="confirmPassword" name="confirmPassword" class="layui-input" style="width: 406px;height:60px;" th:placeholder="#{player.register.tip5}" onpaste="return false" tabindex="4"
+                                           type="password" equalTo="#password" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="inner-box">
+                                <label class="clearfix" style="padding: 5px;">
+                                    <input type="checkbox" style="float: left;margin: 22px 0 0;" name="" id="regRead" onclick="agreement()">
+                                    <span class="txt" style="padding-left: 5px;">[[#{player.register.tip10}]]<a onclick="showAgreement()">《[[#{player.register.tip11}]]》</a></span>
+                                </label>
+                                <input id="btnSubmit" class="layui-btn unCheckRegister" onclick="beforeSubmit()" type="submit" disabled="disabled" style="width:406px;height:60px;font-weight: bold;" th:value="#{player.register.tip13}"/>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <input type="hidden" name="fp" id="fp"/>
+            <input type="hidden" name="Token" id="Token" value="" />
+        </form>
+	</div>
+</div>
+
+<div class="web-bottom" style="bottom:0px;"  th:include="@{common/footer.html}"></div>
+</body>
+</html>

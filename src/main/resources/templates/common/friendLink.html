@@ -1,0 +1,28 @@
+<div class="link">
+    <span>[[#{Common.friendship}]]:&nbsp;</span>
+    <span th:each="friendLink : ${session.friendLinkList}"><a th:href="${friendLink.url}" target="_blank">[[${friendLink.name}]]</a></span>
+</div>
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function () {
+        var friendLinkList = [[${session.friendLinkList}]];
+        if (friendLinkList==null){
+            $.ajax({
+                type: 'POST',
+                url: '/friendLink',
+                datatype: 'json',
+                cache: false,
+                success: function (data) {
+                    var data1=JSON.parse(data);
+                    var str = "";
+                    $.each(data1, function (i, obj) {
+                        str = str + "<span><a href=" + obj.url + ">" + obj.name + "</a></span>"
+                    });
+                    $(".link").append(str)
+                }
+            });
+
+        }
+    })
+    /*]]>*/
+</script>

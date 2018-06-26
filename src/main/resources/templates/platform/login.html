@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport"
+		  content="width=device-width, initial-scale=1, maximum-scale=1" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+	<meta http-equiv="expires" content="0">
+	<link rel="shortcut icon"  th:href="@{/images/favicon.ico}"/>
+	<!--<link rel="icon" type="image/gif" th:href="@{/images/animated_favicon.gif}">-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}" />
+    <!--<link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all">-->
+    <title>平台管理人员登陆</title>
+    <!-- Bootstrap 核心 JavaScript 文件 -->
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/jquery.min.js}"></script>
+    <!--<script th:src="@{/layui/layui.js}"></script>-->
+	<script th:src="@{/js/md5.js}"></script>
+
+	<script th:inline="javascript" type="text/javascript">
+        /* jquery 表单简单验证 */
+        $().ready(function() {
+            /*$("#loginName").blur(function() {
+                $("#loginName").val() == ""?$("#loginName").focus(): $('#errorTip').text("请输入登录用户名或手机号");
+            });
+            $("#loginPwd").blur(function() {
+                $("#loginPwd").val() == ""?$("#loginPwd").focus(): $('#errorTip').text("请输入登录密码");
+            });
+            $("#kaptcha").blur(function() {
+                $("#kaptcha").val() == ""?$("#kaptcha").focus(): $('#errorTip').text("请输入验证码");
+            });*/
+            /*$("#loginPwd").val("");*/
+            if ($("#isLoginOut").val() == "true") {
+                alert("未登录或登录超时。请重新登录，谢谢！", function () {
+                    parent.location.href = "/platform/login.html";
+                });
+            }
+//            layui.use(['form', 'laydate','layedit','laypage','layer'], function () {
+//                var t_layer = layui.layer;
+//
+//            });
+
+            $('#kaptchaImgObj').on({
+                click:function(){
+                    $("#kaptchaImgObj").attr('src',"/PlatForm/captcha.jpg?t=" + $.now());
+                }
+            });
+
+
+        });
+
+        function beforeSubmit() {
+            $('#errorTip').text("");
+            var loginName = $("#loginName").val();
+            var loginPwd = $("#loginPwd").val();
+            var kaptcha = $("#kaptcha").val();
+            if(loginName=='' || loginName.length==0) {
+                $('#errorTip').text("请输入登录用户名或手机号");
+                return false;
+            }
+            if(loginPwd=='' || loginPwd.length==0) {
+                $('#errorTip').text("请输入登录密码");
+                return false;
+            }
+            if(kaptcha=='' || kaptcha.length==0) {
+                $('#errorTip').text("请输入验证码");
+                return false;
+            }
+             //加密成md5
+            var md5Passwd = $.md5(loginPwd);
+
+            $("#md5Password").val(md5Passwd);
+            //$("#loginPwd").val('');
+            return true;
+        }
+
+	</script>
+	<style type="text/css">
+		body {
+			width:100%;
+			height:100%;
+			position:absolute;
+		}
+        .container{
+            position: relative;
+            margin:0 auto;
+            top: 50%;
+            height: 400px;
+            margin-top: -200px; /* negative half of the height */
+        }
+		.form {
+			background: rgba(255, 255, 255, 0.2);
+			width:450px;
+			margin-left:auto;
+			margin-right:auto;
+			padding-left: 10px;
+			padding-right: 10px;
+		}
+
+		#login_form {
+			display: block;
+		}
+
+		#register_form {
+			display: none;
+		}
+
+		.fa {
+			display: inline-block;
+			top: 27px;
+			left: 6px;
+			position: relative;
+			color: #ccc;
+		}
+
+		input[type="text"],input[type="password"] {
+			padding-left: 26px;
+		}
+
+		.checkbox {
+			padding-left: 21px;
+		}
+
+		.footer {
+			position: fixed;
+			left: 0px;
+			bottom: 0px;
+			width: 100%;
+			z-index: 9999;
+		}
+
+		#errorTip{
+			font-size: 14px;
+			color: red;
+		}
+
+        input.error{
+            border: 1px solid #E6594E;
+        }
+
+        input.highlight{
+            border: 1px solid #7abd54;
+        }
+        label.error{
+            float: left;
+            height: 30px;
+            line-height: 20px;
+            font-size: 12px;
+            text-align: left;
+            margin-left: 5px;
+            padding-left: 30px;
+            color: red;
+
+        }
+
+        #kaptcha{
+            width:54%;
+        }
+
+        #kaptchaImgObj{
+            width:45%;
+            height:100%;
+            float:right;
+            margin-top:-30px;
+        }
+
+
+
+	</style>
+</head>
+<body th:style="'background:url(' + @{/images/bg.jpg} + ') fixed center center no-repeat;background-size:cover;'">
+<div class="container" >
+	<div class="form row">
+		<input type="hidden" id="isLoginOut" th:value="${isLoginOut}" />
+		<form th:action="@{/PlatForm/login}"
+			  class="form-horizontal col-sm-offset-3 col-md-offset-3"
+			  method="post" id="login_form" name="login_form">
+			<!-- 标题 -->
+			<h3 class="form-title" style="margin-left: 10%;font-weight: bold">汇游网管理后台</h3>
+			<div class="col-sm-9 col-md-9">
+				<div class="form-group" >
+					<i class="fa fa-user fa-lg"> </i>
+					<!-- 用户名  -->
+					<input class="form-control" type="text"
+						   placeholder="请输入您的用户名或手机号" name="loginName" id="loginName" autofocus="autofocus"
+						   maxlength="20" />
+				</div>
+				<div class="form-group">
+					<i class="fa fa-key fa-lg"></i>
+                    <input type="hidden" id="md5Password" name="md5Password">
+					<input class="form-control" type="password"
+						   placeholder="" id="loginPwd" name="loginPwd" maxlength="32" onpaste="return false"/>
+				</div>
+				<div class="form-group">
+                    <i class="fa fa-unlock fa-lg"></i>
+                    <input type="text" name="kaptcha" id="kaptcha"  lay-verify="" placeholder="请输入验证码"
+                           autocomplete="off" class="form-control">
+                    <img id="kaptchaImgObj" alt="如果看不清楚，请单击图片刷新！" th:src="@{/PlatForm/captcha.jpg}" />
+                </div>
+
+				<div class="form-group">
+                    <div style="height: 25px">
+					  <p  id="errorTip" th:if="${errorInfo != null}" th:text="${errorInfo}"></p>
+                    </div>
+				</div>
+				<div class="form-group">
+                    <div style="height: 30px;widht:100%;text-align:center;margin:0 auto;">
+					  <input type="submit" class="btn btn-success" onclick="return beforeSubmit();"
+                           style=" background-color: #0C0C0C; border: 0px ;width:60%;"
+						   value="登陆 " />
+                    </div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div></body>
+<div class="footer">
+	<p  style="text-align: center;">
+		<span>Copyright</span><span>&copy;</span><span>2018</span><a style="color: blue" >HuiYou</a>
+	</p>
+</div>
+</body>
+</html>

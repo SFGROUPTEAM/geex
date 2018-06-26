@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.platform.IPlatFormRoleButtonDao">
+    <resultMap type="com.hy.entity.PlatFormRoleButton" id="roleButtonResult"/>
+    <insert id="add" parameterType="com.hy.entity.PlatFormRoleButton">
+        INSERT INTO hy_PLATFORM_ROLEBUTTON (roleid,buttonid,menuid)VALUES (#{roleid},#{buttonid},#{menuid})
+    </insert>
+    <update id="update" parameterType="com.hy.entity.PlatFormRoleButton">
+        UPDATE hy_PLATFORM_ROLEBUTTON set
+    </update>
+    <delete id="delete" parameterType="com.hy.entity.PlatFormRoleButton">
+        DELETE from hy_PLATFORM_ROLEBUTTON where roleid = #{roleid}
+        <if test="buttonid != null and buttonid != ''">
+            and buttonid = #{buttonid}
+        </if>
+        <if test="menuid != null and menuid != ''">
+            and menuid = #{menuid}
+        </if>
+
+    </delete>
+    <select id="getPlatFormRoleButton" parameterType="com.hy.entity.PlatFormRoleButton" resultMap="roleButtonResult">
+
+    </select>
+    <select id="getList" parameterType="map" resultMap="roleButtonResult">
+        SELECT  *  from  hy_PLATFORM_ROLEBUTTON where 1=1
+        <if test="roleid != null and roleid != ''">
+            and roleid = #{roleid}
+        </if>
+        <if test="buttonid != null and buttonid != ''">
+            and buttonid = #{buttonid}
+        </if>
+        <if test="menuid != null and menuid != ''">
+            and menuid = #{menuid}
+        </if>
+    </select>
+    <select id="getListCount" parameterType="map" resultType="int">
+        SELECT  count(*)  from  hy_PLATFORM_ROLEBUTTON where 1=1
+        <if test="roleid != null and roleid != ''">
+            and roleid = #{roleid}
+        </if>
+        <if test="buttonid != null and buttonid != ''">
+            and buttonid = #{buttonid}
+        </if>
+        <if test="menuid != null and menuid != ''">
+            and menuid = #{menuid}
+        </if>
+    </select>
+</mapper>

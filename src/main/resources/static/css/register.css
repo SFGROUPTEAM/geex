@@ -1,0 +1,35 @@
+.unCheckRegister{
+    background-color:#D4D4D4;
+    color:black;
+}
+
+.checkRegister{
+    background-color:#FF9800;
+    color:white;
+}
+
+.invalid{
+    color:red;
+}
+.key1{
+    float:left;padding:15px;width:150px;
+}
+
+.header_div{
+    height: 80px;border-bottom:1px solid #dddddd;padding-top: 30px;
+}
+.header_des0{
+    float: left;width: 25%;text-align: right;border-right:1px solid #dddddd;
+}
+
+.header_span0{
+    font-size:28px;width: 200px;padding-right: 20px;
+}
+
+.header_des1{
+    float: left;width: 25%;text-align: left;padding-top: 10px;
+}
+
+.header_span1{
+    font-size:18px;width: 200px;padding-left: 15px;color:#797979;
+}

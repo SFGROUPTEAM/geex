@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.platform.IPlatFormRoleMenuDao">
+    <resultMap type="com.hy.entity.PlatFormRoleMenu" id="roleMenuResult"/>
+    <insert id="add" parameterType="com.hy.entity.PlatFormRoleMenu">
+        INSERT  into hy_PLATFORM_ROLEMENU (roleid,menuid) VALUES (#{roleid},#{menuid})
+    </insert>
+    <update id="update" parameterType="com.hy.entity.PlatFormRoleMenu">
+
+    </update>
+    <delete id="delete" parameterType="com.hy.entity.PlatFormRoleMenu">
+        DELETE from hy_PLATFORM_ROLEMENU where roleid = #{roleid}
+        <if test="menuid !=null and menuid != ''"> and menuid = #{menuid} </if>
+    </delete>
+    <select id="getPlatFormRoleMenu" parameterType="com.hy.entity.PlatFormRoleMenu" resultMap="roleMenuResult">
+
+    </select>
+    <select id="getList" parameterType="map" resultMap="roleMenuResult">
+        SELECT  * from hy_PLATFORM_ROLEMENU where roleid = #{roleid}
+    </select>
+    <select id="getListCount" parameterType="map" resultType="int">
+        SELECT  count(*) from hy_PLATFORM_ROLEMENU where roleid = #{roleid}
+    </select>
+</mapper>

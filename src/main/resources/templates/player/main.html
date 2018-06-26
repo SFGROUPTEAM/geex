@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+    <link rel="shortcut icon" th:href="@{/images/icon/bitbug_favicon.ico}"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=1200"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <title>[[#{player.memberCenter.menu1}]]</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}"/>
+    <link rel="stylesheet" th:href="@{/css/global.css}"/>
+    <link rel="stylesheet" th:href="@{/css/newIndex.css}"/>
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/js/moduleUse2.js}"></script>
+
+    <style>
+        .btnUpdate {
+            background-color: #FF9800;
+            color: white;
+            width: 100px;
+            height: 35px;
+        }
+    </style>
+    <script th:inline="javascript" type="text/javascript">
+    </script>
+</head>
+<body class="layout" onmousemove="return false" oncontextmenu="return false" ondragstart="return false"
+      onselectstart="return false" onselect="document.selection.empty()" oncopy="document.selection.empty()"
+      onbeforecopy="return false" onmouseup="document.selection.empty()">
+<div class="web-top">
+    <div class="topBar" th:include="@{common/top.html}"></div>
+    <div class="logoBar" th:include="@{common/header.html}"></div>
+    <!--导航-->
+    <div class="logoBar" th:include="@{common/navBar.html}"></div>
+</div>
+<div class="wrapper" style="padding-top: 75px;">
+    <div class="container" style="border: 1px;width:90%;">
+        <div class="col-md-12 column">
+            <div class="row clearfix">
+                <!--左侧-->
+                <div th:include="@{player/left.html}"></div>
+
+                <!--右侧-->
+                <div class="col-md-9 column">
+                    <header style="height: 60px;border-bottom:1px solid #E5E5E5">
+                        <div class="w1200 clearfix">
+                            <h1 class="clearfix" style="width: 500px;">
+                                <p style="font-size:18px;padding-top:15px;float: left;color:black;float: left">
+                                    [[#{player.memberCenter.menu0}]]</p>
+                            </h1>
+                        </div>
+                    </header>
+
+                    <div class="panel-collapse collapse in" style="padding-top: 15px;">
+                        <div class="panel-body">
+                            <form class="form-horizontal m-t jeesns_form"
+                                  th:action="@{/Player/main.html}" method="post">
+                                <input name="id" class="form-control" type="hidden" th:value="${user.id}">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">[[#{player.main.desc1}]]：</label>
+                                    <div class="col-sm-7">
+                                        <p style="display: inline" th:text="${user.username}"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">[[#{player.main.desc2}]]：</label>
+                                    <div class="col-sm-7">
+                                        <input id="nickname" name="nickname" class="form-control" type="text"
+                                               data-type="require" th:value="${user.nickname}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">[[#{player.main.desc3}]]：</label>
+                                    <div class="col-sm-7">
+                                        <select name="gendar" style="width: 67px;height: 27px;border-radius: 5px;">
+                                            <option th:text="#{player.main.desc4}" th:selected="${user.gendar==0}"
+                                                    th:value="0"></option>
+                                            <option th:text="#{player.main.desc5}" th:selected="${user.gendar==1}"
+                                                    th:value="1"></option>
+                                            <option th:text="#{player.main.desc6}" th:selected="${user.gendar==2}"
+                                                    th:value="2"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">
+                                        <nobr>[[#{player.main.desc7}]]：</nobr>
+                                    </label>
+                                    <div class="col-sm-7">
+										<textarea id="remark" name="remark" class="form-control"
+                                                  type="text" data-type="require" th:value="${user.remark}"
+                                                  cols="5" th:text="${user.remark}"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">[[#{player.main.desc8}]]：</label>
+                                    <div class="col-sm-7">
+                                        <input id="birthday" name="birthday" type="date" class="form-control"
+                                               th:value="${user.birthday}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">QQ：</label>
+                                    <div class="col-sm-7">
+                                        <input id="qq" name="qq" class="form-control" type="text"
+                                               dataType="" th:value="${user.qq}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">[[#{player.main.desc9}]]：</label>
+                                    <div class="col-sm-7">
+                                        <input id="phone" name="phone" class="form-control"
+                                               type="text" dataType="" th:value="${user.phone}">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">[[#{player.main.desc10}]]：</label>
+                                    <div class="col-sm-7">
+                                        <input id="email" name="email" class="form-control"
+                                               type="text" dataType="" th:value="${user.email}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label"></label>
+                                    <div class="col-sm-7">
+                                        <input type="submit"
+                                               class="btn btnUpdate"
+                                               value="修改">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:include="@{common/memberFooter.html}"></div>
+</div>
+
+<!--bottom-->
+</body>
+<script type="text/javascript" th:inline="javascript">
+    var user = [[${user}]];
+    console.log(user);
+
+</script>
+<script>
+    $("#memberMenu1").addClass("hover")
+</script>
+</html>

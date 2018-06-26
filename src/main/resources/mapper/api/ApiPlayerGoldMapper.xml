@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.api.IApiPlayerGoldDao">
+    <resultMap type="com.hy.entity.PlayerGold" id="playerGoldResult"/>
+    <select id="calculateGold" statementType="CALLABLE" parameterType="map">
+        <![CDATA[  {call HY_PACK_CALCULATEGOLD.calculate(
+  	               #{t_type,mode=IN,jdbcType=VARCHAR},
+	  			   #{t_id,mode=IN,jdbcType=VARCHAR},
+				   #{p_retVal,mode=OUT,jdbcType=NUMERIC},
+				    #{p_retMsg,mode=OUT,jdbcType=VARCHAR}
+  			    )}
+  			    ]]>
+    </select>
+</mapper>

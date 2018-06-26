@@ -1,0 +1,42 @@
+.title_ul {
+    list-style: none;
+    background-color: #E5E5E5;
+    vertical-align: middle
+}
+
+.detail_ul {
+    list-style: none;
+    height: 58px;
+    margin-top: -10px;
+    border-left: 1px solid #D4D4D4;
+    border-right: 1px solid #D4D4D4;
+    border-bottom: 1px solid #D4D4D4;
+}
+
+.title_li {
+    width: 20%;
+    height: 45px;
+    float: left;
+    text-align: center;
+}
+
+.li_sub_con {
+    vertical-align: middle;
+    line-height: 58px;
+}
+
+.query_li {
+    float: left;
+    text-align: center;
+}
+
+.btnQuery {
+    background-color: #FF9800;
+    color: white;
+    width: 100px;
+}
+
+.currentmenu{
+    color:red;
+    font-weight: bold;
+}

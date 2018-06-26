@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.platform.IPlatFormUserRoleDao">
+    <resultMap type="com.hy.entity.PlatFormUserRole" id="userRoleResult"/>
+    <insert id="add" parameterType="com.hy.entity.PlatFormUserRole">
+      INSERT  INTO hy_PLATFORM_USERROLE  (userid,roleid) VALUES (#{userid},#{roleid})
+    </insert>
+    <update id="update" parameterType="com.hy.entity.PlatFormUserRole">
+
+    </update>
+    <delete id="delete" parameterType="com.hy.entity.PlatFormUserRole">
+          DELETE  from hy_PLATFORM_USERROLE where userid = #{userid}
+        <if test="roleid !=null and roleid != ''"> and roleid = #{roleid}</if>
+    </delete>
+    <select id="getPlatFormUserRole" parameterType="com.hy.entity.PlatFormUserRole" resultMap="userRoleResult">
+
+    </select>
+    <select id="getList" parameterType="map" resultMap="userRoleResult">
+            SELECT * from hy_PLATFORM_USERROLE where userid = #{userid}
+    </select>
+    <select id="getListCount" parameterType="map" resultType="int">
+          SELECT count(*) from hy_PLATFORM_USERROLE where userid = #{userid}
+    </select>
+</mapper>

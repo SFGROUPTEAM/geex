@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.IEquipmentLogDao">
+    <resultMap type="com.hy.entity.EquipmentLog" id="equipmentLogResult"/>
+    <resultMap type="com.hy.entity.EquipmentLog1" id="equipmentLog1Result"/>
+
+    <insert id="add" parameterType="com.hy.entity.EquipmentLog">
+        INSERT into hy_equipment_log (id,equipmentid,
+        <if test="type != null and type != ''">type,</if>
+        <if test="subtype != null and subtype != ''">subtype,</if>
+        <if test="quantity != null">quantity,</if>
+        <if test="beforequantity != null">beforequantity,</if>
+        <if test="afterquantity != null">afterquantity,</if>
+        <if test="playerid != null and playerid != ''">playerid,</if>
+        <if test="price != null and price != ''">price,</if>
+        <if test="operationuser != null and operationuser != ''">operationuser,</if>
+        operationtime)VALUES (#{id},#{equipmentid},
+        <if test="type != null and type != ''">#{type},</if>
+        <if test="subtype != null and subtype != ''">#{subtype},</if>
+        <if test="quantity != null">#{quantity},</if>
+        <if test="beforequantity != null">#{beforequantity},</if>
+        <if test="afterquantity != null">#{afterquantity},</if>
+        <if test="playerid != null and playerid != ''">#{playerid},</if>
+        <if test="price != null and price != ''">#{price},</if>
+        <if test="operationuser != null and operationuser != ''">#{operationuser},</if>
+        to_char(sysdate,'yyyymmddHH24mmss'))
+    </insert>
+
+    <select id="getEquipmentLog" parameterType="com.hy.entity.EquipmentLog" resultMap="equipmentLogResult">
+         SELECT  * FROM  hy_equipment_log a where  1=1 and  a.id=#{id} AND  rownum=1
+    </select>
+
+    <select id="getList" parameterType="map" resultMap="equipmentLog1Result">
+        SELECT t.equipmentid,t.type,t.subtype,t.quantity,t.beforequantity,t.afterquantity,t.playerid,t.price,t.operationuser,t.id,t.remark,
+        to_char(to_date(t.operationtime,'yyyy-mm-dd HH24:mi:ss'),'yyyy-mm-dd HH24:mi:ss')   operationtime ,e.equipmentno,
+        e.name equipmentname,p.username playername FROM hy_equipment_log t left join hy_equipment e on t.equipmentid=e.id
+        left join hy_player p on t.playerid=p.id  where 1=1
+        <if test="equipmentid != null and equipmentid != ''">
+            and t.equipmentid  = #{equipmentid}
+        </if>
+        <if test="type != null and type != ''">
+            and t.type  = #{type}
+        </if>
+        <if test="subtype != null and subtype != ''">
+            and t.subtype  = #{subtype}
+        </if>
+        <if test="playerid != null and playerid != ''">
+            and t.playerid  = #{playerid}
+        </if>
+        <if test="playername != null and playername != ''">
+            and p.username  = #{playername}
+        </if>
+        <if test="equno != null and equno != ''">
+            and e.equipmentno  = #{equno}
+        </if>
+        <if test="data1 != null and data1 != ''">
+            and t.operationtime >= to_char(to_date(#{data1},'yyyy-mm-dd HH24:mi:ss'),'yyyymmddHH24miss')
+        </if>
+        <if test="data2 != null and data2 != ''">
+            and t.operationtime &lt;= to_char(to_date(#{data2},'yyyy-mm-dd HH24:mi:ss'),'yyyymmddHH24miss')
+        </if>
+        ORDER  BY  t.OPERATIONTIME DESC
+    </select>
+    <select id="getListCount" parameterType="map" resultType="int">
+        SELECT count(*) FROM hy_equipment_log t left join hy_equipment e on t.equipmentid=e.id
+        left join hy_player p on t.playerid=p.id  where 1=1
+        <if test="equipmentid != null and equipmentid != ''">
+            and t.equipmentid  = #{equipmentid}
+        </if>
+        <if test="type != null and type != ''">
+            and t.type  = #{type}
+        </if>
+        <if test="subtype != null and subtype != ''">
+            and t.subtype  = #{subtype}
+        </if>
+        <if test="playerid != null and playerid != ''">
+            and t.playerid  = #{playerid}
+        </if>
+        <if test="playername != null and playername != ''">
+            and p.username  = #{playername}
+        </if>
+        <if test="equno != null and equno != ''">
+            and e.equipmentno  = #{equno}
+        </if>
+        <if test="data1 != null and data1 != ''">
+            and t.operationtime >= to_char(to_date(#{data1},'yyyy-mm-dd HH24:mi:ss'),'yyyymmddHH24miss')
+        </if>
+        <if test="data2 != null and data2 != ''">
+            and t.operationtime &lt;= to_char(to_date(#{data2},'yyyy-mm-dd HH24:mi:ss'),'yyyymmddHH24miss')
+        </if>
+    </select>
+</mapper>

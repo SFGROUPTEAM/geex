@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hy.dao.platform.IPlatFormMenuDao">
+    <resultMap type="com.hy.entity.PlatFormMenu" id="menuResult"/>
+    <resultMap type="com.hy.entity.PlatFormMenu1" id="menuResult1"/>
+
+    <insert id="add" parameterType="com.hy.entity.PlatFormMenu">
+        INSERT INTO HY_PLATFORM_MENU (id,parentid,
+        <if test="code != null and code != ''">code,</if>
+        <if test="type != null and type != ''">type,</if>
+        <if test="url != null and url != ''">url,</if>
+        <if test="target != null and target != ''">target,</if>
+        <if test="showlevel != null and showlevel != ''">showlevel,</if>
+        <if test="iconcls != null and iconcls != ''">iconcls,</if>
+        name,apptype)VALUES (#{id},#{parentid},
+        <if test="code != null and code != ''">#{code},</if>
+        <if test="type != null and type != ''">#{type},</if>
+        <if test="url != null and url != ''">#{url},</if>
+        <if test="target != null and target != ''">#{target},</if>
+        <if test="showlevel != null and showlevel != ''">#{showlevel},</if>
+        <if test="iconcls != null and iconcls != ''">#{iconcls},</if>
+        #{name},'A')
+    </insert>
+    <update id="update" parameterType="com.hy.entity.PlatFormMenu">
+        UPDATE HY_PLATFORM_MENU set
+        <if test="parentid != null and parentid != ''">parentid = #{parentid},</if>
+        <if test="code != null and code != ''">code = #{code},</if>
+        <if test="type != null and type != ''">type = #{type},</if>
+        <if test="url != null and url != ''">url = #{url},</if>
+        <if test="target != null and target != ''">target = #{target},</if>
+        <if test="showlevel != null and showlevel != ''">showlevel = #{showlevel},</if>
+        <if test="iconcls != null and iconcls != ''">iconcls = #{iconcls},</if>
+        <if test="name != null and name != ''">name = #{name},</if>
+        apptype='A'
+        where id = #{id}
+    </update>
+    <delete id="delete" parameterType="com.hy.entity.PlatFormMenu">
+        DELETE  from HY_PLATFORM_MENU where id =#{id}
+    </delete>
+    <select id="getPlatFormMenu" parameterType="com.hy.entity.PlatFormMenu" resultMap="menuResult">
+            SELECT  * from   HY_PLATFORM_MENU where id = #{id}
+    </select>
+    <select id="getList" parameterType="map" resultMap="menuResult">
+               SELECT * from  HY_PLATFORM_MENU m where apptype='A'
+               <if test="parentid != null and parentid != ''">and m.parentid = #{parentid}</if>
+        <if test="type != null and type != ''">and m.type = #{type}</if>
+        order by m.parentid,m.showlevel
+    </select>
+    <select id="getListCount" parameterType="map" resultType="int">
+        SELECT count(*) from  HY_PLATFORM_MENU where apptype='A'
+        <if test="parentid != null and parentid != ''">and parentid = #{parentid}</if>
+    </select>
+
+    <select id="getUserList" parameterType="map" resultMap="menuResult">
+       select distinct * from (
+        SELECT distinct a.* FROM HY_platform_user  t  inner join  HY_platform_userrole  ur  on t.id=ur.userid
+        inner join HY_platform_role r on ur.roleid=r.id and r.apptype='A'
+        inner join HY_platform_rolemenu m on ur.roleid=m.roleid
+        inner join HY_platform_menu a on m.menuid=a.id and a.apptype='A'
+        where 1=1 and t.state='1' and r.state='1'
+        <if test="userid != null and userid != ''"> and t.id=#{userid}</if>
+        union
+        select distinct b.*  FROM HY_platform_user  t  inner join  HY_platform_userrole  ur  on t.id=ur.userid
+        inner join HY_platform_role r on ur.roleid=r.id and r.apptype='A'
+        inner join HY_platform_rolemenu m on ur.roleid=m.roleid
+        inner join HY_platform_menu a on m.menuid=a.id and a.apptype='A'
+        inner join HY_platform_menu b on a.parentid=b.id and b.apptype='A'
+        where 1=1 and t.state='1' and r.state='1'
+        <if test="userid != null and userid != ''"> and t.id=#{userid}</if>
+        )  order by parentid,showlevel
+    </select>
+
+    <select id="getRoleMenuList" parameterType="map" resultMap="menuResult1">
+       SELECT m.*,case when r.menuid is not null then 'true' else '' end checked FROM HY_platform_menu m
+		 left join HY_platform_rolemenu r on m.id=r.menuid   and r.roleid=#{roleid}
+	  where m.apptype='A'
+        <if test="type != null and type != ''"> and m.type=#{type}</if>
+        order by m.parentid,m.showlevel
+    </select>
+
+</mapper>

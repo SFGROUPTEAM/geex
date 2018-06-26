@@ -1,0 +1,51 @@
+
+<div class="footer" style="bottom: 0px;">
+    <div class="friendLink" th:include="@{common/friendLink.html}"></div>
+    <div class="companyInfo">
+        <div class="info01">
+            <a href="#">[[#{Common.aboutUs}]]</a>|
+            <a href="#">[[#{Common.cooperative}]]</a>|
+            <a href="#">[[#{Common.privacy}]]</a>|
+            <a href="#">[[#{Common.complaint}]]</a>|
+            <a href="#">[[#{Common.disclaimer}]]</a>
+        </div>
+        <h5>Copyright (C) <span id="copyright"></span> , All Rights Reserved<span id="icp"></span></h5>
+    </div>
+</div>
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function () {
+
+            var baseConfig = [[${session.baseConfig}]];
+            if(baseConfig==null){
+                $.ajax({
+                    type: 'POST',
+                    url: '/baseConfig',
+                    datatype: 'json',
+                    cache: false,
+                    success: function (data) {
+                        var data1=JSON.parse(data);
+                        if (data1.copyright!=null){
+                            $("#copyright").html(data1.copyright);
+                        }
+                        if(data1.icp!=null){
+                            var icpNum = data1.icp.split("：")[1];
+                            var str = "<a href='http://www.beian.gov.cn/portal/registerSystemInfo?recordcode="+icpNum+"' target='view_window' >&nbsp;&nbsp;&nbsp;&nbsp;"+data1.icp+"</a>";
+                            $("#icp").html(str);
+                        }
+                    }
+                });
+            }else {
+                if (baseConfig.copyright!=null){
+                    $("#copyright").html(baseConfig.copyright);
+                }
+                if(baseConfig.icp!=null){
+                    var icpNum = baseConfig.icp.split("：")[1];
+                    var str = "<a href='http://www.beian.gov.cn/portal/registerSystemInfo?recordcode="+icpNum+"' target='view_window' >&nbsp;&nbsp;&nbsp;&nbsp;"+baseConfig.icp+"</a>";
+                    $("#icp").html(str);
+                }
+            }
+    })
+    /*]]>*/
+</script>
+

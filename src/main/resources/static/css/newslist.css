@@ -1,0 +1,29 @@
+
+.mid{ width:800px; overflow:hidden; margin:0 auto;}
+.container{padding-right: 0px;padding-left: 0px; padding-top: 15px}
+/*公告*/
+
+.mid .left_side{float: left;width: 200px;height: 200px}
+.mid .left_side ul{ list-style: none;}
+.mid .left_side ul li{ border: 1px solid rgba(101, 101, 101, 0.64);box-shadow: 1px 1px 0px 0px rgba(87, 91, 89, 0.44);}
+.mid .left_side ul li a{    display: block;  padding-left: 20px;  color: #484848;}
+.mid .left_side .current{ border: 1px solid rgba(80, 152, 233, 0.64);box-shadow: 1px 1px 0px 0px rgba(87, 91, 89, 0.44);}
+.mid .left_side .current a{    color: #0075a9;  font-weight: bold;}
+.mid .newsContent{float: left;width: 800px;}
+.mid .newsContent .list_title{ background-color: #F1F1F1 ;  height: 30px;width: 800px  ;border: 1px #ddd solid; }
+.mid .newsContent .list_title h3{ color: #666;text-align: center}
+.mid .newsContent .news_list{ width: 800px;}
+.mid .newsContent .news_list ul{}
+.mid .newsContent .news_list ul li{  list-style:circle;border-bottom: 1px solid #ccc;padding-right: 0px;  margin:10px 10px 15px 10px; font-size:12px;}
+.mid .newsContent .news_list ul li span{ height:40px;  width:800px;}
+.mid .newsContent .news_list ul li span a{ padding-left:10px; font-size:12px; float:left;}
+.mid .newsContent .news_list ul li span a:hover{ color:#ee6c02; text-decoration:underline;font-size:14px;}
+.mid .newsContent .news_list ul li span label{  float:right; margin-right:5px; font-weight: lighter; margin-bottom: 0px }
+
+/*分页*/
+.mid .page{ height: 50px;margin-top: 0px;padding-top: 10px;clear: both; }
+.mid .page .pageInfo{ width:300px ;  border: 0;  padding-left: 40px;  padding-top: 12px;  font-size: 15px;}
+ul.pagination {float: right;margin: 0px;padding-right:20px;}
+ul.pagination li {display: inline;}
+ul.pagination li a {  color: black;  float: left;  text-align: center; width: 40px; text-decoration: none;  transition: background-color .3s;  border: 1px solid #ddd;  }
+ul.pagination li a.active {  background-color: #4CAF50;  color: white;  border: 1px solid #4CAF50;  }

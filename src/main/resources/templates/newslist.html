@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"/>
+    <title>[[#{AppTitle}]]</title>
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}"/>
+    <!--<link rel="icon" type="image/gif" th:href="@{/images/animated_favicon.gif}">-->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.css}"/>
+    <link rel="stylesheet" th:href="@{/css/global.css}"/>
+    <link rel="stylesheet" th:href="@{/css/newslist.css}"/>
+    <link rel="stylesheet" th:href="@{/css/newIndex.css}"/>
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/changePage.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script type="application/javascript">
+        var cur = "newslist";
+    </script>
+
+</head>
+<body class="layout" style="position: relative">
+<div class="web-top">
+    <div class="topBar" th:include="@{common/top.html}"></div>
+    <div class="logoBar" th:include="@{common/header.html}"></div>
+    <!--导航-->
+    <div class="logoBar" th:include="@{common/navBar.html}"></div>
+</div>
+<div class="middle" style="margin: 65px 6%;width: 88%;">
+    <div class="mid container clearfix">
+        <!--<div class="left_side">-->
+        <!--<ul>-->
+        <!--<li id="notice" class="current"><a>公告</a></li>-->
+        <!--<li id="news" class=""><a>新闻</a></li>-->
+        <!--</ul>-->
+        <!--</div>-->
+        <div style="margin: 0 auto">
+            <div class="newsContent">
+                <div class="list_title">
+                    <h3>[[#{Common.Navigator.Announcement}]]</h3>
+                </div>
+                <div class="news_list">
+                    <ul id="allNewsInfo">
+
+                    </ul>
+                </div>
+            </div>
+            <div class="page" id="page">
+                <div class="pageInfo" style="float: left">
+                    <span>[[#{Common.page.total1}]]</span>
+                    <span id="newsNum1"></span>
+                    <span>[[#{Common.page.total2}]]</span>
+                    <span>[[#{Common.page.total3}]]</span>
+                    <span id="currentPage1"></span>
+                    <span>[[#{Common.page.total4}]]</span>
+                </div>
+                <ul class="pagination" id="pagination">
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!--底部栏-->
+    <div class="web-bottom" th:include="@{common/footer.html}">
+    </div>
+</div>
+<input type="hidden" id="allPage">
+<input type="hidden" id="currentPage">
+<input type="hidden" id="currentMaxPage">
+<input type="hidden" id="currentMinPage">
+<input type="hidden" id="newsNum">
+<script type="text/javascript" th:inline="javascript">
+    $(document).ready(function () {
+        showAllNews();
+    });
+
+    //解析日期
+    function date(obj) {
+        var year = obj.substring(0, 4);
+        var month = obj.substring(4, 6);
+        var day = obj.substring(6, 8);
+        return year + "-" + month + "-" + day;
+    }
+
+    function showAllNews() {
+        /*<![CDATA[*/
+        var newsList = [[${newsList}]];
+        var eachPageNum = 20;//每页显示数量
+        var tempNum = Math.ceil([[${newsListCount}]] / eachPageNum);//计算总页数
+        $("#allPage").val(tempNum);
+        $("#currentPage").val(1);//当前页面
+        $("#currentMinPage").val(1);//当前最小显示页码
+        $("#newsNum").val([[${newsListCount}]]);
+        var strPage = '<li><a onclick=\'pageChange(1)\'>«</a></li>';
+        for (var a = 1; a <= tempNum; a++) {
+            if (a > 7) {
+                strPage = strPage + "<li><a  onclick='more()'>…</a></li>";
+                break;
+            }
+            strPage = strPage + "<li><a   id='a" + a + "' onclick='pageChange(" + a + ")'>" + a + "</a></li>"
+            $("#currentMaxPage").val(a);//当前最大显示页码
+        }
+        strPage = strPage + "<li><a onclick='pageChange(" + tempNum + ")'>»</a></li>";
+
+        //遍历公告
+        var str = '';
+        $.each(newsList, function (i, obj) {
+            str = str + "<li><span><a href='/news.html?id=" + obj.id + "'>" + obj.title + "</a><label>" + date(obj.createtime) + "</label></span></li>";
+        });//[[#{Common.surplus}]]  [[#{Common.ge}]]
+        $("#allNewsInfo").html(str);
+        $("#pagination").html(strPage);
+        //增加第一页选中状态
+        if ($("#currentPage").val() != null && $("#currentPage").val() != '') {
+            $("#a1").attr("class", "active")
+        }
+        //显示页面信息
+        //显示页面信息
+        $("#newsNum1").html($("#newsNum").val());
+        $("#allPage1").html($("#allPage").val());
+        $("#currentPage1").html($("#currentPage").val());
+        /*]]>*/
+    }
+
+    //变更显示页面
+    function pageChange(obj) {
+        //点击当前页页码
+        if (obj == $("#currentPage").val()) {
+            $("html,body").animate({scrollTop: 0}, 500);
+            return;
+        }
+        //点击首页尾页时刷新分页
+        var allPage = $("#allPage").val();
+        if (parseInt(obj) == 1) {
+            var temp = 1;
+            var strPage = '<li><a onclick=\'pageChange(1)\'>«</a>';
+            $("#currentMinPage").val(temp);//当前最小显示页码
+            for (var a = 1; a <= allPage; a++) {
+                if (a > (parseInt(temp) + 6)) {
+                    strPage = strPage + "<li><a  onclick='more()'>…</a></li>";
+                    break;
+                }
+                strPage = strPage + "<li><a   id='a" + a + "' onclick='pageChange(" + a + ")'>" + a + "</a></li>";
+                $("#currentMaxPage").val(a);
+            }
+            strPage = strPage + "<li><a onclick='pageChange(" + allPage + ")'>»</a></li>";
+            $("#pagination").html(strPage);
+        } else if (parseInt(obj) == parseInt(allPage)) {
+            var temp = parseInt(obj) - 6;
+            var strPage = '<li><a onclick=\'pageChange(1)\'>«</a>';
+            //判断是否会到首页
+            if (temp <= 1) {
+                temp = 1;
+            } else {
+                strPage = strPage + "</li><li><a onclick='less()'>…</a></li>";
+            }
+            $("#currentMinPage").val(temp);//当前最小显示页码
+            for (var b = parseInt(temp); b <= allPage; b++) {
+                if (b > (parseInt(temp) + 6)) {
+                    strPage = strPage + "<li><a  onclick='more()'>…</a></li>";
+                    break;
+                }
+                strPage = strPage + "<li><a   id='a" + b + "' onclick='pageChange(" + b + ")'>" + b + "</a></li>";
+                $("#currentMaxPage").val(b);
+            }
+            strPage = strPage + "<li><a onclick='pageChange(" + allPage + ")'>»</a></li>";
+            $("#pagination").html(strPage);
+        }
+
+        //请求数据库
+        /*<![CDATA[*/
+        var eachPageNum = 20;//每页显示数量
+        $("#currentPage").val(obj);
+        var str = '';
+        $.ajax({
+            type: 'POST',
+            url: '/getNewsByPage?pagenum=' + obj,
+            datatype: 'json',
+            cache: false,
+            success: function (data) {
+                console.log(data)
+                var data1 = JSON.parse(data);
+                console.log(data1)
+                //遍历公告
+                var str = '';
+                $.each(data1.newsList, function (i, obj) {
+                    str = str + "<li><span><a href='/news.html?id=" + obj.id + "'>" + obj.title + "</a><label>" + date(obj.createtime) + "</label></span></li>";
+                });//[[#{Common.surplus}]]  [[#{Common.ge}]]
+                $("#allNewsInfo").html(str);
+                //刷新选中状态
+                $(".page .pagination li a").attr("class", "");
+                if ($("#currentPage").val() != null && $("#currentPage").val() != '') {
+                    $("#a" + obj + "").attr("class", "active")
+                }
+                //显示页面信息
+                //显示页面信息
+                $("#newsNum1").html($("#newsNum").val());
+                $("#allPage1").html($("#allPage").val());
+                $("#currentPage1").html($("#currentPage").val());
+                $("html,body").animate({scrollTop: 0}, 500);
+            }
+        });
+        /*]]>*/
+    }
+</script>
+</body>
+</html>
