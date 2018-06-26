@@ -38,6 +38,7 @@ public class NewsController {
         List<News> list=newsService.getList(map);
         String resultJson="";
         resultJson = JsonMapper.toJsonString(list);
+        System.out.println("测试GITHUB PUSH");
         model.put("list",list);
         return resultJson;
 
